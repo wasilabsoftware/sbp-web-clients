@@ -1,32 +1,22 @@
-"use client";
+import type { Metadata } from "next";
+import { AuthGuard } from "@/components/portal/AuthGuard";
 
-import { useEffect } from "react";
-import { useRouter } from "next/navigation";
-import { useAuth } from "@/hooks/useAuth";
+export const metadata: Metadata = {
+  title: "Mi Cuenta",
+  robots: {
+    index: false,
+    follow: false,
+    googleBot: {
+      index: false,
+      follow: false,
+    },
+  },
+};
 
 export default function PortalLayout({
   children,
 }: {
   children: React.ReactNode;
 }) {
-  const router = useRouter();
-  const { isAuthenticated } = useAuth();
-
-  useEffect(() => {
-    // Redirect to login if not authenticated
-    if (!isAuthenticated) {
-      router.replace("/login");
-    }
-  }, [isAuthenticated, router]);
-
-  // Show nothing while checking auth or redirecting
-  if (!isAuthenticated) {
-    return (
-      <div className="min-h-screen flex items-center justify-center bg-bg-primary">
-        <div className="w-8 h-8 border-4 border-berry-red border-t-transparent rounded-full animate-spin" />
-      </div>
-    );
-  }
-
-  return <>{children}</>;
+  return <AuthGuard>{children}</AuthGuard>;
 }

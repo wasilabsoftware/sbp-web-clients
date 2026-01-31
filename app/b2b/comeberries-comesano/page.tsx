@@ -1,5 +1,7 @@
+import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { createMetadata } from "@/lib/seo/metadata";
 import {
   Building2,
   Phone,
@@ -27,6 +29,22 @@ import {
 
 import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
+
+export const metadata: Metadata = createMetadata({
+  title: "#ComeBerries #ComeSano - Programa de Bienestar Corporativo",
+  description:
+    "Programa integral de bienestar con snacks saludables, asesoría nutricional, pausas activas y coaching organizacional para empresas en Perú.",
+  canonical: "/b2b/comeberries-comesano",
+  keywords: [
+    "ComeBerries",
+    "ComeSano",
+    "bienestar corporativo",
+    "snacks saludables empresas",
+    "pausas activas",
+    "coaching organizacional",
+    "nutrición empresarial",
+  ],
+});
 
 // Problem cards data - different text for mobile
 const problemCards = {
