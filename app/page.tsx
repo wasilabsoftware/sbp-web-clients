@@ -8,6 +8,9 @@ import {
   ShieldCheck,
   Heart,
   ShoppingBag,
+  Building2,
+  Briefcase,
+  ChevronRight,
 } from "lucide-react";
 
 import { Header } from "@/components/shared/Header";
@@ -15,6 +18,7 @@ import { Footer } from "@/components/shared/Footer";
 import { CategoryCard } from "@/components/shop/CategoryCard";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { FeatureCard } from "@/components/shop/FeatureCard";
+import { B2BSection } from "@/components/shop/B2BSection";
 import { Button } from "@/components/ui/Button";
 
 const categories = [
@@ -129,7 +133,7 @@ export default function HomePage() {
           <div className="inline-flex items-center gap-1.5 lg:gap-2 bg-berry-red-light rounded-full px-3 py-1.5 lg:px-4 lg:py-2 w-fit">
             <Leaf className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-berry-green" />
             <span className="text-xs lg:text-sm font-semibold text-berry-green">
-              100% Natural
+              100% Natural y Fresco
             </span>
           </div>
           <h1 className="text-[32px] lg:text-[56px] font-bold text-text-primary leading-tight text-center lg:text-left max-w-[320px] lg:max-w-[500px]">
@@ -138,7 +142,7 @@ export default function HomePage() {
             Directo a Tu Mesa
           </h1>
           <p className="text-[15px] lg:text-lg text-text-secondary text-center lg:text-left max-w-[320px] lg:max-w-[480px]">
-            Descubre nuestra selección premium de fresas, arándanos, moras y más.
+            Descubre nuestra selección premium de fresas, arándanos, moras, aguaymanto y más. Cultivados con amor en los valles del Perú.
           </p>
 
           {/* Mobile Hero Image */}
@@ -167,6 +171,27 @@ export default function HomePage() {
               </Button>
             </Link>
           </div>
+
+          {/* B2B Link - Mobile */}
+          <Link href="/b2b" className="flex lg:hidden items-center justify-center gap-1.5 w-full text-text-tertiary hover:text-text-secondary transition-colors">
+            <Building2 className="w-3.5 h-3.5" />
+            <span className="text-[13px] font-medium">¿Eres empresa? Soluciones B2B</span>
+            <ChevronRight className="w-3.5 h-3.5" />
+          </Link>
+
+          {/* B2B Link - Desktop */}
+          <Link href="/b2b" className="hidden lg:flex items-center gap-2 text-text-tertiary hover:text-text-secondary transition-colors">
+            <Building2 className="w-4 h-4" />
+            <span className="text-sm font-medium">¿Eres empresa? Conoce nuestras soluciones B2B</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link>
+
+          {/* Canal Empresarial Link */}
+          {/* <Link href="#" className="flex items-center gap-2 text-berry-red hover:text-berry-red/80 transition-colors">
+            <Briefcase className="w-4 h-4" />
+            <span className="text-sm font-medium">Accede al Canal Empresarial</span>
+            <ArrowRight className="w-3.5 h-3.5" />
+          </Link> */}
         </div>
 
         {/* Desktop Hero Image */}
@@ -255,6 +280,9 @@ export default function HomePage() {
           ))}
         </div>
       </section>
+
+      {/* B2B Section */}
+      <B2BSection />
 
       {/* Why Choose Us Section */}
       <section className="bg-berry-red px-5 py-10 lg:px-20 lg:py-20">

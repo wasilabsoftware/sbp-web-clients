@@ -5,7 +5,7 @@ const navLinks = [
   { title: "Navegación", links: [
     { href: "/", label: "Inicio" },
     { href: "/productos", label: "Catálogo" },
-    { href: "/nosotros", label: "Nosotros" },
+    { href: "/b2b", label: "Empresas" },
     { href: "/contacto", label: "Contacto" },
   ]},
   { title: "Categorías", links: [

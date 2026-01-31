@@ -5,10 +5,12 @@ import { Search, ShoppingBag, User, Menu } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useAuth } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
+import { MobileMenu } from "./MobileMenu";
 
 const navLinks = [
   { href: "/", label: "Inicio" },
   { href: "/productos", label: "Catálogo" },
+  { href: "/b2b", label: "Empresas" },
   { href: "/nosotros", label: "Nosotros" },
   { href: "/contacto", label: "Contacto" },
 ];
@@ -20,6 +22,7 @@ export function Header() {
     state.items.reduce((total, item) => total + item.quantity, 0)
   );
   const [mounted, setMounted] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     setMounted(true);
@@ -96,10 +99,21 @@ export function Header() {
             </span>
           )}
         </Link>
-        <button className="w-10 h-10 rounded-full bg-bg-muted flex items-center justify-center">
+        <button
+          onClick={() => setMobileMenuOpen(true)}
+          className="w-10 h-10 rounded-full bg-bg-muted flex items-center justify-center hover:bg-border-subtle transition-colors"
+          aria-label="Abrir menú"
+          aria-expanded={mobileMenuOpen}
+        >
           <Menu className="w-[18px] h-[18px] text-text-secondary" />
         </button>
       </div>
+
+      {/* Mobile Menu */}
+      <MobileMenu
+        isOpen={mobileMenuOpen}
+        onClose={() => setMobileMenuOpen(false)}
+      />
     </header>
   );
 }
