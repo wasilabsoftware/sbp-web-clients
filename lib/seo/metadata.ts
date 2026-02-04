@@ -26,7 +26,7 @@ export const siteConfig = {
   social: {
     instagram: 'https://instagram.com/superberriesperu',
     facebook: 'https://facebook.com/superberriesperu',
-    whatsapp: '+51999999999',
+    whatsapp: '+51952805608',
   },
 } as const;
 

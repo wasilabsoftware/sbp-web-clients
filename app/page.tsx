@@ -164,7 +164,7 @@ export default function HomePage() {
                 <ArrowRight className="w-4.5 h-4.5" />
               </Button>
             </Link>
-            <Link href="https://wa.me/51999888777" target="_blank" className="w-full lg:w-auto">
+            <Link href="https://wa.me/51952805608" target="_blank" className="w-full lg:w-auto">
               <Button variant="whatsapp" size="md" className="w-full lg:w-auto h-[52px] lg:h-auto justify-center">
                 <MessageCircle className="w-4.5 h-4.5" />
                 Pedir por WhatsApp
@@ -329,7 +329,7 @@ export default function HomePage() {
           Haz tu pedido ahora y recíbelo hoy mismo
         </p>
         <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-4 w-full lg:w-auto">
-          <Link href="https://wa.me/51999888777" target="_blank" className="w-full lg:w-auto">
+          <Link href="https://wa.me/51952805608" target="_blank" className="w-full lg:w-auto">
             <Button variant="whatsapp" size="lg" className="w-full lg:w-auto h-[52px] lg:h-auto justify-center">
               <MessageCircle className="w-5 h-5 lg:w-6 lg:h-6" />
               Pedir por WhatsApp

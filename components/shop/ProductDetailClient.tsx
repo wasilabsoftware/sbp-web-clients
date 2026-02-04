@@ -62,7 +62,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
     const message = encodeURIComponent(
       `¡Hola! Me gustaría pedir:\n\n• ${product.name} (${quantity}x) - S/ ${totalPrice.toFixed(2)}\n\nTotal: S/ ${totalPrice.toFixed(2)}`
     );
-    window.open(`https://wa.me/51999999999?text=${message}`, "_blank");
+    window.open(`https://wa.me/51952805608?text=${message}`, "_blank");
   };
 
   return (

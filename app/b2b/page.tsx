@@ -206,7 +206,7 @@ export default function B2BPage() {
               </button>
             </Link>
             <Link
-              href="https://wa.me/51999888777"
+              href="https://wa.me/51952805608"
               target="_blank"
               className="w-full lg:w-auto"
             >

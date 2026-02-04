@@ -16,7 +16,7 @@ const navLinks = [
     { href: "/productos?categoria=especiales", label: "Especiales" },
   ]},
   { title: "Contacto", links: [
-    { href: "tel:+51999888777", label: "+51 999 888 777" },
+    { href: "tel:+51952805608", label: "+51 952 805 608" },
     { href: "mailto:hola@superberries.pe", label: "hola@superberries.pe" },
     { href: "#", label: "Lima, Perú" },
   ]},
@@ -25,7 +25,7 @@ const navLinks = [
 const socialLinks = [
   { href: "https://facebook.com", icon: Facebook, label: "Facebook" },
   { href: "https://instagram.com", icon: Instagram, label: "Instagram" },
-  { href: "https://wa.me/51999888777", icon: MessageCircle, label: "WhatsApp", highlight: true },
+  { href: "https://wa.me/51952805608", icon: MessageCircle, label: "WhatsApp", highlight: true },
 ];
 
 export function Footer() {
