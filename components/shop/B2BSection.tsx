@@ -30,18 +30,18 @@ export function B2BSection() {
 
           {/* Description - Mobile */}
           <p className="lg:hidden text-[15px] text-text-secondary text-center max-w-[320px]">
-            Precios especiales, entregas programadas y atención personalizada para tu empresa.
+            Con #ComeBerries #ComeSano, tu equipo disfrutará de experiencias saludables todo el año.
           </p>
 
           {/* Description - Desktop */}
           <p className="hidden lg:block text-lg text-text-secondary text-left max-w-[480px]">
-            Ofrecemos precios especiales, entregas programadas y atención personalizada para restaurantes, hoteles, cafeterías y más.
+            Regalos corporativos: con el programa #ComeBerries #ComeSano, tu equipo podrá disfrutar de experiencias saludables durante todo el año, de acuerdo al plan que elijas.
           </p>
 
           {/* Mobile Image - between description and button */}
           <div className="lg:hidden relative w-[320px] h-[180px] rounded-lg overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1758519288905-38b7b00c1023?w=600"
+              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/adbc8281-9aa9-42d3-3426-08cef0911a00/Hero"
               alt="Reunión de negocios"
               fill
               className="object-cover"
@@ -61,7 +61,7 @@ export function B2BSection() {
         {/* Desktop Image */}
         <div className="hidden lg:block relative w-[480px] h-[360px] rounded-xl overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1731156679850-e73fbc21564c?w=1080"
+            src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/adbc8281-9aa9-42d3-3426-08cef0911a00/Hero"
             alt="Cocina comercial"
             fill
             className="object-cover"
