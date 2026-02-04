@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import {
@@ -95,9 +96,15 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         {/* Menu Header */}
         <div className="h-16 flex items-center justify-between px-5">
           <Link href="/" className="flex items-center gap-2" onClick={onClose}>
-            <div className="w-9 h-9 rounded-full bg-berry-red" />
+            <Image
+              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
+              alt="Super Berries Logo"
+              width={36}
+              height={36}
+              className="w-9 h-9 rounded-full object-cover"
+            />
             <span className="text-lg font-bold text-text-primary">
-              Super Berries
+              Super Berries Perú
             </span>
           </Link>
           <button

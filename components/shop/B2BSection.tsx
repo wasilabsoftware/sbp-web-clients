@@ -18,14 +18,14 @@ export function B2BSection() {
 
           {/* Title - Mobile */}
           <h2 className="lg:hidden text-2xl font-bold text-text-primary text-center">
-            ¿Tienes un negocio?
+            Beneficios saludables para colaboradores
           </h2>
 
           {/* Title - Desktop */}
           <h2 className="hidden lg:block text-[40px] font-bold text-text-primary leading-tight text-left max-w-[500px]">
-            ¿Tienes un negocio?
-            <br />
-            Te ayudamos a crecer
+            Beneficios saludables para colaboradores
+            {/* <br /> */}
+            {/* Te ayudamos a crecer */}
           </h2>
 
           {/* Description - Mobile */}

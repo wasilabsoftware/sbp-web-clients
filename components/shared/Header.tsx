@@ -1,5 +1,6 @@
 "use client";
 
+import Image from "next/image";
 import Link from "next/link";
 import { Search, ShoppingBag, User, Menu } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
@@ -32,9 +33,15 @@ export function Header() {
     <header className="bg-bg-surface h-16 lg:h-20 flex items-center justify-between px-5 lg:px-20">
       {/* Logo */}
       <Link href="/" className="flex items-center gap-2 lg:gap-3">
-        <div className="w-9 h-9 lg:w-12 lg:h-12 rounded-full bg-berry-red" />
+        <Image
+          src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
+          alt="Super Berries Logo"
+          width={48}
+          height={48}
+          className="w-9 h-9 lg:w-12 lg:h-12 rounded-full object-cover"
+        />
         <span className="text-lg lg:text-2xl font-bold text-text-primary">
-          Super Berries
+          Super Berries Perú
         </span>
       </Link>
 

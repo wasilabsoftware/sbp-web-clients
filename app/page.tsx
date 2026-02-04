@@ -148,7 +148,7 @@ export default function HomePage() {
           {/* Mobile Hero Image */}
           <div className="relative w-[280px] h-[220px] lg:hidden rounded-lg overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1588053422059-1ea604843686?w=600"
+              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/75d59e82-80bf-4553-3cab-8ca2cb362c00/Hero"
               alt="Berries frescos"
               fill
               className="object-cover"
@@ -197,7 +197,7 @@ export default function HomePage() {
         {/* Desktop Hero Image */}
         <div className="hidden lg:block relative w-[520px] h-[440px] rounded-xl overflow-hidden">
           <Image
-            src="https://images.unsplash.com/photo-1605674543277-12aa4ed9356d?w=1080"
+            src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/75d59e82-80bf-4553-3cab-8ca2cb362c00/Hero"
             alt="Berries frescos"
             fill
             className="object-cover"

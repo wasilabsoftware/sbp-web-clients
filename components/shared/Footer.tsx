@@ -1,3 +1,4 @@
+import Image from "next/image";
 import Link from "next/link";
 import { Facebook, Instagram, MessageCircle } from "lucide-react";
 
@@ -33,9 +34,15 @@ export function Footer() {
       {/* Mobile Footer */}
       <div className="flex flex-col items-center gap-6 lg:hidden">
         <Link href="/" className="flex items-center gap-2">
-          <div className="w-8 h-8 rounded-full bg-berry-red" />
+          <Image
+            src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
+            alt="Super Berries Logo"
+            width={32}
+            height={32}
+            className="w-8 h-8 rounded-full object-cover"
+          />
           <span className="text-lg font-bold text-text-inverse">
-            Super Berries
+            Super Berries Perú
           </span>
         </Link>
         <p className="text-sm text-white/65 text-center max-w-[250px]">
@@ -72,7 +79,13 @@ export function Footer() {
           {/* Brand */}
           <div className="flex flex-col gap-4 max-w-[300px]">
             <Link href="/" className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-full bg-berry-red" />
+              <Image
+                src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
+                alt="Super Berries Logo"
+                width={40}
+                height={40}
+                className="w-10 h-10 rounded-full object-cover"
+              />
               <span className="text-[22px] font-bold text-text-inverse">
                 Super Berries
               </span>
