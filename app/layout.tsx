@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import { Outfit } from "next/font/google";
+import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/seo/metadata";
 import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
@@ -77,6 +78,7 @@ export default function RootLayout({
       <body className={`${outfit.variable} font-sans antialiased`}>
         <OrganizationSchema />
         {children}
+        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!} />
       </body>
     </html>
   );
