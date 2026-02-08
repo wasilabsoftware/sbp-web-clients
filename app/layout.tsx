@@ -78,7 +78,7 @@ export default function RootLayout({
       <body className={`${outfit.variable} font-sans antialiased`}>
         <OrganizationSchema />
         {children}
-        <GoogleAnalytics gaId={process.env.NEXT_PUBLIC_GA_MEASUREMENT_ID!} />
+        <GoogleAnalytics gaId="G-KD21DWG664" />
       </body>
     </html>
   );
