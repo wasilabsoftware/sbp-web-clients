@@ -34,7 +34,138 @@ Frontend                          API                           Niubiz
 
 ---
 
-## Endpoints
+## Step 0: Create an Order
+
+Before starting the payment flow, you need an order.
+
+### POST /api/v1/orders
+
+**Request:**
+```json
+POST /api/v1/orders
+Content-Type: application/json
+
+{
+  "customerId": "uuid-of-customer",
+  "subtotalAmount": "75.00",
+  "deliveryFee": "10.00",
+  "totalAmount": "85.00",
+  "deliveryAddress": "Av. Javier Prado 123, San Isidro",
+  "deliveryDistrictId": 1,
+  "deliveryDate": "2025-01-20T10:00:00Z",
+  "orderSource": "web",
+  "items": [
+    {
+      "productId": "uuid-of-product",
+      "variantId": "uuid-of-variant",
+      "productName": "Fresas Frescas Premium",
+      "productSku": "FRESA-FRESCA-1KG",
+      "quantity": "2.5",
+      "unitPrice": "20.00",
+      "totalPrice": "50.00",
+      "specialInstructions": "Sin semillas por favor"
+    },
+    {
+      "productId": "uuid-of-product-2",
+      "variantId": "uuid-of-variant-2",
+      "productName": "Arándanos Frescos",
+      "productSku": "ARANDANO-250G",
+      "quantity": "1",
+      "unitPrice": "25.00",
+      "totalPrice": "25.00"
+    }
+  ]
+}
+```
+
+| Field | Type | Required | Description |
+|-------|------|----------|-------------|
+| `customerId` | UUID | Yes | Customer ID |
+| `subtotalAmount` | string (decimal) | Yes | Subtotal without delivery |
+| `deliveryFee` | string (decimal) | No (default `"10.00"`) | Delivery fee |
+| `totalAmount` | string (decimal) | Yes | Total to charge |
+| `deliveryAddress` | string (min 10) | Yes | Delivery address |
+| `deliveryDistrictId` | number | No | District ID |
+| `deliveryDate` | ISO datetime | No | Desired delivery date |
+| `orderSource` | `"web"` `"whatsapp"` `"instagram"` `"facebook"` `"phone"` | No (default `"web"`) | Order origin |
+| `items` | array (min 1) | Yes | Order items |
+| `items[].productId` | UUID | Yes | Product ID |
+| `items[].variantId` | UUID | Yes | Product variant ID |
+| `items[].productName` | string | Yes | Product name |
+| `items[].productSku` | string | Yes | Product SKU |
+| `items[].quantity` | string (decimal) | Yes | Quantity (kg or units) |
+| `items[].unitPrice` | string (decimal) | Yes | Unit price in soles |
+| `items[].totalPrice` | string (decimal) | Yes | Line total |
+| `items[].specialInstructions` | string | No | Special notes |
+
+**Response (201):**
+```json
+{
+  "id": "generated-uuid",
+  "orderNumber": "SBP1707840123ABCDEFG",
+  "orderStatus": "pending",
+  "paymentStatus": "pending",
+  "totalAmount": "85.00",
+  "subtotal": "75.00",
+  "deliveryFee": "10.00",
+  "deliveryAddress": "Av. Javier Prado 123, San Isidro",
+  "createdAt": "2025-01-15T15:00:00.000Z"
+}
+```
+
+> Save the returned `id` — you'll need it for the payment session.
+
+### Full checkout flow (TypeScript)
+
+```typescript
+const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+// 1. Create the order
+async function createOrder(cart: CartData): Promise<string> {
+  const res = await fetch(`${API_URL}/api/v1/orders`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+    },
+    body: JSON.stringify({
+      customerId: cart.customerId,
+      subtotalAmount: cart.subtotal.toFixed(2),
+      deliveryFee: cart.deliveryFee.toFixed(2),
+      totalAmount: cart.total.toFixed(2),
+      deliveryAddress: cart.address,
+      deliveryDistrictId: cart.districtId,
+      orderSource: 'web',
+      items: cart.items.map(item => ({
+        productId: item.productId,
+        variantId: item.variantId,
+        productName: item.productName,
+        productSku: item.productSku,
+        quantity: item.quantity.toFixed(2),
+        unitPrice: item.unitPrice.toFixed(2),
+        totalPrice: (item.quantity * item.unitPrice).toFixed(2),
+      })),
+    }),
+  });
+
+  if (!res.ok) {
+    const err = await res.json();
+    throw new Error(err.error || 'Error creating order');
+  }
+
+  const order = await res.json();
+  return order.id; // Use this for payment
+}
+
+// 2. Then start payment with the orderId
+async function checkout(cart: CartData) {
+  const orderId = await createOrder(cart);
+  await startPayment(orderId); // from payment flow below
+}
+```
+
+---
+
+## Payment Endpoints
 
 ### 1. GET /api/v1/payments/config
 
