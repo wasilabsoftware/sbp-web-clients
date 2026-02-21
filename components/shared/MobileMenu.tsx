@@ -10,6 +10,7 @@ import {
   Building2,
   Users,
   Mail,
+  BookOpen,
   LogIn,
   UserPlus,
   User,
@@ -31,6 +32,7 @@ const navItems = [
   { href: "/productos", label: "Catálogo", icon: Grid3X3 },
   { href: "/b2b", label: "B2B Empresas", icon: Building2, badge: "NUEVO" },
   { href: "/nosotros", label: "Nosotros", icon: Users },
+  { href: "/blog", label: "Blog", icon: BookOpen },
   { href: "/contacto", label: "Contacto", icon: Mail },
 ];
 

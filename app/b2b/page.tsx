@@ -3,27 +3,67 @@ import Link from "next/link";
 import {
   Building2,
   HeartPulse,
+  UtensilsCrossed,
+  Globe,
   ArrowRight,
-  Timer,
-  Bell,
   Phone,
   MessageCircle,
-  Apple,
-  Salad,
-  Activity,
-  Brain,
-  LucideIcon,
 } from "lucide-react";
 
 import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
 import { Button } from "@/components/ui/Button";
 
-const programFeatures: { label: string; icon: LucideIcon; color: string }[] = [
-  { label: "Snacks", icon: Apple, color: "text-berry-red" },
-  { label: "Nutrición", icon: Salad, color: "text-berry-green" },
-  { label: "Activo", icon: Activity, color: "text-[#F5A623]" },
-  { label: "Coaching", icon: Brain, color: "text-berry-purple" },
+const channels = [
+  {
+    badge: "Bienestar Integral",
+    badgeIcon: HeartPulse,
+    badgeColor: "text-berry-red",
+    badgeBg: "bg-berry-red-light",
+    title: "#ComeBerries #ComeSano",
+    descriptionMobile: "Snacks saludables, asesoría nutricional, pausas activas y coaching para tu equipo.",
+    descriptionDesktop: "Programa integral de bienestar con snacks saludables, asesoría nutricional, pausas activas y coaching organizacional para tus colaboradores.",
+    image: "https://images.unsplash.com/photo-1663136618561-29fcf597c51a?w=800",
+    imageAlt: "Programa ComeBerries de bienestar corporativo",
+    href: "/b2b/comeberries-comesano",
+    ctaText: "Ver Programa",
+    ctaColor: "bg-berry-red hover:bg-berry-red/90",
+    comingSoon: false,
+  },
+  {
+    badge: "Canal HORECA",
+    badgeIcon: UtensilsCrossed,
+    badgeColor: "text-berry-green",
+    badgeBg: "bg-berry-green-light",
+    title: "Hoteles, Restaurantes y Catering",
+    descriptionMobile: "Berries frescos y congelados para tu negocio gastronómico. Entrega programada en Lima.",
+    descriptionDesktop: "Abastecimiento de berries frescos y congelados para hoteles, restaurantes, cafeterías y servicios de catering. Precios mayoristas y entrega programada en Lima.",
+    image: "https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800",
+    imageAlt: "Berries para restaurantes y hoteles",
+    href: "/b2b/horeca",
+    ctaText: "Ver HORECA",
+    ctaColor: "bg-berry-green hover:bg-berry-green/90",
+    comingSoon: true,
+  },
+  {
+    badge: "Export",
+    badgeIcon: Globe,
+    badgeColor: "text-amber-600",
+    badgeBg: "bg-amber-50",
+    title: "Premium Peruvian Berries for the World",
+    descriptionMobile: "Fresh and frozen berries from Peru. Year-round supply, certified quality.",
+    descriptionDesktop: "Export premium Peruvian berries to global markets. Blueberries, goldenberries, strawberries, and frozen IQF products. Year-round supply with certified quality.",
+    image: "https://images.unsplash.com/photo-1596591868231-05e882e79c0e?w=800",
+    imageAlt: "Peruvian berries for export",
+    href: "/b2b/exportacion",
+    ctaText: "View Export",
+    ctaColor: "bg-amber-600 hover:bg-amber-700",
+    comingSoon: true,
+  },
+];
+
+const trustedCompanies = [
+  "NEXA", "SUNARP", "MEDIFARMA", "OSINERGMIN", "REFAX", "IMAGINA",
 ];
 
 export default function B2BPage() {
@@ -34,7 +74,6 @@ export default function B2BPage() {
       {/* Hero Section */}
       <section className="bg-bg-surface px-5 py-10 pb-8 lg:px-20 lg:py-20">
         <div className="flex flex-col items-center gap-5 lg:gap-6">
-          {/* Badge */}
           <div className="inline-flex items-center gap-1.5 lg:gap-2 bg-berry-red-light rounded-full px-3 py-1.5 lg:px-4 lg:py-2">
             <Building2 className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-berry-red" />
             <span className="text-xs lg:text-sm font-semibold text-berry-red">
@@ -42,178 +81,139 @@ export default function B2BPage() {
             </span>
           </div>
 
-          {/* Title */}
           <h1 className="text-[28px] lg:text-5xl font-bold text-text-primary text-center max-w-[320px] lg:max-w-none">
             Soluciones B2B para tu empresa
           </h1>
 
-          {/* Description - Mobile */}
           <p className="lg:hidden text-[15px] text-text-secondary text-center max-w-[320px]">
-            Programas de bienestar corporativo para potenciar a tus colaboradores
+            Bienestar corporativo, abastecimiento HORECA y exportación de berries peruanos
           </p>
 
-          {/* Description - Desktop */}
           <p className="hidden lg:block text-lg text-text-secondary text-center max-w-[700px]">
-            Descubre nuestros programas de bienestar corporativo diseñados para
-            potenciar la productividad y felicidad de tus colaboradores
+            Tres canales empresariales: bienestar corporativo, abastecimiento a hoteles y restaurantes, y exportación de berries peruanos premium al mundo
           </p>
         </div>
       </section>
 
-      {/* Programs Section */}
+      {/* Channels Section */}
       <section className="bg-bg-surface px-5 pb-10 lg:px-20 lg:pb-20">
-        <div className="flex flex-col lg:flex-row items-stretch justify-center gap-5 lg:gap-8">
-          {/* Program 1 - Active */}
-          <div className="w-full lg:w-[400px] bg-bg-surface border border-border-subtle rounded-2xl lg:rounded-3xl shadow-lg overflow-hidden">
-            {/* Image */}
-            <div className="relative w-full h-[160px] lg:h-[200px]">
-              <Image
-                src="https://images.unsplash.com/photo-1663136618561-29fcf597c51a?w=800"
-                alt="Berries frescos"
-                fill
-                className="object-cover"
-              />
-            </div>
+        <div className="flex flex-col items-center gap-6 lg:gap-8 max-w-[1200px] mx-auto">
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 w-full">
+            {channels.map((channel) => (
+              <div
+                key={channel.title}
+                className={`bg-bg-surface border border-border-subtle rounded-2xl shadow-lg overflow-hidden flex flex-col ${
+                  channel.comingSoon ? "opacity-60" : ""
+                }`}
+              >
+                {/* Image */}
+                <div className="relative w-full h-[160px] lg:h-[180px]">
+                  <Image
+                    src={channel.image}
+                    alt={channel.imageAlt}
+                    fill
+                    className={`object-cover ${channel.comingSoon ? "grayscale" : ""}`}
+                  />
+                  {channel.comingSoon && (
+                    <div className="absolute inset-0 flex items-center justify-center bg-black/30">
+                      <span className="bg-white/90 text-text-primary text-xs font-bold uppercase tracking-wider px-4 py-1.5 rounded-full">
+                        Proximamente
+                      </span>
+                    </div>
+                  )}
+                </div>
 
-            {/* Content */}
-            <div className="p-5 lg:p-8 flex flex-col gap-3 lg:gap-4">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-1.5 bg-berry-red-light rounded-full px-2.5 py-1 lg:px-3 lg:py-1.5 w-fit">
-                <HeartPulse className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-berry-red" />
-                <span className="text-[11px] lg:text-xs font-semibold text-berry-red">
-                  Bienestar Integral
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-xl lg:text-2xl font-bold text-text-primary">
-                #ComeBerries #ComeSano
-              </h3>
-
-              {/* Description - Mobile */}
-              <p className="lg:hidden text-sm text-text-secondary">
-                Snacks saludables, asesoría nutricional, pausas activas y coaching organizacional.
-              </p>
-
-              {/* Description - Desktop */}
-              <p className="hidden lg:block text-[15px] text-text-secondary">
-                Programa integral de bienestar con snacks saludables, asesoría
-                nutricional, pausas activas y coaching organizacional.
-              </p>
-
-              {/* Features */}
-              <div className="flex flex-wrap gap-3 lg:gap-4">
-                {programFeatures.map((feature, index) => (
-                  <div
-                    key={feature.label}
-                    className={`flex items-center gap-1 lg:gap-1.5 ${index === 3 ? "hidden lg:flex" : ""}`}
-                  >
-                    <feature.icon className={`w-3.5 h-3.5 lg:w-4 lg:h-4 shrink-0 ${feature.color}`} />
-                    <span className="text-xs lg:text-[13px] text-text-tertiary font-medium">
-                      {feature.label}
+                {/* Content */}
+                <div className="p-5 lg:p-6 flex flex-col gap-3 flex-1">
+                  <div className={`inline-flex items-center gap-1.5 ${channel.badgeBg} rounded-full px-2.5 py-1 w-fit`}>
+                    <channel.badgeIcon className={`w-3 h-3 ${channel.badgeColor}`} />
+                    <span className={`text-[11px] font-semibold ${channel.badgeColor}`}>
+                      {channel.badge}
                     </span>
                   </div>
-                ))}
-              </div>
 
-              {/* CTA Button */}
-              <Link href="/b2b/comeberries-comesano" className="mt-1 lg:mt-2">
-                <button className="w-full flex items-center justify-center gap-2 bg-berry-red text-text-inverse px-5 py-3.5 lg:px-6 lg:py-4 rounded-lg font-semibold text-sm lg:text-[15px] hover:bg-berry-red/90 transition-colors">
-                  Ver Programa
-                  <ArrowRight className="w-4 h-4 lg:w-4.5 lg:h-4.5" />
-                </button>
-              </Link>
-            </div>
+                  <h3 className="text-lg lg:text-xl font-bold text-text-primary">
+                    {channel.title}
+                  </h3>
+
+                  <p className="lg:hidden text-sm text-text-secondary flex-1">
+                    {channel.descriptionMobile}
+                  </p>
+                  <p className="hidden lg:block text-sm text-text-secondary flex-1">
+                    {channel.descriptionDesktop}
+                  </p>
+
+                  {channel.comingSoon ? (
+                    <div className="mt-2">
+                      <span className="w-full flex items-center justify-center gap-2 bg-bg-muted text-text-tertiary px-5 py-3.5 rounded-lg font-semibold text-sm cursor-not-allowed">
+                        Proximamente
+                      </span>
+                    </div>
+                  ) : (
+                    <Link href={channel.href} className="mt-2">
+                      <button className={`w-full flex items-center justify-center gap-2 ${channel.ctaColor} text-text-inverse px-5 py-3.5 rounded-lg font-semibold text-sm transition-colors`}>
+                        {channel.ctaText}
+                        <ArrowRight className="w-4 h-4" />
+                      </button>
+                    </Link>
+                  )}
+                </div>
+              </div>
+            ))}
           </div>
+        </div>
+      </section>
 
-          {/* Program 2 - Coming Soon */}
-          <div className="w-full lg:w-[400px] bg-bg-surface border border-border-subtle rounded-2xl lg:rounded-3xl shadow-lg overflow-hidden flex flex-col">
-            {/* Placeholder Image */}
-            <div className="w-full h-[120px] lg:h-[200px] bg-bg-muted flex items-center justify-center">
-              <div className="w-9 h-9 lg:w-12 lg:h-12 text-text-tertiary">
-                <svg
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  strokeWidth="1.5"
-                >
-                  <path d="M12 5v14M5 12h14" />
-                </svg>
-              </div>
-            </div>
-
-            {/* Content */}
-            <div className="p-5 lg:p-8 flex flex-col gap-3 lg:gap-4 flex-1">
-              {/* Badge */}
-              <div className="inline-flex items-center gap-1.5 bg-bg-muted rounded-full px-2.5 py-1 lg:px-3 lg:py-1.5 w-fit">
-                <Timer className="w-3 h-3 lg:w-3.5 lg:h-3.5 text-text-tertiary" />
-                <span className="text-[11px] lg:text-xs font-semibold text-text-tertiary">
-                  Próximamente
-                </span>
-              </div>
-
-              {/* Title */}
-              <h3 className="text-xl lg:text-2xl font-bold text-text-tertiary">
-                Nuevo programa
-              </h3>
-
-              {/* Description - Mobile */}
-              <p className="lg:hidden text-sm text-text-tertiary">
-                Estamos preparando nuevas soluciones. ¡Mantente atento!
-              </p>
-
-              {/* Description - Desktop */}
-              <p className="hidden lg:block text-[15px] text-text-tertiary">
-                Estamos preparando nuevas soluciones de bienestar corporativo.
-                ¡Mantente atento!
-              </p>
-
-              {/* Notify Button */}
-              <button className="mt-auto w-full flex items-center justify-center gap-2 px-5 py-3.5 lg:px-6 lg:py-4 border-2 border-border-subtle rounded-lg text-text-tertiary font-semibold text-sm lg:text-[15px] hover:border-text-tertiary transition-colors">
-                Notificarme
-                <Bell className="w-4 h-4 lg:w-4.5 lg:h-4.5" />
-              </button>
-            </div>
+      {/* Trust Section */}
+      <section className="bg-bg-muted px-5 py-10 lg:px-20 lg:py-16">
+        <div className="flex flex-col items-center gap-6 lg:gap-8">
+          <p className="text-sm lg:text-base font-semibold text-text-tertiary uppercase tracking-wider text-center">
+            Empresas que confían en nosotros
+          </p>
+          <div className="flex flex-wrap justify-center gap-6 lg:gap-12">
+            {trustedCompanies.map((company) => (
+              <span
+                key={company}
+                className="text-lg lg:text-xl font-bold text-text-tertiary/60"
+              >
+                {company}
+              </span>
+            ))}
           </div>
         </div>
       </section>
 
       {/* CTA Section */}
-      <section className="bg-bg-muted px-5 py-10 lg:px-20 lg:py-20">
+      <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-20">
         <div className="flex flex-col items-center gap-5 lg:gap-8">
-          {/* Title */}
           <h2 className="text-xl lg:text-[32px] font-bold text-text-primary text-center">
-            ¿No encuentras lo que buscas?
+            ¿Necesitas una solución personalizada?
           </h2>
 
-          {/* Description - Mobile */}
           <p className="lg:hidden text-sm text-text-secondary text-center">
             Creamos soluciones a medida. Contáctanos.
           </p>
 
-          {/* Description - Desktop */}
           <p className="hidden lg:block text-lg text-text-secondary text-center max-w-[600px]">
-            Creamos soluciones a medida para tu empresa. Contáctanos y diseñemos
-            juntos el programa ideal.
+            Creamos soluciones a medida para tu empresa. Contáctanos y diseñemos juntos la propuesta ideal.
           </p>
 
-          {/* Buttons */}
           <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-4 w-full lg:w-auto">
-            <Link href="#" className="w-full lg:w-auto">
-              <button className="w-full lg:w-auto flex items-center justify-center gap-2.5 bg-berry-red text-text-inverse px-6 py-4 lg:px-8 lg:py-4.5 rounded-lg font-semibold text-[15px] lg:text-base hover:bg-berry-red/90 transition-colors">
-                <Phone className="w-4.5 h-4.5 lg:w-5 lg:h-5" />
+            <Link href="/contacto" className="w-full lg:w-auto">
+              <Button variant="primary" size="lg" className="w-full lg:w-auto h-[52px] justify-center">
+                <Phone className="w-5 h-5" />
                 Contactar Ventas
-              </button>
+              </Button>
             </Link>
             <Link
               href="https://wa.me/51952805608"
               target="_blank"
               className="w-full lg:w-auto"
             >
-              <button className="w-full lg:w-auto flex items-center justify-center gap-2.5 bg-whatsapp text-text-inverse px-6 py-4 lg:px-8 lg:py-4.5 rounded-lg font-semibold text-[15px] lg:text-base hover:opacity-90 transition-opacity">
-                <MessageCircle className="w-4.5 h-4.5 lg:w-5 lg:h-5" />
+              <Button variant="whatsapp" size="lg" className="w-full lg:w-auto h-[52px] justify-center">
+                <MessageCircle className="w-5 h-5" />
                 WhatsApp
-              </button>
+              </Button>
             </Link>
           </div>
         </div>

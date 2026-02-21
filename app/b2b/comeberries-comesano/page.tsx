@@ -29,6 +29,7 @@ import {
 
 import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
+import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = createMetadata({
   title: "#ComeBerries #ComeSano - Programa de Bienestar Corporativo",
@@ -255,6 +256,13 @@ const clients = ["NEXA", "SUNARP", "MEDIFARMA", "OSINERGMIN", "REFAX", "IMAGINA"
 export default function ComeSanoPage() {
   return (
     <main className="min-h-screen bg-bg-primary">
+      <BreadcrumbSchema
+        items={[
+          { name: "Inicio", url: "/" },
+          { name: "Empresas", url: "/b2b" },
+          { name: "#ComeBerries #ComeSano" },
+        ]}
+      />
       <Header />
 
       {/* Hero Section */}
@@ -300,7 +308,7 @@ export default function ComeSanoPage() {
 
             {/* CTA Buttons */}
             <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-4 w-full lg:w-auto">
-              <Link href="tel:+51952805608" className="w-full lg:w-auto">
+              <Link href="https://wa.me/51952805608?text=Hola%2C%20me%20interesa%20el%20programa%20ComeBerries%20para%20mi%20empresa" className="w-full lg:w-auto">
                 <button className="w-full lg:w-auto flex items-center justify-center gap-2.5 bg-berry-red text-text-inverse px-6 py-4 lg:px-8 lg:py-4.5 rounded-lg font-semibold text-[15px] lg:text-base hover:bg-berry-red/90 transition-colors">
                   <Phone className="w-4.5 h-4.5 lg:w-5 lg:h-5" />
                   Solicitar Cotización
@@ -458,6 +466,67 @@ export default function ComeSanoPage() {
         </div>
       </section>
 
+      {/* Nutrition & Coaching Topics Section */}
+      <section className="bg-bg-muted px-5 py-10 lg:px-20 lg:py-20">
+        <div className="flex flex-col items-center gap-6 lg:gap-12 max-w-[1100px] mx-auto">
+          <div className="flex flex-col items-center gap-3">
+            <h2 className="text-2xl lg:text-[40px] font-bold text-text-primary text-center">
+              <span className="lg:hidden">Charlas y Talleres</span>
+              <span className="hidden lg:inline">Charlas de Nutrición y Coaching</span>
+            </h2>
+            <p className="hidden lg:block text-lg text-text-secondary text-center max-w-[600px]">
+              Temas especializados impartidos por profesionales certificados
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-4 lg:gap-6 w-full">
+            {/* Nutrition Talks */}
+            <div className="flex flex-col gap-4 bg-bg-surface rounded-xl p-5 lg:p-6 border border-border-subtle">
+              <div className="flex items-center gap-2">
+                <Salad className="w-5 h-5 text-berry-green" />
+                <h3 className="text-base lg:text-lg font-bold text-text-primary">Charlas de Nutrición</h3>
+              </div>
+              <div className="flex flex-col gap-2.5">
+                {[
+                  "Alimentación saludable",
+                  "Manejo de la alimentación y el estrés",
+                  "Loncheras escolares saludables",
+                  "Snacks saludables en la empresa",
+                  "Alimentación para mejorar indicadores de salud",
+                  "Alimentación para maratones y medias maratones",
+                ].map((topic) => (
+                  <div key={topic} className="flex items-center gap-2">
+                    <CircleCheck className="w-4 h-4 text-berry-green shrink-0" />
+                    <span className="text-sm text-text-secondary">{topic}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Coaching Talks */}
+            <div className="flex flex-col gap-4 bg-bg-surface rounded-xl p-5 lg:p-6 border border-border-subtle">
+              <div className="flex items-center gap-2">
+                <Brain className="w-5 h-5 text-berry-purple" />
+                <h3 className="text-base lg:text-lg font-bold text-text-primary">Coaching Organizacional</h3>
+              </div>
+              <div className="flex flex-col gap-2.5">
+                {[
+                  "El efecto del enfoque consciente en la vida profesional",
+                  "Autocontrol emocional en momentos de estrés",
+                  "Seguridad 2.0: El poder de creer en uno mismo",
+                  "Transformar tu realidad de adentro hacia afuera",
+                ].map((topic) => (
+                  <div key={topic} className="flex items-center gap-2">
+                    <CircleCheck className="w-4 h-4 text-berry-purple shrink-0" />
+                    <span className="text-sm text-text-secondary">{topic}</span>
+                  </div>
+                ))}
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Benefits Section */}
       <section className="bg-berry-red px-5 py-10 lg:px-20 lg:py-20">
         <div className="flex flex-col lg:flex-row items-center gap-6 lg:gap-15">
@@ -573,7 +642,7 @@ export default function ComeSanoPage() {
                 </div>
 
                 {/* CTA Button */}
-                <Link href="tel:+51952805608" className="mt-auto">
+                <Link href="https://wa.me/51952805608?text=Hola%2C%20me%20interesa%20el%20programa%20ComeBerries%20para%20mi%20empresa" className="mt-auto">
                   {plan.buttonStyle === "filled" ? (
                     <button className={`w-full flex items-center justify-center gap-2 bg-${plan.color} text-text-inverse px-5 py-3.5 rounded-lg font-semibold text-[15px] hover:opacity-90 transition-opacity`}>
                       Solicitar Plan
@@ -631,7 +700,7 @@ export default function ComeSanoPage() {
                 )}
 
                 {/* CTA Button */}
-                <Link href="tel:+51952805608">
+                <Link href="https://wa.me/51952805608?text=Hola%2C%20me%20interesa%20el%20programa%20ComeBerries%20para%20mi%20empresa">
                   {plan.buttonStyle === "filled" ? (
                     <button className={`w-full flex items-center justify-center gap-2 bg-${plan.color} text-text-inverse px-5 py-3.5 rounded-lg font-semibold text-sm hover:opacity-90 transition-opacity`}>
                       Solicitar Plan
@@ -768,7 +837,7 @@ export default function ComeSanoPage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-4 w-full lg:w-auto">
-            <Link href="tel:+51952805608" className="w-full lg:w-auto">
+            <Link href="https://wa.me/51952805608?text=Hola%2C%20me%20interesa%20el%20programa%20ComeBerries%20para%20mi%20empresa" className="w-full lg:w-auto">
               <button className="w-full lg:w-auto flex items-center justify-center gap-2.5 bg-bg-surface text-berry-red px-6 py-4 lg:px-8 lg:py-4.5 rounded-lg font-semibold text-[15px] lg:text-base hover:bg-white/90 transition-colors">
                 <Phone className="w-4.5 h-4.5 lg:w-5 lg:h-5" />
                 952 805 608

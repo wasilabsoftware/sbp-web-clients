@@ -3,7 +3,7 @@ import type { Metadata } from 'next';
 export const siteConfig = {
   name: 'Super Berries Perú',
   shortName: 'SuperBerries',
-  description: 'Descubre nuestra selección premium de fresas, arándanos, moras, aguaymanto y más. Berries frescos cultivados con amor en los valles del Perú.',
+  description: 'Más de 60 productos: arándanos, fresas, moras, frambuesas, aguaymanto frescos y congelados. Delivery mismo día en Lima. Desde S/5. Pide por WhatsApp.',
   url: 'https://superberriesperu.com',
   ogImage: '/og-image.png',
   locale: 'es_PE',
@@ -21,6 +21,14 @@ export const siteConfig = {
     'Perú',
     'frutas premium',
     'snacks saludables',
+    'comprar berries online',
+    'delivery berries Lima',
+    'frutas frescas Lima',
+    'fresas delivery',
+    'arándanos Lima',
+    'berries corporativo',
+    'berries congelados',
+    'frutos secos Lima',
   ],
   creator: 'Super Berries Perú',
   social: {

@@ -8,116 +8,21 @@ import { Footer } from "@/components/shared/Footer";
 import { SidebarFilters } from "@/components/shop/SidebarFilters";
 import { CatalogProductCard } from "@/components/shop/CatalogProductCard";
 import { Pagination } from "@/components/ui/Pagination";
+import { products, getAllCategories } from "@/lib/data/products";
 
-const categories = [
-  { id: "todos", name: "Todos" },
-  { id: "berries", name: "Berries" },
-  { id: "frutos-secos", name: "Frutos Secos" },
-  { id: "deshidratados", name: "Deshidratados" },
-  { id: "especiales", name: "Especiales" },
-];
+const categories = getAllCategories();
 
-const allProducts = [
-  {
-    id: "1",
-    name: "Fresas Premium",
-    category: "Berries",
-    categoryId: "berries",
-    categoryColor: "red" as const,
-    weight: "500g",
-    price: 18.9,
-    imageUrl: "https://images.unsplash.com/photo-1636119708661-91ec3f9a6eb2?w=600",
-    href: "/productos/fresas-premium",
-  },
-  {
-    id: "2",
-    name: "Arándanos Frescos",
-    category: "Berries",
-    categoryId: "berries",
-    categoryColor: "red" as const,
-    weight: "250g",
-    price: 24.9,
-    imageUrl: "https://images.unsplash.com/photo-1758820609344-b01c8c6b3406?w=600",
-    href: "/productos/arandanos-frescos",
-  },
-  {
-    id: "3",
-    name: "Moras Silvestres",
-    category: "Berries",
-    categoryId: "berries",
-    categoryColor: "red" as const,
-    weight: "300g",
-    price: 19.9,
-    imageUrl: "https://images.unsplash.com/photo-1723746546836-85e9857c5d19?w=600",
-    href: "/productos/moras-silvestres",
-  },
-  {
-    id: "4",
-    name: "Aguaymanto",
-    category: "Especiales",
-    categoryId: "especiales",
-    categoryColor: "green" as const,
-    weight: "200g",
-    price: 15.9,
-    imageUrl: "https://images.unsplash.com/photo-1698747789735-011173b068f2?w=600",
-    href: "/productos/aguaymanto",
-  },
-  {
-    id: "5",
-    name: "Cerezas",
-    category: "Berries",
-    categoryId: "berries",
-    categoryColor: "red" as const,
-    weight: "250g",
-    price: 29.9,
-    imageUrl: "https://images.unsplash.com/photo-1530176611600-d05a6387d07c?w=600",
-    href: "/productos/cerezas",
-  },
-  {
-    id: "6",
-    name: "Pistachos",
-    category: "Frutos Secos",
-    categoryId: "frutos-secos",
-    categoryColor: "green" as const,
-    weight: "150g",
-    price: 22.9,
-    imageUrl: "https://images.unsplash.com/photo-1721976505728-1d2a5ee8de5f?w=600",
-    href: "/productos/pistachos",
-  },
-  {
-    id: "7",
-    name: "Frambuesas",
-    category: "Berries",
-    categoryId: "berries",
-    categoryColor: "red" as const,
-    weight: "200g",
-    price: 21.9,
-    imageUrl: "https://images.unsplash.com/photo-1577003833619-76bbd7f82948?w=600",
-    href: "/productos/frambuesas",
-  },
-  {
-    id: "8",
-    name: "Almendras",
-    category: "Frutos Secos",
-    categoryId: "frutos-secos",
-    categoryColor: "green" as const,
-    weight: "200g",
-    price: 18.9,
-    imageUrl: "https://images.unsplash.com/photo-1508061253366-f7da158b6d46?w=600",
-    href: "/productos/almendras",
-  },
-  {
-    id: "9",
-    name: "Arándanos Deshidratados",
-    category: "Deshidratados",
-    categoryId: "deshidratados",
-    categoryColor: "green" as const,
-    weight: "100g",
-    price: 12.9,
-    imageUrl: "https://images.unsplash.com/photo-1615484477778-ca3b77940c25?w=600",
-    href: "/productos/arandanos-deshidratados",
-  },
-];
+const allProducts = products.map((p) => ({
+  id: p.id,
+  name: p.name,
+  category: p.category,
+  categoryId: p.categoryId,
+  categoryColor: p.categoryColor,
+  weight: p.weights[p.defaultWeightIndex].label,
+  price: p.weights[p.defaultWeightIndex].price,
+  imageUrl: p.images[0],
+  href: `/productos/${p.slug}`,
+}));
 
 export default function CatalogPage() {
   const [selectedCategory, setSelectedCategory] = useState("todos");
@@ -138,7 +43,7 @@ export default function CatalogPage() {
     return matchesCategory && matchesPrice && matchesSearch;
   });
 
-  const productsPerPage = 6;
+  const productsPerPage = 9;
   const totalPages = Math.ceil(filteredProducts.length / productsPerPage);
   const paginatedProducts = filteredProducts.slice(
     (currentPage - 1) * productsPerPage,

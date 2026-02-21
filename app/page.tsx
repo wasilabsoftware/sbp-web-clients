@@ -23,28 +23,40 @@ import { Button } from "@/components/ui/Button";
 
 const categories = [
   {
-    title: "Berries",
+    title: "Berries Frescos",
     productCount: 12,
     imageUrl: "https://images.unsplash.com/photo-1636119708793-7af9f143ac13?w=400",
     href: "/productos?categoria=berries",
   },
   {
+    title: "Congelados",
+    productCount: 7,
+    imageUrl: "https://images.unsplash.com/photo-1563746098251-d35aef196e83?w=400",
+    href: "/productos?categoria=congelados",
+  },
+  {
     title: "Frutos Secos",
-    productCount: 8,
+    productCount: 14,
     imageUrl: "https://images.unsplash.com/photo-1724058663142-e6e1a5e89f2d?w=400",
     href: "/productos?categoria=frutos-secos",
   },
   {
-    title: "Especiales",
-    productCount: 5,
+    title: "Súper Snacks",
+    productCount: 4,
     imageUrl: "https://images.unsplash.com/photo-1583440772344-edd2e043742c?w=400",
-    href: "/productos?categoria=especiales",
+    href: "/productos?categoria=super-snacks",
   },
   {
     title: "Deshidratados",
     productCount: 6,
     imageUrl: "https://images.unsplash.com/photo-1748898297482-3c336a18cca5?w=400",
     href: "/productos?categoria=deshidratados",
+  },
+  {
+    title: "Frutas Frescas",
+    productCount: 10,
+    imageUrl: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400",
+    href: "/productos?categoria=frutas",
   },
 ];
 
@@ -56,7 +68,7 @@ const featuredProducts = [
     category: "Berries",
     categoryColor: "red" as const,
     description: "500g - Frescas del día",
-    price: 18.9,
+    price: 9.0,
     imageUrl: "https://images.unsplash.com/photo-1768204043813-8ed923cc30cf?w=600",
     href: "/productos/fresas-premium",
   },
@@ -67,7 +79,7 @@ const featuredProducts = [
     category: "Berries",
     categoryColor: "red" as const,
     description: "250g - Antioxidantes naturales",
-    price: 24.9,
+    price: 5.0,
     imageUrl: "https://images.unsplash.com/photo-1690090953464-7d6713a9065f?w=600",
     href: "/productos/arandanos-frescos",
   },
@@ -78,7 +90,7 @@ const featuredProducts = [
     category: "Berries",
     categoryColor: "red" as const,
     description: "300g - Sabor intenso",
-    price: 15.9,
+    price: 12.0,
     imageUrl: "https://images.unsplash.com/photo-1667054071803-84272acfec7e?w=600",
     href: "/productos/moras-silvestres",
   },
@@ -89,7 +101,7 @@ const featuredProducts = [
     category: "Especiales",
     categoryColor: "green" as const,
     description: "200g - Superfruta peruana",
-    price: 12.9,
+    price: 8.0,
     imageUrl: "https://images.unsplash.com/photo-1763477892923-c3fee1a33533?w=600",
     href: "/productos/aguaymanto",
   },
@@ -133,16 +145,16 @@ export default function HomePage() {
           <div className="inline-flex items-center gap-1.5 lg:gap-2 bg-berry-red-light rounded-full px-3 py-1.5 lg:px-4 lg:py-2 w-fit">
             <Leaf className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-berry-green" />
             <span className="text-xs lg:text-sm font-semibold text-berry-green">
-              100% Natural y Fresco
+              🚚 Delivery hoy en Lima · Desde S/ 5 · +7,400 pedidos
             </span>
           </div>
           <h1 className="text-[32px] lg:text-[56px] font-bold text-text-primary leading-tight text-center lg:text-left max-w-[320px] lg:max-w-[500px]">
             Berries Frescos
             <br />
-            Directo a Tu Mesa
+            con Delivery en Lima
           </h1>
           <p className="text-[15px] lg:text-lg text-text-secondary text-center lg:text-left max-w-[320px] lg:max-w-[480px]">
-            Descubre nuestra selección premium de fresas, arándanos, moras, aguaymanto y más. Cultivados con amor en los valles del Perú.
+            Más de 60 productos naturales del campo peruano. Fresas desde S/9, arándanos desde S/5. Pide por WhatsApp y recíbelos hoy.
           </p>
 
           {/* Mobile Hero Image */}
@@ -216,13 +228,10 @@ export default function HomePage() {
             Explora nuestra variedad de productos frescos y deliciosos
           </p>
         </div>
-        <div className="flex gap-3 lg:gap-6 lg:justify-center overflow-x-auto pb-2 lg:pb-0 -mx-5 px-5 lg:mx-0 lg:px-0">
-          {categories.slice(0, 3).map((category) => (
+        <div className="flex gap-3 lg:gap-6 lg:justify-center overflow-x-auto pb-2 lg:pb-0 -mx-5 px-5 lg:mx-0 lg:px-0 lg:flex-wrap">
+          {categories.map((category) => (
             <CategoryCard key={category.title} {...category} />
           ))}
-          <div className="hidden lg:block">
-            <CategoryCard {...categories[3]} />
-          </div>
         </div>
       </section>
 

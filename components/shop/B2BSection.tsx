@@ -18,24 +18,22 @@ export function B2BSection() {
 
           {/* Title - Mobile */}
           <h2 className="lg:hidden text-2xl font-bold text-text-primary text-center">
-            Beneficios saludables para colaboradores
+            Soluciones para empresas, restaurantes y exportación
           </h2>
 
           {/* Title - Desktop */}
           <h2 className="hidden lg:block text-[40px] font-bold text-text-primary leading-tight text-left max-w-[500px]">
-            Beneficios saludables para colaboradores
-            {/* <br /> */}
-            {/* Te ayudamos a crecer */}
+            Atendemos empresas, restaurantes y exportamos al mundo
           </h2>
 
           {/* Description - Mobile */}
           <p className="lg:hidden text-[15px] text-text-secondary text-center max-w-[320px]">
-            Con #ComeBerries #ComeSano, tu equipo disfrutará de experiencias saludables todo el año.
+            Programas corporativos, abastecimiento HORECA y exportación de berries peruanos premium.
           </p>
 
           {/* Description - Desktop */}
           <p className="hidden lg:block text-lg text-text-secondary text-left max-w-[480px]">
-            Regalos corporativos: con el programa #ComeBerries #ComeSano, tu equipo podrá disfrutar de experiencias saludables durante todo el año, de acuerdo al plan que elijas.
+            Programas de bienestar corporativo #ComeBerries, abastecimiento a hoteles y restaurantes (HORECA), y exportación de berries peruanos premium al mundo.
           </p>
 
           {/* Mobile Image - between description and button */}
@@ -54,7 +52,7 @@ export function B2BSection() {
             className="inline-flex items-center justify-center gap-2.5 lg:gap-3 bg-berry-red text-text-inverse w-full lg:w-auto px-6 py-4 lg:px-8 lg:py-4.5 rounded-lg font-semibold text-[15px] lg:text-base hover:bg-berry-red/90 transition-colors"
           >
             <Briefcase className="w-4.5 h-4.5 lg:w-5 lg:h-5" />
-            Soy Empresa
+            Ver Soluciones B2B
           </Link>
         </div>
 

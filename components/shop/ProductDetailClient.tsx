@@ -13,13 +13,20 @@ import {
 } from "lucide-react";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { QuantitySelector } from "@/components/shop/QuantitySelector";
+import { WeightSelector } from "@/components/shop/WeightSelector";
 import { useCart } from "@/hooks/useCart";
 
 const features = [
-  { icon: Truck, label: "Envío gratis" },
+  { icon: Truck, label: "Delivery hoy en Lima" },
   { icon: Leaf, label: "100% Natural" },
   { icon: ShieldCheck, label: "Calidad garantizada" },
 ];
+
+interface WeightOption {
+  label: string;
+  price: number;
+  unit: string;
+}
 
 interface ProductDetailClientProps {
   product: {
@@ -27,8 +34,8 @@ interface ProductDetailClientProps {
     name: string;
     category: string;
     description: string;
-    price: number;
-    unit: string;
+    weights: WeightOption[];
+    defaultWeightIndex: number;
     rating: number;
     reviewCount: number;
     inStock: boolean;
@@ -37,18 +44,23 @@ interface ProductDetailClientProps {
 }
 
 export function ProductDetailClient({ product }: ProductDetailClientProps) {
+  const [selectedWeightIndex, setSelectedWeightIndex] = useState(
+    product.defaultWeightIndex
+  );
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const { addItem } = useCart();
-  const totalPrice = product.price * quantity;
+
+  const selectedWeight = product.weights[selectedWeightIndex];
+  const totalPrice = selectedWeight.price * quantity;
 
   const handleAddToCart = () => {
     addItem(
       {
-        id: product.id,
+        id: `${product.id}-${selectedWeight.unit}`,
         name: product.name,
-        description: product.unit,
-        unitPrice: product.price,
+        description: selectedWeight.label,
+        unitPrice: selectedWeight.price,
         imageUrl: product.images[0],
       },
       quantity
@@ -60,7 +72,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   const handleWhatsAppOrder = () => {
     const message = encodeURIComponent(
-      `¡Hola! Me gustaría pedir:\n\n• ${product.name} (${quantity}x) - S/ ${totalPrice.toFixed(2)}\n\nTotal: S/ ${totalPrice.toFixed(2)}`
+      `¡Hola! Me gustaría pedir:\n\n• ${product.name} ${selectedWeight.label} (${quantity}x) - S/ ${totalPrice.toFixed(2)}\n\nTotal: S/ ${totalPrice.toFixed(2)}`
     );
     window.open(`https://wa.me/51952805608?text=${message}`, "_blank");
   };
@@ -106,14 +118,23 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
           {product.description}
         </p>
 
+        {/* Weight Selector */}
+        {product.weights.length > 1 && (
+          <WeightSelector
+            weights={product.weights}
+            selectedIndex={selectedWeightIndex}
+            onSelect={setSelectedWeightIndex}
+          />
+        )}
+
         {/* Price Section */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-4">
             <span className="text-2xl lg:text-[32px] font-bold text-berry-red">
-              S/ {product.price.toFixed(2)}
+              S/ {selectedWeight.price.toFixed(2)}
             </span>
             <span className="text-lg text-text-tertiary">
-              / {product.unit}
+              / {selectedWeight.unit}
             </span>
           </div>
           {product.inStock && (

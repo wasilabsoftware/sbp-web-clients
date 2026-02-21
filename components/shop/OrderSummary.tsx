@@ -54,6 +54,26 @@ export function OrderSummary({
           </div>
         </div>
 
+        {/* Free Shipping Progress */}
+        {shipping > 0 && subtotal > 0 && (
+          <div className="flex flex-col gap-2 w-full">
+            <div className="w-full h-1.5 bg-border-subtle rounded-full overflow-hidden">
+              <div
+                className="h-full bg-berry-green rounded-full transition-all"
+                style={{ width: `${Math.min((subtotal / 100) * 100, 100)}%` }}
+              />
+            </div>
+            <p className="text-xs text-text-tertiary text-center">
+              Te faltan <span className="font-semibold text-berry-red">S/ {(100 - subtotal).toFixed(2)}</span> para envío gratis
+            </p>
+          </div>
+        )}
+        {shipping === 0 && subtotal > 0 && (
+          <p className="text-xs font-medium text-berry-green text-center">
+            ¡Envío gratis aplicado!
+          </p>
+        )}
+
         {/* Divider */}
         <div className="w-full h-px bg-border-subtle" />
 

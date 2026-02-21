@@ -7,6 +7,7 @@ const navLinks = [
     { href: "/", label: "Inicio" },
     { href: "/productos", label: "Catálogo" },
     { href: "/b2b", label: "Empresas" },
+    { href: "/blog", label: "Blog" },
     { href: "/contacto", label: "Contacto" },
   ]},
   { title: "Categorías", links: [
@@ -69,7 +70,7 @@ export function Footer() {
           ))}
         </div>
         <p className="text-xs text-white/40">
-          © 2025 Super Berries Perú
+          © {new Date().getFullYear()} Super Berries Perú
         </p>
       </div>
 
@@ -122,7 +123,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="flex items-center justify-between pt-6 border-t border-white/20">
           <p className="text-[13px] text-white/50">
-            © 2025 Super Berries Perú. Todos los derechos reservados.
+            © {new Date().getFullYear()} Super Berries Perú. Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-4">
             {socialLinks.map((social) => (
