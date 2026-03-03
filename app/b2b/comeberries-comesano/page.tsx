@@ -298,7 +298,7 @@ export default function ComeSanoPage() {
             {/* Mobile Hero Image */}
             <div className="relative w-[320px] h-[200px] lg:hidden rounded-lg overflow-hidden">
               <Image
-                src="https://images.unsplash.com/photo-1602050580420-45f0364bc792?w=800"
+                src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/b7b00224-652e-4bf5-6e95-d64638501c00/Hero"
                 alt="Programa ComeBerries ComeSano"
                 fill
                 className="object-cover"
@@ -326,7 +326,7 @@ export default function ComeSanoPage() {
           {/* Desktop Hero Image */}
           <div className="hidden lg:block relative w-[500px] h-[440px] rounded-xl overflow-hidden">
             <Image
-              src="https://images.unsplash.com/photo-1642635055753-3eec6c0b2a6e?w=1080"
+              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/b7b00224-652e-4bf5-6e95-d64638501c00/Hero"
               alt="Programa ComeBerries ComeSano"
               fill
               className="object-cover"

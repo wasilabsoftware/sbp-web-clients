@@ -33,7 +33,7 @@ export default function LoginPage() {
         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
           <span className="text-berry-red text-xl font-bold">SB</span>
         </div>
-        <h1 className="text-[28px] font-bold text-white">Super Berries</h1>
+        <h1 className="text-[28px] font-bold text-white">Super Berries Perú</h1>
         <p className="text-sm text-white/90 italic">
           Frutas frescas directo a tu puerta
         </p>
@@ -45,7 +45,7 @@ export default function LoginPage() {
           <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
             <span className="text-berry-red text-2xl font-bold">SB</span>
           </div>
-          <h1 className="text-4xl font-bold text-white">Super Berries</h1>
+          <h1 className="text-4xl font-bold text-white">Super Berries Perú</h1>
           <p className="text-lg text-white/90 text-center italic whitespace-nowrap">
             Frutas frescas directo a tu puerta
           </p>

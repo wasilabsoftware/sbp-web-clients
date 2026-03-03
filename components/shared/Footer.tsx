@@ -11,14 +11,16 @@ const navLinks = [
     { href: "/contacto", label: "Contacto" },
   ]},
   { title: "Categorías", links: [
-    { href: "/productos?categoria=berries", label: "Berries" },
+    { href: "/productos?categoria=berries", label: "Berries Frescos" },
+    { href: "/productos?categoria=congelados", label: "Congelados" },
     { href: "/productos?categoria=frutos-secos", label: "Frutos Secos" },
+    { href: "/productos?categoria=super-snacks", label: "Súper Snacks" },
     { href: "/productos?categoria=deshidratados", label: "Deshidratados" },
-    { href: "/productos?categoria=especiales", label: "Especiales" },
+    { href: "/productos?categoria=frutas", label: "Frutas Frescas" },
   ]},
   { title: "Contacto", links: [
     { href: "tel:+51952805608", label: "+51 952 805 608" },
-    { href: "mailto:hola@superberries.pe", label: "hola@superberries.pe" },
+    { href: "mailto:ventas@superberriesperu.com", label: "ventas@superberriesperu.com" },
     { href: "#", label: "Lima, Perú" },
   ]},
 ];
@@ -37,7 +39,7 @@ export function Footer() {
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
-            alt="Super Berries Logo"
+            alt="Super Berries Perú Logo"
             width={32}
             height={32}
             className="w-8 h-8 rounded-full object-cover"
@@ -46,8 +48,8 @@ export function Footer() {
             Super Berries Perú
           </span>
         </Link>
-        <p className="text-sm text-white/65 text-center max-w-[250px]">
-          Berries frescos del Perú,{"\n"}directo a tu mesa.
+        <p className="text-sm text-white/65 text-center max-w-[280px] leading-relaxed">
+          Berries, frutas frescas, congelados, frutos secos y más. Del campo peruano a tu puerta con delivery programado.
         </p>
         <div className="flex items-center gap-4">
           {socialLinks.map((social) => (
@@ -82,17 +84,17 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-3">
               <Image
                 src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
-                alt="Super Berries Logo"
+                alt="Super Berries Perú Logo"
                 width={40}
                 height={40}
                 className="w-10 h-10 rounded-full object-cover"
               />
               <span className="text-[22px] font-bold text-text-inverse">
-                Super Berries
+                Super Berries Perú
               </span>
             </Link>
             <p className="text-sm text-white/65 leading-relaxed">
-              Berries frescos del Perú, directo a tu mesa. Calidad y frescura garantizada.
+              +60 productos naturales: berries, frutas frescas, congelados, frutos secos, deshidratados y snacks. Del campo peruano a tu puerta con delivery programado en Lima y provincias.
             </p>
           </div>
 

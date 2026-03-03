@@ -169,7 +169,7 @@ export default function ExportacionPage() {
           {/* Hero Image */}
           <div className="relative w-full lg:w-[480px] h-[250px] lg:h-[380px] rounded-xl overflow-hidden flex-shrink-0">
             <Image
-              src="https://images.unsplash.com/photo-1596591868231-05e882e79c0e?w=800"
+              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/a0c3b9f1-0f5d-4b4a-0b24-3d3ed092bb00/Hero"
               alt="Premium Peruvian berries for export"
               fill
               className="object-cover"

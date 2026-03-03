@@ -165,7 +165,7 @@ export default function HorecaPage() {
           {/* Hero Image */}
           <div className="relative w-full lg:w-[480px] h-[250px] lg:h-[380px] rounded-xl overflow-hidden flex-shrink-0">
             <Image
-              src="https://images.unsplash.com/photo-1556909114-f6e7ad7d3136?w=800"
+              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/c48d92c5-d761-472c-feec-774504b59400/Hero"
               alt="Berries frescos para restaurantes y hoteles"
               fill
               className="object-cover"

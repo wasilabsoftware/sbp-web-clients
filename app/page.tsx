@@ -110,9 +110,9 @@ const featuredProducts = [
 const features = [
   {
     icon: Truck,
-    title: "Delivery Rápido",
-    description: "Entrega el mismo día en Lima",
-    descriptionFull: "Entrega el mismo día en Lima Metropolitana",
+    title: "Delivery Programado",
+    description: "Pide hoy, recibe mañana",
+    descriptionFull: "Pide hoy, recibe al día siguiente en Lima y Provincias",
   },
   {
     icon: Leaf,
@@ -142,19 +142,21 @@ export default function HomePage() {
       {/* Hero Section */}
       <section className="bg-bg-surface px-5 py-8 lg:px-20 lg:py-20 flex flex-col lg:flex-row items-center gap-6 lg:gap-15 lg:h-[600px]">
         <div className="flex flex-col items-center lg:items-start gap-6 flex-1 order-1 lg:order-none">
-          <div className="inline-flex items-center gap-1.5 lg:gap-2 bg-berry-red-light rounded-full px-3 py-1.5 lg:px-4 lg:py-2 w-fit">
-            <Leaf className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-berry-green" />
-            <span className="text-xs lg:text-sm font-semibold text-berry-green">
-              🚚 Delivery hoy en Lima · Desde S/ 5 · +7,400 pedidos
+          <div className="inline-flex items-center gap-1.5 lg:gap-2 bg-berry-red-light rounded-full px-3 py-1.5 lg:px-4 lg:py-2 w-fit max-w-full">
+            <Leaf className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-berry-green shrink-0" />
+            <span className="text-[11px] lg:text-sm font-semibold text-berry-green">
+              🚚 Envíos a Lima y Provincias
             </span>
           </div>
-          <h1 className="text-[32px] lg:text-[56px] font-bold text-text-primary leading-tight text-center lg:text-left max-w-[320px] lg:max-w-[500px]">
-            Berries Frescos
+          <h1 className="text-[26px] lg:text-[56px] font-bold text-text-primary leading-tight text-center lg:text-left max-w-[320px] lg:max-w-[600px]">
+            Berries Frescos, Congelados,
             <br />
-            con Delivery en Lima
+            Frutas Premium, Frutos Secos
+            <br />
+            {/* <span className="text-berry-red">y Más</span> */}
           </h1>
           <p className="text-[15px] lg:text-lg text-text-secondary text-center lg:text-left max-w-[320px] lg:max-w-[480px]">
-            Más de 60 productos naturales del campo peruano. Fresas desde S/9, arándanos desde S/5. Pide por WhatsApp y recíbelos hoy.
+            Del campo peruano directo a tu puerta. Productos 100% naturales, sin preservantes. Pide por WhatsApp o desde nuestra tienda online.
           </p>
 
           {/* Mobile Hero Image */}
@@ -332,7 +334,7 @@ export default function HomePage() {
       {/* CTA Section */}
       <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-20 flex flex-col items-center gap-5 lg:gap-8">
         <h2 className="text-2xl lg:text-4xl font-bold text-text-primary text-center max-w-[300px] lg:max-w-none">
-          ¿Listo para probar nuestros berries?
+          ¿Listo para probar nuestros productos?
         </h2>
         <p className="hidden lg:block text-lg text-text-secondary text-center">
           Haz tu pedido ahora y recíbelo hoy mismo
