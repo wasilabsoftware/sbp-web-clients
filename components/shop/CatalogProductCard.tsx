@@ -1,6 +1,8 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { Plus, ImageOff } from "lucide-react";
+
+const PLACEHOLDER_IMAGE = "/placeholder-product.svg";
 
 interface CatalogProductCardProps {
   id: string;
@@ -9,7 +11,7 @@ interface CatalogProductCardProps {
   categoryColor?: "red" | "green";
   weight: string;
   price: number;
-  imageUrl: string;
+  imageUrl: string | null;
   href: string;
 }
 
@@ -30,13 +32,19 @@ export function CatalogProductCard({
   return (
     <div className="flex flex-col bg-bg-surface rounded-lg shadow-[0_2px_10px_rgba(26,20,18,0.06)] lg:shadow-card hover:shadow-lg transition-shadow overflow-hidden">
       <Link href={href} className="block">
-        <div className="relative h-[120px] lg:h-[180px] w-full overflow-hidden rounded-t-lg">
-          <Image
-            src={imageUrl}
-            alt={name}
-            fill
-            className="object-cover hover:scale-105 transition-transform duration-300"
-          />
+        <div className="relative h-[120px] lg:h-[180px] w-full overflow-hidden rounded-t-lg bg-bg-muted">
+          {imageUrl ? (
+            <Image
+              src={imageUrl}
+              alt={name}
+              fill
+              className="object-cover hover:scale-105 transition-transform duration-300"
+            />
+          ) : (
+            <div className="flex items-center justify-center w-full h-full">
+              <ImageOff className="w-8 h-8 text-text-tertiary" />
+            </div>
+          )}
         </div>
       </Link>
 

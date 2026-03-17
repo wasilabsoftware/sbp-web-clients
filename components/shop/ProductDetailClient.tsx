@@ -10,10 +10,10 @@ import {
   Leaf,
   ShieldCheck,
   Check,
+  ImageOff,
 } from "lucide-react";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { QuantitySelector } from "@/components/shop/QuantitySelector";
-import { WeightSelector } from "@/components/shop/WeightSelector";
 import { useCart } from "@/hooks/useCart";
 
 const features = [
@@ -22,20 +22,14 @@ const features = [
   { icon: ShieldCheck, label: "Calidad garantizada" },
 ];
 
-interface WeightOption {
-  label: string;
-  price: number;
-  unit: string;
-}
-
 interface ProductDetailClientProps {
   product: {
     id: string;
     name: string;
     category: string;
     description: string;
-    weights: WeightOption[];
-    defaultWeightIndex: number;
+    price: number;
+    weightInfo: string;
     rating: number;
     reviewCount: number;
     inStock: boolean;
@@ -44,24 +38,21 @@ interface ProductDetailClientProps {
 }
 
 export function ProductDetailClient({ product }: ProductDetailClientProps) {
-  const [selectedWeightIndex, setSelectedWeightIndex] = useState(
-    product.defaultWeightIndex
-  );
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
   const { addItem } = useCart();
 
-  const selectedWeight = product.weights[selectedWeightIndex];
-  const totalPrice = selectedWeight.price * quantity;
+  const totalPrice = product.price * quantity;
+  const hasImages = product.images.length > 0;
 
   const handleAddToCart = () => {
     addItem(
       {
-        id: `${product.id}-${selectedWeight.unit}`,
+        id: product.id,
         name: product.name,
-        description: selectedWeight.label,
-        unitPrice: selectedWeight.price,
-        imageUrl: product.images[0],
+        description: product.weightInfo || product.name,
+        unitPrice: product.price,
+        imageUrl: product.images[0] ?? "",
       },
       quantity
     );
@@ -72,15 +63,21 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
 
   const handleWhatsAppOrder = () => {
     const message = encodeURIComponent(
-      `¡Hola! Me gustaría pedir:\n\n• ${product.name} ${selectedWeight.label} (${quantity}x) - S/ ${totalPrice.toFixed(2)}\n\nTotal: S/ ${totalPrice.toFixed(2)}`
+      `¡Hola! Me gustaría pedir:\n\n• ${product.name} (${quantity}x) - S/ ${totalPrice.toFixed(2)}\n\nTotal: S/ ${totalPrice.toFixed(2)}`
     );
     window.open(`https://wa.me/51952805608?text=${message}`, "_blank");
   };
 
   return (
     <div className="flex flex-col lg:flex-row gap-8 lg:gap-[60px]">
-      {/* Gallery */}
-      <ProductGallery images={product.images} productName={product.name} />
+      {/* Gallery or Placeholder */}
+      {hasImages ? (
+        <ProductGallery images={product.images} productName={product.name} />
+      ) : (
+        <div className="flex items-center justify-center w-full lg:w-[560px] h-[300px] lg:h-[480px] rounded-xl lg:rounded-3xl bg-bg-muted">
+          <ImageOff className="w-16 h-16 text-text-tertiary" />
+        </div>
+      )}
 
       {/* Product Info */}
       <div className="flex flex-col gap-6 flex-1">
@@ -95,46 +92,43 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         </h1>
 
         {/* Rating */}
-        <div className="flex items-center gap-2">
-          <div className="flex gap-1">
-            {[1, 2, 3, 4, 5].map((star) => (
-              <Star
-                key={star}
-                className={`w-[18px] h-[18px] ${
-                  star <= Math.floor(product.rating)
-                    ? "fill-amber-400 text-amber-400"
-                    : "fill-border-subtle text-border-subtle"
-                }`}
-              />
-            ))}
+        {product.reviewCount > 0 && (
+          <div className="flex items-center gap-2">
+            <div className="flex gap-1">
+              {[1, 2, 3, 4, 5].map((star) => (
+                <Star
+                  key={star}
+                  className={`w-[18px] h-[18px] ${
+                    star <= Math.floor(product.rating)
+                      ? "fill-amber-400 text-amber-400"
+                      : "fill-border-subtle text-border-subtle"
+                  }`}
+                />
+              ))}
+            </div>
+            <span className="text-sm text-text-secondary">
+              {product.rating.toFixed(1)} ({product.reviewCount} reseñas)
+            </span>
           </div>
-          <span className="text-sm text-text-secondary">
-            {product.rating} ({product.reviewCount} reseñas)
-          </span>
-        </div>
+        )}
 
         {/* Description */}
-        <p className="text-base text-text-secondary max-w-[500px]">
-          {product.description}
-        </p>
+        {product.description && (
+          <p className="text-base text-text-secondary max-w-[500px]">
+            {product.description}
+          </p>
+        )}
 
-        {/* Weight Selector */}
-        {product.weights.length > 1 && (
-          <WeightSelector
-            weights={product.weights}
-            selectedIndex={selectedWeightIndex}
-            onSelect={setSelectedWeightIndex}
-          />
+        {/* Weight/Packaging Info */}
+        {product.weightInfo && (
+          <p className="text-sm text-text-tertiary">{product.weightInfo}</p>
         )}
 
         {/* Price Section */}
         <div className="flex flex-col gap-2">
           <div className="flex items-center gap-4">
             <span className="text-2xl lg:text-[32px] font-bold text-berry-red">
-              S/ {selectedWeight.price.toFixed(2)}
-            </span>
-            <span className="text-lg text-text-tertiary">
-              / {selectedWeight.unit}
+              S/ {product.price.toFixed(2)}
             </span>
           </div>
           {product.inStock && (

@@ -8,49 +8,90 @@ import { ProductDetailClient } from "@/components/shop/ProductDetailClient";
 import { ProductSchema } from "@/components/seo/ProductSchema";
 import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 import { createProductMetadata } from "@/lib/seo/metadata";
-import { products, getProductBySlug } from "@/lib/data/products";
+import { getStorefrontVariantById } from "@/lib/services/storefront.service";
 
 interface PageProps {
   params: Promise<{ slug: string }>;
+  searchParams: Promise<{ v?: string }>;
 }
 
-export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const { slug } = await params;
-  const product = getProductBySlug(slug);
+async function getVariant(variantId: string) {
+  try {
+    return await getStorefrontVariantById(variantId);
+  } catch {
+    return null;
+  }
+}
 
-  if (!product) {
-    return {
-      title: "Producto no encontrado",
-    };
+export async function generateMetadata({
+  params,
+  searchParams,
+}: PageProps): Promise<Metadata> {
+  const { slug } = await params;
+  const { v: variantId } = await searchParams;
+
+  if (!variantId) {
+    return { title: "Producto no encontrado" };
   }
 
-  const defaultWeight = product.weights[product.defaultWeightIndex];
+  const variant = await getVariant(variantId);
+
+  if (!variant) {
+    return { title: "Producto no encontrado" };
+  }
+
+  const image =
+    variant.images?.[0] ?? variant.product.images?.[0] ?? "";
+  const price = variant.calculatedPrice
+    ? parseFloat(variant.calculatedPrice)
+    : parseFloat(variant.product.basePrice);
 
   return createProductMetadata({
-    name: product.name,
-    description: product.description,
-    image: product.images[0],
-    price: defaultWeight.price,
+    name: variant.name,
+    description:
+      variant.product.description ?? variant.product.shortDescription ?? "",
+    image,
+    price,
     slug,
   });
 }
 
-export async function generateStaticParams() {
-  return products.map((p) => ({ slug: p.slug }));
-}
-
-export default async function ProductDetailPage({ params }: PageProps) {
+export default async function ProductDetailPage({
+  params,
+  searchParams,
+}: PageProps) {
   const { slug } = await params;
-  const product = getProductBySlug(slug);
+  const { v: variantId } = await searchParams;
 
-  if (!product) {
+  if (!variantId) {
     notFound();
   }
+
+  const variant = await getVariant(variantId);
+
+  if (!variant) {
+    notFound();
+  }
+
+  const images = variant.images ?? variant.product.images ?? [];
+  const price = variant.calculatedPrice
+    ? parseFloat(variant.calculatedPrice)
+    : parseFloat(variant.product.basePrice);
+  const rating = variant.product.averageRating
+    ? parseFloat(variant.product.averageRating)
+    : 0;
+  const weightInfo = [
+    variant.weight ? `${variant.weight}g` : null,
+    variant.packaging,
+    variant.presentation,
+  ]
+    .filter(Boolean)
+    .join(" · ");
 
   const breadcrumbItems = [
     { name: "Inicio", url: "/" },
     { name: "Catálogo", url: "/productos" },
-    { name: product.name },
+    { name: variant.name },
   ];
 
   return (
@@ -58,14 +99,17 @@ export default async function ProductDetailPage({ params }: PageProps) {
       {/* Structured Data */}
       <ProductSchema
         product={{
-          name: product.name,
-          description: product.description,
-          images: product.images,
-          weights: product.weights,
+          name: variant.name,
+          description:
+            variant.product.description ??
+            variant.product.shortDescription ??
+            "",
+          images,
+          weights: [{ label: weightInfo || variant.name, price, unit: weightInfo || "und" }],
           slug,
-          inStock: product.inStock,
-          rating: product.rating,
-          reviewCount: product.reviewCount,
+          inStock: variant.stockQuantity > 0,
+          rating: rating || undefined,
+          reviewCount: variant.product.reviewCount || undefined,
         }}
       />
       <BreadcrumbSchema items={breadcrumbItems} />
@@ -83,16 +127,22 @@ export default async function ProductDetailPage({ params }: PageProps) {
         >
           Inicio
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-text-tertiary" aria-hidden="true" />
+        <ChevronRight
+          className="w-3.5 h-3.5 text-text-tertiary"
+          aria-hidden="true"
+        />
         <Link
           href="/productos"
           className="text-sm text-text-tertiary hover:text-berry-red transition-colors"
         >
           Catálogo
         </Link>
-        <ChevronRight className="w-3.5 h-3.5 text-text-tertiary" aria-hidden="true" />
+        <ChevronRight
+          className="w-3.5 h-3.5 text-text-tertiary"
+          aria-hidden="true"
+        />
         <span className="text-sm font-medium text-text-primary">
-          {product.name}
+          {variant.name}
         </span>
       </nav>
 
@@ -100,16 +150,19 @@ export default async function ProductDetailPage({ params }: PageProps) {
       <main className="px-5 lg:px-20 py-8 lg:py-12">
         <ProductDetailClient
           product={{
-            id: product.id,
-            name: product.name,
-            category: product.category,
-            description: product.description,
-            weights: product.weights,
-            defaultWeightIndex: product.defaultWeightIndex,
-            rating: product.rating,
-            reviewCount: product.reviewCount,
-            inStock: product.inStock,
-            images: product.images,
+            id: variant.id,
+            name: variant.name,
+            category: variant.category.name,
+            description:
+              variant.product.description ??
+              variant.product.shortDescription ??
+              "",
+            price,
+            weightInfo,
+            rating,
+            reviewCount: variant.product.reviewCount,
+            inStock: variant.stockQuantity > 0,
+            images,
           }}
         />
       </main>

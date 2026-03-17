@@ -15,48 +15,52 @@ import {
 
 import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
-import { CategoryCard } from "@/components/shop/CategoryCard";
+import { CategoriesCarousel } from "@/components/shop/CategoriesCarousel";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { FeatureCard } from "@/components/shop/FeatureCard";
 import { B2BSection } from "@/components/shop/B2BSection";
 import { Button } from "@/components/ui/Button";
-
-const categories = [
+import {
+  getCategories,
+  getCategoryFallbackImage,
+} from "@/lib/services/category.service";
+// Fallback hardcodeado para cuando la API no responde
+const FALLBACK_CATEGORIES = [
   {
     title: "Berries Frescos",
-    productCount: 12,
+    productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1636119708793-7af9f143ac13?w=400",
-    href: "/productos?categoria=berries",
+    href: "/productos?categoria=berries-frescos",
   },
   {
     title: "Congelados",
-    productCount: 7,
+    productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1563746098251-d35aef196e83?w=400",
-    href: "/productos?categoria=congelados",
+    href: "/productos?categoria=berries-congelados",
   },
   {
     title: "Frutos Secos",
-    productCount: 14,
+    productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1724058663142-e6e1a5e89f2d?w=400",
     href: "/productos?categoria=frutos-secos",
   },
   {
     title: "Súper Snacks",
-    productCount: 4,
+    productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1583440772344-edd2e043742c?w=400",
     href: "/productos?categoria=super-snacks",
   },
   {
     title: "Deshidratados",
-    productCount: 6,
+    productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1748898297482-3c336a18cca5?w=400",
-    href: "/productos?categoria=deshidratados",
+    href: "/productos?categoria=frutas-deshidratadas",
   },
   {
     title: "Frutas Frescas",
-    productCount: 10,
+    productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400",
-    href: "/productos?categoria=frutas",
+    href: "/productos?categoria=super-frutas-frescas",
   },
 ];
 
@@ -134,7 +138,23 @@ const features = [
   },
 ];
 
-export default function HomePage() {
+export default async function HomePage() {
+  let categories;
+  try {
+    const apiCategories = await getCategories();
+    categories = apiCategories
+      .filter((c) => c.parentId === null)
+      .map((c) => ({
+        title: c.name,
+        productCount: 0,
+        imageUrl: c.imageUrl ?? getCategoryFallbackImage(c.slug),
+        href: `/productos?categoria=${c.slug}`,
+      }));
+  } catch (error) {
+    console.error("Failed to fetch categories, using fallback:", error);
+    categories = FALLBACK_CATEGORIES;
+  }
+
   return (
     <main className="min-h-screen bg-bg-primary">
       <Header />
@@ -230,11 +250,7 @@ export default function HomePage() {
             Explora nuestra variedad de productos frescos y deliciosos
           </p>
         </div>
-        <div className="flex gap-3 lg:gap-6 lg:justify-center overflow-x-auto pb-2 lg:pb-0 -mx-5 px-5 lg:mx-0 lg:px-0 lg:flex-wrap">
-          {categories.map((category) => (
-            <CategoryCard key={category.title} {...category} />
-          ))}
-        </div>
+        <CategoriesCarousel categories={categories} />
       </section>
 
       {/* Featured Products Section */}
