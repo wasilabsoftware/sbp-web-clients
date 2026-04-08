@@ -10,8 +10,9 @@ import { MobileMenu } from "./MobileMenu";
 
 const navLinks = [
   { href: "/", label: "Inicio" },
-  { href: "/productos", label: "Catálogo" },
-  { href: "/b2b", label: "Empresas" },
+  { href: "/tienda", label: "Tienda" },
+  { href: "/empresa", label: "Empresas" },
+  { href: "/horeca", label: "HORECA" },
   { href: "/nosotros", label: "Nosotros" },
   { href: "/blog", label: "Blog" },
   { href: "/contacto", label: "Contacto" },
@@ -36,13 +37,13 @@ export function Header() {
       <Link href="/" className="flex items-center gap-2 lg:gap-3">
         <Image
           src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
-          alt="Super Berries Perú Logo"
+          alt="Súper Berries Perú Logo"
           width={48}
           height={48}
           className="w-9 h-9 lg:w-12 lg:h-12 rounded-full object-cover"
         />
         <span className="text-lg lg:text-2xl font-bold text-text-primary">
-          Super Berries Perú
+          Súper Berries Perú
         </span>
       </Link>
 

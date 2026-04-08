@@ -18,6 +18,7 @@ import {
   MapPin,
   Settings,
   LogOut,
+  UtensilsCrossed,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { useEffect } from "react";
@@ -27,10 +28,11 @@ interface MobileMenuProps {
   onClose: () => void;
 }
 
-const navItems = [
+const navItems: { href: string; label: string; icon: typeof House; badge?: string }[] = [
   { href: "/", label: "Inicio", icon: House },
-  { href: "/productos", label: "Catálogo", icon: Grid3X3 },
-  { href: "/b2b", label: "B2B Empresas", icon: Building2, badge: "NUEVO" },
+  { href: "/tienda", label: "Tienda", icon: Grid3X3 },
+  { href: "/empresa", label: "Empresas", icon: Building2 },
+  { href: "/horeca", label: "HORECA", icon: UtensilsCrossed },
   { href: "/nosotros", label: "Nosotros", icon: Users },
   { href: "/blog", label: "Blog", icon: BookOpen },
   { href: "/contacto", label: "Contacto", icon: Mail },
@@ -100,13 +102,13 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <Link href="/" className="flex items-center gap-2" onClick={onClose}>
             <Image
               src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
-              alt="Super Berries Perú Logo"
+              alt="Súper Berries Perú Logo"
               width={36}
               height={36}
               className="w-9 h-9 rounded-full object-cover"
             />
             <span className="text-lg font-bold text-text-primary">
-              Super Berries Perú
+              Súper Berries Perú
             </span>
           </Link>
           <button

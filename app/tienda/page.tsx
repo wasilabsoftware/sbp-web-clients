@@ -81,7 +81,7 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
           .join(" · "),
         price,
         imageUrl: image,
-        href: `/productos/${variant.product.slug}?v=${variant.id}`,
+        href: `/tienda/${variant.product.slug}?v=${variant.id}`,
       };
     });
 

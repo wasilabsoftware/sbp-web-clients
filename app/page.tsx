@@ -18,7 +18,7 @@ import { Footer } from "@/components/shared/Footer";
 import { CategoriesCarousel } from "@/components/shop/CategoriesCarousel";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { FeatureCard } from "@/components/shop/FeatureCard";
-import { B2BSection } from "@/components/shop/B2BSection";
+import { AudienceSection } from "@/components/shop/AudienceSection";
 import { Button } from "@/components/ui/Button";
 import {
   getCategories,
@@ -30,37 +30,37 @@ const FALLBACK_CATEGORIES = [
     title: "Berries Frescos",
     productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1636119708793-7af9f143ac13?w=400",
-    href: "/productos?categoria=berries-frescos",
+    href: "/tienda?categoria=berries-frescos",
   },
   {
     title: "Congelados",
     productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1563746098251-d35aef196e83?w=400",
-    href: "/productos?categoria=berries-congelados",
+    href: "/tienda?categoria=berries-congelados",
   },
   {
     title: "Frutos Secos",
     productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1724058663142-e6e1a5e89f2d?w=400",
-    href: "/productos?categoria=frutos-secos",
+    href: "/tienda?categoria=frutos-secos",
   },
   {
     title: "Súper Snacks",
     productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1583440772344-edd2e043742c?w=400",
-    href: "/productos?categoria=super-snacks",
+    href: "/tienda?categoria=super-snacks",
   },
   {
     title: "Deshidratados",
     productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1748898297482-3c336a18cca5?w=400",
-    href: "/productos?categoria=frutas-deshidratadas",
+    href: "/tienda?categoria=frutas-deshidratadas",
   },
   {
     title: "Frutas Frescas",
     productCount: 0,
     imageUrl: "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=400",
-    href: "/productos?categoria=super-frutas-frescas",
+    href: "/tienda?categoria=super-frutas-frescas",
   },
 ];
 
@@ -74,7 +74,7 @@ const featuredProducts = [
     description: "500g - Frescas del día",
     price: 9.0,
     imageUrl: "https://images.unsplash.com/photo-1768204043813-8ed923cc30cf?w=600",
-    href: "/productos/fresas-premium",
+    href: "/tienda/fresas-premium",
   },
   {
     id: "2",
@@ -85,7 +85,7 @@ const featuredProducts = [
     description: "250g - Antioxidantes naturales",
     price: 5.0,
     imageUrl: "https://images.unsplash.com/photo-1690090953464-7d6713a9065f?w=600",
-    href: "/productos/arandanos-frescos",
+    href: "/tienda/arandanos-frescos",
   },
   {
     id: "3",
@@ -96,7 +96,7 @@ const featuredProducts = [
     description: "300g - Sabor intenso",
     price: 12.0,
     imageUrl: "https://images.unsplash.com/photo-1667054071803-84272acfec7e?w=600",
-    href: "/productos/moras-silvestres",
+    href: "/tienda/moras-silvestres",
   },
   {
     id: "4",
@@ -107,7 +107,7 @@ const featuredProducts = [
     description: "200g - Superfruta peruana",
     price: 8.0,
     imageUrl: "https://images.unsplash.com/photo-1763477892923-c3fee1a33533?w=600",
-    href: "/productos/aguaymanto",
+    href: "/tienda/aguaymanto",
   },
 ];
 
@@ -148,7 +148,7 @@ export default async function HomePage() {
         title: c.name,
         productCount: 0,
         imageUrl: c.imageUrl ?? getCategoryFallbackImage(c.slug),
-        href: `/productos?categoria=${c.slug}`,
+        href: `/tienda?categoria=${c.slug}`,
       }));
   } catch (error) {
     console.error("Failed to fetch categories, using fallback:", error);
@@ -168,15 +168,11 @@ export default async function HomePage() {
               🚚 Envíos a Lima y Provincias
             </span>
           </div>
-          <h1 className="text-[26px] lg:text-[56px] font-bold text-text-primary leading-tight text-center lg:text-left max-w-[320px] lg:max-w-[600px]">
-            Berries Frescos, Congelados,
-            <br />
-            Frutas Premium, Frutos Secos
-            <br />
-            {/* <span className="text-berry-red">y Más</span> */}
+          <h1 className="text-[26px] lg:text-[56px] font-bold text-berry-red leading-tight text-center lg:text-left max-w-[320px] lg:max-w-[600px]">
+            Mas que berries... Bienestar en cada entrega
           </h1>
           <p className="text-[15px] lg:text-lg text-text-secondary text-center lg:text-left max-w-[320px] lg:max-w-[480px]">
-            Del campo peruano directo a tu puerta. Productos 100% naturales, sin preservantes. Pide por WhatsApp o desde nuestra tienda online.
+            Snacks saludables, frutas frescas y soluciones corporativas para personas y empresas.
           </p>
 
           {/* Mobile Hero Image */}
@@ -192,9 +188,9 @@ export default async function HomePage() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-4 w-full lg:w-auto mt-2">
-            <Link href="/productos" className="w-full lg:w-auto">
+            <Link href="/tienda" className="w-full lg:w-auto">
               <Button variant="primary" size="md" className="w-full lg:w-auto h-[52px] lg:h-auto justify-center">
-                Ver Catálogo
+                Compra ahora
                 <ArrowRight className="w-4.5 h-4.5" />
               </Button>
             </Link>
@@ -206,17 +202,17 @@ export default async function HomePage() {
             </Link>
           </div>
 
-          {/* B2B Link - Mobile */}
-          <Link href="/b2b" className="flex lg:hidden items-center justify-center gap-1.5 w-full text-text-tertiary hover:text-text-secondary transition-colors">
+          {/* Empresa Link - Mobile */}
+          <Link href="/empresa" className="flex lg:hidden items-center justify-center gap-1.5 w-full text-text-tertiary hover:text-text-secondary transition-colors">
             <Building2 className="w-3.5 h-3.5" />
-            <span className="text-[13px] font-medium">¿Eres empresa? Soluciones B2B</span>
+            <span className="text-[13px] font-medium">¿Eres empresa? Ver soluciones</span>
             <ChevronRight className="w-3.5 h-3.5" />
           </Link>
 
-          {/* B2B Link - Desktop */}
-          <Link href="/b2b" className="hidden lg:flex items-center gap-2 text-text-tertiary hover:text-text-secondary transition-colors">
+          {/* Empresa Link - Desktop */}
+          <Link href="/empresa" className="hidden lg:flex items-center gap-2 text-text-tertiary hover:text-text-secondary transition-colors">
             <Building2 className="w-4 h-4" />
-            <span className="text-sm font-medium">¿Eres empresa? Conoce nuestras soluciones B2B</span>
+            <span className="text-sm font-medium">Soy empresa</span>
             <ArrowRight className="w-3.5 h-3.5" />
           </Link>
 
@@ -264,10 +260,10 @@ export default async function HomePage() {
               Los favoritos de nuestros clientes
             </p>
           </div>
-          <Link href="/productos" className="lg:hidden">
+          <Link href="/tienda" className="lg:hidden">
             <span className="text-sm font-medium text-berry-red">Ver todos</span>
           </Link>
-          <Link href="/productos" className="hidden lg:block">
+          <Link href="/tienda" className="hidden lg:block">
             <Button variant="outline" size="md">
               Ver todos
               <ArrowRight className="w-4 h-4" />
@@ -308,8 +304,8 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* B2B Section */}
-      <B2BSection />
+      {/* Audience Section */}
+      <AudienceSection />
 
       {/* Why Choose Us Section */}
       <section className="bg-berry-red px-5 py-10 lg:px-20 lg:py-20">
@@ -362,7 +358,7 @@ export default async function HomePage() {
               Pedir por WhatsApp
             </Button>
           </Link>
-          <Link href="/productos" className="w-full lg:w-auto">
+          <Link href="/tienda" className="w-full lg:w-auto">
             <Button variant="primary" size="lg" className="w-full lg:w-auto h-[52px] lg:h-auto justify-center">
               <ShoppingBag className="w-5 h-5 lg:w-6 lg:h-6" />
               Ver Catálogo

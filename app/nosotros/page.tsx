@@ -33,7 +33,7 @@ const channels = [
     icon: ShoppingBag,
     title: "E-commerce (B2C)",
     description: "Delivery el mismo día en Lima para familias, deportistas y amantes de lo saludable.",
-    href: "/productos",
+    href: "/tienda",
     color: "text-berry-red",
     bgColor: "bg-berry-red-light",
   },
@@ -41,7 +41,7 @@ const channels = [
     icon: Building2,
     title: "Corporativo (B2B)",
     description: "Programa #ComeBerries para bienestar de colaboradores. NEXA, SUNARP, MEDIFARMA ya confían.",
-    href: "/b2b/comeberries-comesano",
+    href: "/empresa/comeberries-comesano",
     color: "text-berry-purple",
     bgColor: "bg-purple-50",
   },
@@ -49,7 +49,7 @@ const channels = [
     icon: UtensilsCrossed,
     title: "HORECA",
     description: "Abastecimiento de berries frescos y congelados para hoteles, restaurantes y catering.",
-    href: "/b2b/horeca",
+    href: "/horeca",
     color: "text-berry-green",
     bgColor: "bg-berry-green-light",
   },
@@ -57,7 +57,7 @@ const channels = [
     icon: Globe,
     title: "Exportación",
     description: "Berries peruanos premium para el mundo. Arándanos, aguaymanto y más.",
-    href: "/b2b/exportacion",
+    href: "/empresa/exportacion",
     color: "text-amber-600",
     bgColor: "bg-amber-50",
   },
@@ -110,7 +110,7 @@ export default function NosotrosPage() {
             with Berries 🍓
           </h1>
           <p className="text-[15px] lg:text-lg text-text-secondary text-center max-w-[600px]">
-            Somos Super Berries Perú. Llevamos lo mejor del campo peruano a tu mesa, a tu empresa y al mundo.
+            Somos Súper Berries Perú. Llevamos lo mejor del campo peruano a tu mesa, a tu empresa y al mundo.
           </p>
         </div>
       </section>
@@ -285,7 +285,7 @@ export default function NosotrosPage() {
               Pedir por WhatsApp
             </Button>
           </Link>
-          <Link href="/productos" className="w-full lg:w-auto">
+          <Link href="/tienda" className="w-full lg:w-auto">
             <Button variant="primary" size="lg" className="w-full lg:w-auto h-[52px] lg:h-auto justify-center">
               <ShoppingBag className="w-5 h-5 lg:w-6 lg:h-6" />
               Ver Catálogo

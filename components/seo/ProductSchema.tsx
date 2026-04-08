@@ -23,7 +23,7 @@ export function ProductSchema({ product }: ProductSchemaProps) {
   const offers = product.weights.map((weight) => ({
     "@type": "Offer" as const,
     name: weight.label,
-    url: `${siteConfig.url}/productos/${product.slug}`,
+    url: `${siteConfig.url}/tienda/${product.slug}`,
     priceCurrency: "PEN",
     price: weight.price,
     availability: product.inStock

@@ -2,12 +2,12 @@ import type { Metadata } from "next";
 import { createMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createMetadata({
-  title: "Contacto | Pide Berries Frescos en Lima | Super Berries Perú",
+  title: "Contacto | Pide Berries Frescos en Lima | Súper Berries Perú",
   description:
     "Contáctanos por WhatsApp (+51 952 805 608) o formulario. Delivery el mismo día en Lima. Familias, empresas, HORECA y exportación.",
   canonical: "/contacto",
   keywords: [
-    "contacto Super Berries Perú",
+    "contacto Súper Berries Perú",
     "pedir berries Lima",
     "delivery frutas frescas Lima",
     "WhatsApp berries",

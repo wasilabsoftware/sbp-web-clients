@@ -1,8 +1,8 @@
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "Iniciar Sesión | Super Berries Perú",
-  description: "Accede a tu cuenta de Super Berries Perú para gestionar tus pedidos y disfrutar de beneficios exclusivos.",
+  title: "Iniciar Sesión | Súper Berries Perú",
+  description: "Accede a tu cuenta de Súper Berries Perú para gestionar tus pedidos y disfrutar de beneficios exclusivos.",
 };
 
 export default function AuthLayout({

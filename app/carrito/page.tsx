@@ -97,7 +97,7 @@ export default function CarritoPage() {
                     Tu carrito está vacío
                   </p>
                   <Link
-                    href="/productos"
+                    href="/tienda"
                     className="text-berry-red font-medium hover:underline"
                   >
                     Ver productos

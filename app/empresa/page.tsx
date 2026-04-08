@@ -3,7 +3,6 @@ import Link from "next/link";
 import {
   Building2,
   HeartPulse,
-  UtensilsCrossed,
   Globe,
   ArrowRight,
   Phone,
@@ -25,24 +24,9 @@ const channels = [
     descriptionDesktop: "Programa integral de bienestar con snacks saludables, asesoría nutricional, pausas activas y coaching organizacional para tus colaboradores.",
     image: "https://imagedelivery.net/hrfM92Tw965illARz9WHuA/b7b00224-652e-4bf5-6e95-d64638501c00/Hero",
     imageAlt: "Programa ComeBerries de bienestar corporativo",
-    href: "/b2b/comeberries-comesano",
+    href: "/empresa/comeberries-comesano",
     ctaText: "Ver Programa",
     ctaColor: "bg-berry-red hover:bg-berry-red/90",
-    comingSoon: false,
-  },
-  {
-    badge: "Canal HORECA",
-    badgeIcon: UtensilsCrossed,
-    badgeColor: "text-berry-green",
-    badgeBg: "bg-berry-green-light",
-    title: "Hoteles, Restaurantes y Catering",
-    descriptionMobile: "Berries frescos y congelados para tu negocio gastronómico. Entrega programada en Lima.",
-    descriptionDesktop: "Abastecimiento de berries frescos y congelados para hoteles, restaurantes, cafeterías y servicios de catering. Precios mayoristas y entrega programada en Lima.",
-    image: "https://imagedelivery.net/hrfM92Tw965illARz9WHuA/c48d92c5-d761-472c-feec-774504b59400/Hero",
-    imageAlt: "Berries para restaurantes y hoteles",
-    href: "/b2b/horeca",
-    ctaText: "Ver HORECA",
-    ctaColor: "bg-berry-green hover:bg-berry-green/90",
     comingSoon: false,
   },
   {
@@ -55,7 +39,7 @@ const channels = [
     descriptionDesktop: "Export premium Peruvian berries to global markets. Blueberries, goldenberries, strawberries, and frozen IQF products. Year-round supply with certified quality.",
     image: "https://imagedelivery.net/hrfM92Tw965illARz9WHuA/a0c3b9f1-0f5d-4b4a-0b24-3d3ed092bb00/Hero",
     imageAlt: "Peruvian berries for export",
-    href: "/b2b/exportacion",
+    href: "/empresa/exportacion",
     ctaText: "View Export",
     ctaColor: "bg-amber-600 hover:bg-amber-700",
     comingSoon: false,
@@ -66,7 +50,7 @@ const trustedCompanies = [
   "NEXA", "SUNARP", "MEDIFARMA", "OSINERGMIN", "REFAX", "IMAGINA",
 ];
 
-export default function B2BPage() {
+export default function EmpresaPage() {
   return (
     <main className="min-h-screen bg-bg-primary">
       <Header />
@@ -82,7 +66,7 @@ export default function B2BPage() {
           </div>
 
           <h1 className="text-[28px] lg:text-5xl font-bold text-text-primary text-center max-w-[320px] lg:max-w-none">
-            Soluciones B2B para tu empresa
+            Soluciones para tu empresa
           </h1>
 
           <p className="lg:hidden text-[15px] text-text-secondary text-center max-w-[320px]">

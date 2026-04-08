@@ -66,7 +66,7 @@ export function CatalogClient({
       }
 
       const qs = params.toString();
-      return `/productos${qs ? `?${qs}` : ""}`;
+      return `/tienda${qs ? `?${qs}` : ""}`;
     },
     [searchParams]
   );

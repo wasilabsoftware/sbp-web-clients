@@ -1,7 +1,7 @@
 import { ImageResponse } from "next/og";
 
 export const runtime = "edge";
-export const alt = "Super Berries Perú - Producto";
+export const alt = "Súper Berries Perú - Producto";
 export const size = {
   width: 1200,
   height: 630,
@@ -51,7 +51,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
             fontWeight: "bold",
           }}
         >
-          Super Berries Perú
+          Súper Berries Perú
         </div>
       ),
       { ...size }
@@ -192,7 +192,7 @@ export default async function Image({ params }: { params: { slug: string } }) {
                 color: "#374151",
               }}
             >
-              Super Berries Perú
+              Súper Berries Perú
             </span>
           </div>
         </div>

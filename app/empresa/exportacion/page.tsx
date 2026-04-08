@@ -22,10 +22,10 @@ import { Button } from "@/components/ui/Button";
 import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = createMetadata({
-  title: "Peruvian Berries Exporter | Fresh & Frozen | Super Berries Peru",
+  title: "Peruvian Berries Exporter | Fresh & Frozen | Súper Berries Peru",
   description:
     "Premium fresh and frozen berries from Peru. Blueberries, strawberries, goldenberries, blackberries. Year-round supply, certified quality. Request a quote.",
-  canonical: "/b2b/exportacion",
+  canonical: "/empresa/exportacion",
   keywords: [
     "Peru berries export",
     "Peruvian blueberries",
@@ -125,7 +125,7 @@ export default function ExportacionPage() {
       <BreadcrumbSchema
         items={[
           { name: "Home", url: "/" },
-          { name: "Business", url: "/b2b" },
+          { name: "Business", url: "/empresa" },
           { name: "Export" },
         ]}
       />

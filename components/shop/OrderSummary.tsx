@@ -121,7 +121,7 @@ export function OrderSummary({
 
       {/* Continue Shopping */}
       <Link
-        href="/productos"
+        href="/tienda"
         className="flex items-center justify-center gap-1.5 lg:gap-2 w-full py-4 lg:py-0 text-berry-red hover:underline transition-all"
       >
         <ArrowLeft className="w-4 h-4" />

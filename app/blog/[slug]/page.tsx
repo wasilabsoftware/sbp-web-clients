@@ -26,7 +26,7 @@ export async function generateMetadata({
   }
 
   return createMetadata({
-    title: `${post.title} | Blog Super Berries Perú`,
+    title: `${post.title} | Blog Súper Berries Perú`,
     description: post.excerpt,
     canonical: `/blog/${slug}`,
     keywords: post.tags,

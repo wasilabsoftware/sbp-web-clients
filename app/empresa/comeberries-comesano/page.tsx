@@ -35,7 +35,7 @@ export const metadata: Metadata = createMetadata({
   title: "#ComeBerries #ComeSano - Programa de Bienestar Corporativo",
   description:
     "Programa integral de bienestar con snacks saludables, asesoría nutricional, pausas activas y coaching organizacional para empresas en Perú.",
-  canonical: "/b2b/comeberries-comesano",
+  canonical: "/empresa/comeberries-comesano",
   keywords: [
     "ComeBerries",
     "ComeSano",
@@ -259,7 +259,7 @@ export default function ComeSanoPage() {
       <BreadcrumbSchema
         items={[
           { name: "Inicio", url: "/" },
-          { name: "Empresas", url: "/b2b" },
+          { name: "Empresas", url: "/empresa" },
           { name: "#ComeBerries #ComeSano" },
         ]}
       />

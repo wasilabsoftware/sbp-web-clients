@@ -5,18 +5,19 @@ import { Facebook, Instagram, MessageCircle } from "lucide-react";
 const navLinks = [
   { title: "Navegación", links: [
     { href: "/", label: "Inicio" },
-    { href: "/productos", label: "Catálogo" },
-    { href: "/b2b", label: "Empresas" },
+    { href: "/tienda", label: "Tienda" },
+    { href: "/empresa", label: "Empresas" },
+    { href: "/horeca", label: "HORECA" },
     { href: "/blog", label: "Blog" },
     { href: "/contacto", label: "Contacto" },
   ]},
   { title: "Categorías", links: [
-    { href: "/productos?categoria=berries", label: "Berries Frescos" },
-    { href: "/productos?categoria=congelados", label: "Congelados" },
-    { href: "/productos?categoria=frutos-secos", label: "Frutos Secos" },
-    { href: "/productos?categoria=super-snacks", label: "Súper Snacks" },
-    { href: "/productos?categoria=deshidratados", label: "Deshidratados" },
-    { href: "/productos?categoria=frutas", label: "Frutas Frescas" },
+    { href: "/tienda?categoria=berries", label: "Berries Frescos" },
+    { href: "/tienda?categoria=congelados", label: "Congelados" },
+    { href: "/tienda?categoria=frutos-secos", label: "Frutos Secos" },
+    { href: "/tienda?categoria=super-snacks", label: "Súper Snacks" },
+    { href: "/tienda?categoria=deshidratados", label: "Deshidratados" },
+    { href: "/tienda?categoria=frutas", label: "Frutas Frescas" },
   ]},
   { title: "Contacto", links: [
     { href: "tel:+51952805608", label: "+51 952 805 608" },
@@ -39,13 +40,13 @@ export function Footer() {
         <Link href="/" className="flex items-center gap-2">
           <Image
             src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
-            alt="Super Berries Perú Logo"
+            alt="Súper Berries Perú Logo"
             width={32}
             height={32}
             className="w-8 h-8 rounded-full object-cover"
           />
           <span className="text-lg font-bold text-text-inverse">
-            Super Berries Perú
+            Súper Berries Perú
           </span>
         </Link>
         <p className="text-sm text-white/65 text-center max-w-[280px] leading-relaxed">
@@ -72,7 +73,7 @@ export function Footer() {
           ))}
         </div>
         <p className="text-xs text-white/40">
-          © {new Date().getFullYear()} Super Berries Perú
+          © {new Date().getFullYear()} Súper Berries Perú
         </p>
       </div>
 
@@ -84,13 +85,13 @@ export function Footer() {
             <Link href="/" className="flex items-center gap-3">
               <Image
                 src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
-                alt="Super Berries Perú Logo"
+                alt="Súper Berries Perú Logo"
                 width={40}
                 height={40}
                 className="w-10 h-10 rounded-full object-cover"
               />
               <span className="text-[22px] font-bold text-text-inverse">
-                Super Berries Perú
+                Súper Berries Perú
               </span>
             </Link>
             <p className="text-sm text-white/65 leading-relaxed">
@@ -125,7 +126,7 @@ export function Footer() {
         {/* Bottom */}
         <div className="flex items-center justify-between pt-6 border-t border-white/20">
           <p className="text-[13px] text-white/50">
-            © {new Date().getFullYear()} Super Berries Perú. Todos los derechos reservados.
+            © {new Date().getFullYear()} Súper Berries Perú. Todos los derechos reservados.
           </p>
           <div className="flex items-center gap-4">
             {socialLinks.map((social) => (

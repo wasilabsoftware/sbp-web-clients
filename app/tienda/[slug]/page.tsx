@@ -90,7 +90,7 @@ export default async function ProductDetailPage({
 
   const breadcrumbItems = [
     { name: "Inicio", url: "/" },
-    { name: "Catálogo", url: "/productos" },
+    { name: "Tienda", url: "/tienda" },
     { name: variant.name },
   ];
 
@@ -132,7 +132,7 @@ export default async function ProductDetailPage({
           aria-hidden="true"
         />
         <Link
-          href="/productos"
+          href="/tienda"
           className="text-sm text-text-tertiary hover:text-berry-red transition-colors"
         >
           Catálogo

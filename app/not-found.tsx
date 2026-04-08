@@ -47,7 +47,7 @@ export default function NotFound() {
               Ir al Inicio
             </Link>
             <Link
-              href="/productos"
+              href="/tienda"
               className="inline-flex items-center justify-center gap-2 px-6 py-3 border-2 border-berry-red text-berry-red font-semibold rounded-lg hover:bg-berry-red-light transition-colors"
             >
               <ShoppingBag className="w-5 h-5" />

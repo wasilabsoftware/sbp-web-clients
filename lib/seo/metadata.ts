@@ -1,7 +1,7 @@
 import type { Metadata } from 'next';
 
 export const siteConfig = {
-  name: 'Super Berries Perú',
+  name: 'Súper Berries Perú',
   shortName: 'SuperBerries',
   description: 'Más de 60 productos: arándanos, fresas, moras, frambuesas, aguaymanto frescos y congelados. Delivery mismo día en Lima. Desde S/5. Pide por WhatsApp.',
   url: 'https://superberriesperu.com',
@@ -30,7 +30,7 @@ export const siteConfig = {
     'berries congelados',
     'frutos secos Lima',
   ],
-  creator: 'Super Berries Perú',
+  creator: 'Súper Berries Perú',
   social: {
     instagram: 'https://instagram.com/superberriesperu',
     facebook: 'https://facebook.com/superberriesperu',
@@ -125,7 +125,7 @@ export function createProductMetadata({
   slug: string;
 }): Metadata {
   const title = `${name} | ${siteConfig.name}`;
-  const productUrl = `/productos/${slug}`;
+  const productUrl = `/tienda/${slug}`;
 
   return {
     title: name,

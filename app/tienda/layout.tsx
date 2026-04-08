@@ -5,7 +5,7 @@ export const metadata: Metadata = createMetadata({
   title: "Catálogo de Berries Frescos",
   description:
     "Explora nuestra selección de fresas, arándanos, moras, aguaymanto y más berries frescos con delivery en Lima. Productos premium cultivados en los valles del Perú.",
-  canonical: "/productos",
+  canonical: "/tienda",
   keywords: [
     "berries frescos",
     "fresas",

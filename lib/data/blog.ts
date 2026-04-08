@@ -48,10 +48,10 @@ Sus compuestos bioactivos reducen la inflamación crónica, factor de riesgo par
 - **En smoothies:** Combínalos con plátano y leche de almendras
 - **Congelados:** Mantienen sus nutrientes y son ideales para batidos
 
-En Super Berries Perú encontrarás arándanos frescos desde S/ 5 con delivery en Lima.
+En Súper Berries Perú encontrarás arándanos frescos desde S/ 5 con delivery en Lima.
     `.trim(),
     category: "Nutrición",
-    author: "Super Berries Perú",
+    author: "Súper Berries Perú",
     publishedAt: "2025-12-15",
     updatedAt: "2025-12-15",
     image:
@@ -120,7 +120,7 @@ Los smoothie bowls son la forma perfecta de comenzar el día con energía y nutr
 Encuentra todos los berries que necesitas en nuestra tienda online con delivery en Lima.
     `.trim(),
     category: "Recetas",
-    author: "Super Berries Perú",
+    author: "Súper Berries Perú",
     publishedAt: "2025-11-20",
     updatedAt: "2025-11-20",
     image:
@@ -179,10 +179,10 @@ Los berries congelados conservan el 95% de sus nutrientes y son perfectos para s
 
 ## ¿Sabías que...?
 
-En Super Berries Perú ofrecemos berries congelados IQF (Individual Quick Frozen) que conservan textura, sabor y nutrientes. Ideales si prefieres tener stock permanente.
+En Súper Berries Perú ofrecemos berries congelados IQF (Individual Quick Frozen) que conservan textura, sabor y nutrientes. Ideales si prefieres tener stock permanente.
     `.trim(),
     category: "Tips",
-    author: "Super Berries Perú",
+    author: "Súper Berries Perú",
     publishedAt: "2025-10-05",
     updatedAt: "2025-10-05",
     image:

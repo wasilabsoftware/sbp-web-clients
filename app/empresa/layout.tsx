@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { createMetadata } from "@/lib/seo/metadata";
 
 export const metadata: Metadata = createMetadata({
-  title: "Soluciones B2B para Empresas",
+  title: "Soluciones para Empresas",
   description:
     "Programas de bienestar corporativo con snacks saludables, asesoría nutricional y pausas activas. Soluciones personalizadas para potenciar la productividad de tus colaboradores.",
-  canonical: "/b2b",
+  canonical: "/empresa",
   keywords: [
     "B2B",
     "bienestar corporativo",
@@ -23,7 +23,7 @@ export const metadata: Metadata = createMetadata({
   ],
 });
 
-export default function B2BLayout({
+export default function EmpresaLayout({
   children,
 }: {
   children: React.ReactNode;

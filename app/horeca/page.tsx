@@ -27,10 +27,10 @@ import { Button } from "@/components/ui/Button";
 import { BreadcrumbSchema } from "@/components/seo/BreadcrumbSchema";
 
 export const metadata: Metadata = createMetadata({
-  title: "Berries al por Mayor para Restaurantes y Hoteles | Super Berries Perú",
+  title: "Berries al por Mayor para Restaurantes y Hoteles | Súper Berries Perú",
   description:
     "Proveedor de arándanos, fresas, moras y berries congelados para hoteles, restaurantes y catering en Lima. Entrega programada. Precios mayoristas.",
-  canonical: "/b2b/horeca",
+  canonical: "/horeca",
   keywords: [
     "HORECA",
     "berries hoteles",
@@ -121,7 +121,6 @@ export default function HorecaPage() {
       <BreadcrumbSchema
         items={[
           { name: "Inicio", url: "/" },
-          { name: "Empresas", url: "/b2b" },
           { name: "HORECA" },
         ]}
       />
