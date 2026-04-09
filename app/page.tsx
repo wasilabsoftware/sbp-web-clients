@@ -4,12 +4,13 @@ import {
   ArrowRight,
   MessageCircle,
   Leaf,
+  Sprout,
   Truck,
-  ShieldCheck,
-  Heart,
+  Snowflake,
+  Headset,
   ShoppingBag,
   Building2,
-  Briefcase,
+  UtensilsCrossed,
   ChevronRight,
 } from "lucide-react";
 
@@ -19,11 +20,15 @@ import { CategoriesCarousel } from "@/components/shop/CategoriesCarousel";
 import { ProductCard } from "@/components/shop/ProductCard";
 import { FeatureCard } from "@/components/shop/FeatureCard";
 import { AudienceSection } from "@/components/shop/AudienceSection";
+import { EmpresasHomeSection } from "@/components/shop/EmpresasHomeSection";
+import { HorecaHomeSection } from "@/components/shop/HorecaHomeSection";
+import { SocialProofSection } from "@/components/shop/SocialProofSection";
 import { Button } from "@/components/ui/Button";
 import {
   getCategories,
   getCategoryFallbackImage,
 } from "@/lib/services/category.service";
+import { getFeaturedProducts } from "@/lib/services/storefront.service";
 // Fallback hardcodeado para cuando la API no responde
 const FALLBACK_CATEGORIES = [
   {
@@ -64,7 +69,7 @@ const FALLBACK_CATEGORIES = [
   },
 ];
 
-const featuredProducts = [
+const FALLBACK_FEATURED = [
   {
     id: "1",
     name: "Fresas",
@@ -113,28 +118,32 @@ const featuredProducts = [
 
 const features = [
   {
+    icon: Sprout,
+    title: "Especialistas en berries desde 2017",
+    description: "Berries y snacks naturales",
+    descriptionFull:
+      "No vendemos de todo. Nos especializamos en berries y snacks naturales. Conocemos cada producto, su origen y su mejor momento de consumo.",
+  },
+  {
     icon: Truck,
-    title: "Delivery Programado",
-    description: "Pide hoy, recibe mañana",
-    descriptionFull: "Pide hoy, recibe al día siguiente en Lima y Provincias",
+    title: "Del campo peruano a tu puerta en 24h",
+    description: "Directo del productor",
+    descriptionFull:
+      "Trabajamos directo con productores de los valles del Perú. Tu pedido se prepara el día anterior y llega fresco a tu puerta.",
   },
   {
-    icon: Leaf,
-    title: "100% Natural",
-    description: "Sin preservantes ni químicos",
-    descriptionFull: "Sin preservantes ni químicos. Directo del campo.",
+    icon: Snowflake,
+    title: "Cadena de frío garantizada",
+    description: "Transporte refrigerado",
+    descriptionFull:
+      "Cada entrega viaja en transporte refrigerado. Tus berries llegan como si los hubieras recogido tú mismo.",
   },
   {
-    icon: ShieldCheck,
-    title: "Calidad Garantizada",
-    description: "Selección rigurosa de productos",
-    descriptionFull: "Selección rigurosa para tu satisfacción",
-  },
-  {
-    icon: Heart,
-    title: "Atención Personalizada",
-    description: "Pedidos especiales y atención por WhatsApp",
-    descriptionFull: "Pedidos especiales y atención por WhatsApp",
+    icon: Headset,
+    title: "Atención real por WhatsApp",
+    description: "Respuesta en menos de 1 hora",
+    descriptionFull:
+      "Hablas con personas reales. Respondemos en menos de 1 hora. Pedidos especiales, consultas, lo que necesites.",
   },
 ];
 
@@ -153,6 +162,35 @@ export default async function HomePage() {
   } catch (error) {
     console.error("Failed to fetch categories, using fallback:", error);
     categories = FALLBACK_CATEGORIES;
+  }
+
+  let featuredProducts;
+  try {
+    const apiFeatured = await getFeaturedProducts(4);
+    featuredProducts = apiFeatured.map((p) => {
+      const firstVariant = p.variants[0];
+      const price = firstVariant?.calculatedPrice
+        ? parseFloat(firstVariant.calculatedPrice)
+        : parseFloat(p.salePrice ?? p.basePrice);
+      const image =
+        p.images?.[0] ?? firstVariant?.images?.[0] ?? "";
+      return {
+        id: p.id,
+        name: p.name.length > 16 ? p.name.split(" ").slice(0, 2).join(" ") : p.name,
+        nameFull: p.name,
+        category: p.category.name,
+        categoryColor: "red" as const,
+        description: p.shortDescription ?? "",
+        price,
+        imageUrl: image,
+        href: firstVariant
+          ? `/tienda/${p.slug}?v=${firstVariant.id}`
+          : `/tienda/${p.slug}`,
+      };
+    });
+  } catch (error) {
+    console.error("Failed to fetch featured products, using fallback:", error);
+    featuredProducts = FALLBACK_FEATURED;
   }
 
   return (
@@ -307,14 +345,20 @@ export default async function HomePage() {
       {/* Audience Section */}
       <AudienceSection />
 
+      {/* Empresas Section */}
+      <EmpresasHomeSection />
+
+      {/* HORECA Section */}
+      <HorecaHomeSection />
+
       {/* Why Choose Us Section */}
       <section className="bg-berry-red px-5 py-10 lg:px-20 lg:py-20">
         <div className="flex flex-col items-center gap-1 lg:gap-3 mb-6 lg:mb-12">
           <h2 className="text-2xl lg:text-[40px] font-bold text-text-inverse text-center">
-            ¿Por Qué Elegirnos?
+            Por qué más de 7,400 pedidos nos eligen
           </h2>
-          <p className="hidden lg:block text-lg text-white/80 text-center">
-            Calidad, frescura y servicio que nos distingue
+          <p className="hidden lg:block text-lg text-white/80 text-center max-w-[560px]">
+            No somos un delivery más. Somos especialistas en berries con 7 años convirtiendo lo saludable en práctico.
           </p>
         </div>
 
@@ -343,27 +387,94 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* CTA Section */}
-      <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-20 flex flex-col items-center gap-5 lg:gap-8">
-        <h2 className="text-2xl lg:text-4xl font-bold text-text-primary text-center max-w-[300px] lg:max-w-none">
-          ¿Listo para probar nuestros productos?
-        </h2>
-        <p className="hidden lg:block text-lg text-text-secondary text-center">
-          Haz tu pedido ahora y recíbelo hoy mismo
-        </p>
-        <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-4 w-full lg:w-auto">
-          <Link href="https://wa.me/51952805608" target="_blank" className="w-full lg:w-auto">
-            <Button variant="whatsapp" size="lg" className="w-full lg:w-auto h-[52px] lg:h-auto justify-center">
-              <MessageCircle className="w-5 h-5 lg:w-6 lg:h-6" />
-              Pedir por WhatsApp
-            </Button>
-          </Link>
-          <Link href="/tienda" className="w-full lg:w-auto">
-            <Button variant="primary" size="lg" className="w-full lg:w-auto h-[52px] lg:h-auto justify-center">
-              <ShoppingBag className="w-5 h-5 lg:w-6 lg:h-6" />
-              Ver Catálogo
-            </Button>
-          </Link>
+      {/* Social Proof Section */}
+      <SocialProofSection />
+
+      {/* CTA Final Section */}
+      <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-20">
+        <div className="flex flex-col items-center gap-6 lg:gap-10 max-w-[1200px] mx-auto">
+          <div className="flex flex-col items-center gap-2 lg:gap-3">
+            <h2 className="text-2xl lg:text-[40px] font-bold text-text-primary text-center">
+              Empieza hoy. Elige cómo quieres pedir.
+            </h2>
+            <p className="hidden lg:block text-lg text-text-secondary text-center max-w-[560px]">
+              Delivery en Lima, atención real por WhatsApp, y soluciones para personas, empresas y restaurantes.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 w-full">
+            {/* Personas */}
+            <div className="bg-bg-primary border border-border-subtle rounded-2xl p-5 lg:p-6 flex flex-col gap-4 items-center text-center">
+              <div className="w-12 h-12 rounded-xl bg-berry-red-light flex items-center justify-center">
+                <ShoppingBag className="w-6 h-6 text-berry-red" />
+              </div>
+              <h3 className="text-lg font-bold text-text-primary">
+                Quiero comprar para mí
+              </h3>
+              <p className="text-sm text-text-secondary">
+                Berries frescos, snacks y frutas naturales con delivery en Lima.
+              </p>
+              <div className="flex flex-col gap-2 w-full mt-auto">
+                <Link href="/tienda">
+                  <button className="w-full flex items-center justify-center gap-2 bg-berry-red hover:bg-berry-red/90 text-text-inverse px-5 py-3 rounded-lg font-semibold text-sm transition-colors">
+                    Ver tienda
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+                <Link href="https://wa.me/51952805608" target="_blank">
+                  <button className="w-full flex items-center justify-center gap-2 bg-whatsapp hover:opacity-90 text-text-inverse px-5 py-3 rounded-lg font-semibold text-sm transition-colors">
+                    <MessageCircle className="w-4 h-4" />
+                    Pedir por WhatsApp
+                  </button>
+                </Link>
+              </div>
+            </div>
+
+            {/* Empresas */}
+            <div className="bg-bg-primary border border-border-subtle rounded-2xl p-5 lg:p-6 flex flex-col gap-4 items-center text-center">
+              <div className="w-12 h-12 rounded-xl bg-berry-red-light flex items-center justify-center">
+                <Building2 className="w-6 h-6 text-berry-red" />
+              </div>
+              <h3 className="text-lg font-bold text-text-primary">
+                Quiero un programa para mi equipo
+              </h3>
+              <p className="text-sm text-text-secondary">
+                Bienestar corporativo con snacks, asesoría y experiencias saludables.
+              </p>
+              <div className="flex flex-col gap-2 w-full mt-auto">
+                <Link href="/contacto?tipo=empresa">
+                  <button className="w-full flex items-center justify-center gap-2 bg-berry-red hover:bg-berry-red/90 text-text-inverse px-5 py-3 rounded-lg font-semibold text-sm transition-colors">
+                    Agendar reunión
+                    <ArrowRight className="w-4 h-4" />
+                  </button>
+                </Link>
+              </div>
+            </div>
+
+            {/* HORECA */}
+            <div className="bg-bg-primary border border-border-subtle rounded-2xl p-5 lg:p-6 flex flex-col gap-4 items-center text-center">
+              <div className="w-12 h-12 rounded-xl bg-berry-green-light flex items-center justify-center">
+                <UtensilsCrossed className="w-6 h-6 text-berry-green" />
+              </div>
+              <h3 className="text-lg font-bold text-text-primary">
+                Necesito abastecimiento HORECA
+              </h3>
+              <p className="text-sm text-text-secondary">
+                Berries premium para restaurantes, hoteles y catering en Lima.
+              </p>
+              <div className="flex flex-col gap-2 w-full mt-auto">
+                <Link
+                  href="https://wa.me/51952805608?text=Hola%2C%20me%20interesa%20el%20abastecimiento%20HORECA%20de%20berries"
+                  target="_blank"
+                >
+                  <button className="w-full flex items-center justify-center gap-2 bg-whatsapp hover:opacity-90 text-text-inverse px-5 py-3 rounded-lg font-semibold text-sm transition-colors">
+                    <MessageCircle className="w-4 h-4" />
+                    Cotizar por WhatsApp
+                  </button>
+                </Link>
+              </div>
+            </div>
+          </div>
         </div>
       </section>
 

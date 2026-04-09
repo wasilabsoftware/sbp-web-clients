@@ -4,6 +4,7 @@ import { GoogleAnalytics } from "@next/third-parties/google";
 import "./globals.css";
 import { siteConfig } from "@/lib/seo/metadata";
 import { OrganizationSchema } from "@/components/seo/OrganizationSchema";
+import { WhatsAppFloat } from "@/components/shared/WhatsAppFloat";
 
 const outfit = Outfit({
   variable: "--font-outfit",
@@ -78,6 +79,7 @@ export default function RootLayout({
       <body className={`${outfit.variable} font-sans antialiased`}>
         <OrganizationSchema />
         {children}
+        <WhatsAppFloat />
         <GoogleAnalytics gaId="G-KD21DWG664" />
       </body>
     </html>

@@ -25,7 +25,7 @@ const contactInfo = [
   {
     icon: Mail,
     title: "Email",
-    value: "hola@superberries.pe",
+    value: "ventas@superberriesperu.com",
     description: "Para consultas detalladas",
     href: "mailto:hola@superberries.pe",
     highlight: false,
@@ -76,6 +76,21 @@ const faqItems = [
     answer:
       "Sí, nuestro programa #ComeBerries #ComeSano incluye snacks saludables, asesoría nutricional, pausas activas y coaching organizacional. Empresas como NEXA, SUNARP y MEDIFARMA ya confían en nosotros.",
   },
+  {
+    question: "¿Puedo programar entregas recurrentes?",
+    answer:
+      "Sí, ofrecemos entregas programadas diarias o semanales para clientes HORECA y empresas. Contáctanos por WhatsApp para configurar tu frecuencia.",
+  },
+  {
+    question: "¿Hacen entregas el mismo día?",
+    answer:
+      "Sí, los pedidos realizados antes de las 12pm se entregan el mismo día en Lima Metropolitana, sujeto a disponibilidad.",
+  },
+  {
+    question: "¿Cuál es la política de devolución?",
+    answer:
+      "Si tu pedido llega en malas condiciones, contáctanos por WhatsApp con una foto dentro de las primeras 2 horas de recibido. Hacemos reposición o reembolso inmediato.",
+  },
 ];
 
 export default function ContactoPage() {
@@ -88,7 +103,7 @@ export default function ContactoPage() {
       {/* Hero Section */}
       <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-16">
         <div className="flex flex-col items-center gap-3 lg:gap-4 max-w-[600px] mx-auto text-center">
-          <h1 className="text-[32px] lg:text-[48px] font-bold text-text-primary">
+          <h1 className="text-[32px] lg:text-[48px] font-bold text-berry-red">
             ¿Cómo podemos ayudarte?
           </h1>
           <p className="text-[15px] lg:text-lg text-text-secondary">
@@ -162,14 +177,22 @@ export default function ContactoPage() {
               Entregamos en todo Lima Metropolitana
             </p>
           </div>
-          <div className="flex flex-wrap justify-center gap-4">
+          <div className="flex flex-col lg:flex-row flex-wrap justify-center gap-3 lg:gap-6">
             <div className="flex items-center gap-2">
               <MapPin className="w-4 h-4 text-berry-red" />
               <span className="text-sm text-text-secondary">Lima Metropolitana</span>
             </div>
             <div className="flex items-center gap-2">
               <Clock className="w-4 h-4 text-berry-red" />
-              <span className="text-sm text-text-secondary">Lunes a Sábado 8am - 6pm</span>
+              <span className="text-sm text-text-secondary">Pedidos: Lun-Sáb 8am-6pm</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <Clock className="w-4 h-4 text-berry-red" />
+              <span className="text-sm text-text-secondary">Entregas: Lun-Sáb 8am-6pm</span>
+            </div>
+            <div className="flex items-center gap-2">
+              <MessageCircle className="w-4 h-4 text-whatsapp" />
+              <span className="text-sm text-text-secondary">WhatsApp: respuesta en menos de 1 hora</span>
             </div>
           </div>
         </div>

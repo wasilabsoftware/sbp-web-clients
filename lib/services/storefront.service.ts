@@ -1,11 +1,15 @@
 import {
   storefrontResponseSchema,
   storefrontVariantDetailResponseSchema,
+  featuredProductsResponseSchema,
   type StorefrontResponse,
   type StorefrontVariantDetail,
+  type FeaturedProduct,
 } from "@/types/storefront";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
+
+console.log({API_URL})
 
 function getApiUrl(): string {
   if (!API_URL) {
@@ -73,4 +77,23 @@ export async function getStorefrontVariantById(
 
   const data = await res.json();
   return storefrontVariantDetailResponseSchema.parse(data).data;
+}
+
+export async function getFeaturedProducts(
+  limit: number = 10
+): Promise<FeaturedProduct[]> {
+  const res = await fetch(
+    `${getApiUrl()}/api/v1/storefront/featured?limit=${limit}`,
+    {
+      headers: { accept: "application/json" },
+      next: { revalidate: 60 * 5 },
+    }
+  );
+
+  if (!res.ok) {
+    throw new Error(`Error al obtener productos destacados: ${res.status}`);
+  }
+
+  const data = await res.json();
+  return featuredProductsResponseSchema.parse(data).data;
 }

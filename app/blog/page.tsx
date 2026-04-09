@@ -1,6 +1,8 @@
 "use client";
 
 import { useState } from "react";
+import Link from "next/link";
+import Image from "next/image";
 import { BookOpen } from "lucide-react";
 
 import { Header } from "@/components/shared/Header";
@@ -64,20 +66,53 @@ export default function BlogPage() {
       <section className="px-5 py-10 lg:px-20 lg:py-16">
         <div className="max-w-[1100px] mx-auto">
           {filteredPosts.length > 0 ? (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
-              {filteredPosts.map((post) => (
-                <BlogPostCard
-                  key={post.slug}
-                  slug={post.slug}
-                  title={post.title}
-                  excerpt={post.excerpt}
-                  category={post.category}
-                  image={post.image}
-                  imageAlt={post.imageAlt}
-                  publishedAt={post.publishedAt}
-                  readingTime={post.readingTime}
-                />
-              ))}
+            <div className="flex flex-col gap-8 lg:gap-12">
+              {/* Featured Post (first post, only when showing all) */}
+              {selectedCategory === "Todos" && filteredPosts.length > 0 && (
+                <Link href={`/blog/${filteredPosts[0].slug}`} className="group">
+                  <div className="flex flex-col lg:flex-row gap-5 lg:gap-8 bg-bg-surface rounded-2xl overflow-hidden border border-border-subtle">
+                    <div className="relative w-full lg:w-[480px] h-[200px] lg:h-[280px] flex-shrink-0">
+                      <Image
+                        src={filteredPosts[0].image}
+                        alt={filteredPosts[0].imageAlt}
+                        fill
+                        className="object-cover group-hover:scale-105 transition-transform duration-300"
+                      />
+                    </div>
+                    <div className="flex flex-col justify-center gap-3 p-5 lg:p-6 lg:py-8">
+                      <span className="text-xs font-semibold text-berry-red bg-berry-red-light px-2.5 py-1 rounded-full w-fit">
+                        {filteredPosts[0].category}
+                      </span>
+                      <h2 className="text-xl lg:text-2xl font-bold text-text-primary group-hover:text-berry-red transition-colors">
+                        {filteredPosts[0].title}
+                      </h2>
+                      <p className="text-sm lg:text-base text-text-secondary leading-relaxed">
+                        {filteredPosts[0].excerpt}
+                      </p>
+                      <span className="text-sm font-semibold text-berry-red mt-1">
+                        Leer artículo →
+                      </span>
+                    </div>
+                  </div>
+                </Link>
+              )}
+
+              {/* Rest of posts */}
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 lg:gap-8">
+                {(selectedCategory === "Todos" ? filteredPosts.slice(1) : filteredPosts).map((post) => (
+                  <BlogPostCard
+                    key={post.slug}
+                    slug={post.slug}
+                    title={post.title}
+                    excerpt={post.excerpt}
+                    category={post.category}
+                    image={post.image}
+                    imageAlt={post.imageAlt}
+                    publishedAt={post.publishedAt}
+                    readingTime={post.readingTime}
+                  />
+                ))}
+              </div>
             </div>
           ) : (
             <div className="flex flex-col items-center justify-center py-16 text-center">

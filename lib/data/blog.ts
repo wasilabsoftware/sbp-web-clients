@@ -55,7 +55,7 @@ En Súper Berries Perú encontrarás arándanos frescos desde S/ 5 con delivery 
     publishedAt: "2025-12-15",
     updatedAt: "2025-12-15",
     image:
-      "https://images.unsplash.com/photo-1758820609344-b01c8c6b3406?w=800&q=80",
+      "https://imagedelivery.net/hrfM92Tw965illARz9WHuA/80213646-ba18-423f-47a4-19a2220c6a00/Hero",
     imageAlt: "Arándanos frescos ricos en antioxidantes",
     tags: ["arándanos", "antioxidantes", "salud", "nutrición"],
     readingTime: 5,
@@ -124,7 +124,7 @@ Encuentra todos los berries que necesitas en nuestra tienda online con delivery 
     publishedAt: "2025-11-20",
     updatedAt: "2025-11-20",
     image:
-      "https://images.unsplash.com/photo-1590301157890-4810ed352733?w=800&q=80",
+      "https://imagedelivery.net/hrfM92Tw965illARz9WHuA/0f9aa499-fbc0-4e0e-5912-00a7a9657600/Hero",
     imageAlt: "Smoothie bowl con berries frescos",
     tags: ["recetas", "smoothie bowl", "desayuno", "berries"],
     readingTime: 4,

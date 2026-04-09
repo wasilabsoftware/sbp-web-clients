@@ -50,6 +50,20 @@ const trustedCompanies = [
   "NEXA", "SUNARP", "MEDIFARMA", "OSINERGMIN", "REFAX", "IMAGINA",
 ];
 
+const empresaStats = [
+  { value: "+7,400", label: "Pedidos entregados" },
+  { value: "6+", label: "Empresas activas" },
+  { value: "4", label: "Pilares de bienestar" },
+  { value: "20+", label: "Colaboradores mínimo" },
+];
+
+const processStepsEmpresa = [
+  { step: "1", title: "Reunión de diagnóstico", description: "Entendemos las necesidades de tu equipo y tu cultura organizacional." },
+  { step: "2", title: "Propuesta personalizada", description: "Diseñamos el programa ideal: snacks, frecuencia, branding y activaciones." },
+  { step: "3", title: "Implementación", description: "Arrancamos en 5 días hábiles. Nosotros gestionamos todo." },
+  { step: "4", title: "Seguimiento mensual", description: "Medimos impacto, ajustamos y mejoramos continuamente." },
+];
+
 export default function EmpresaPage() {
   return (
     <main className="min-h-screen bg-bg-primary">
@@ -66,23 +80,57 @@ export default function EmpresaPage() {
           </div>
 
           <h1 className="text-[28px] lg:text-5xl font-bold text-text-primary text-center max-w-[320px] lg:max-w-none">
-            Soluciones para tu empresa
+            Bienestar corporativo que se nota, se come y se mide
           </h1>
 
           <p className="lg:hidden text-[15px] text-text-secondary text-center max-w-[320px]">
-            Bienestar corporativo, abastecimiento HORECA y exportación de berries peruanos
+            Programas integrales de bienestar y exportación de berries premium para empresas.
           </p>
 
           <p className="hidden lg:block text-lg text-text-secondary text-center max-w-[700px]">
-            Tres canales empresariales: bienestar corporativo, abastecimiento a hoteles y restaurantes, y exportación de berries peruanos premium al mundo
+            Programas integrales de bienestar corporativo y exportación de berries peruanos premium. Snacks saludables, asesoría nutricional y experiencias que transforman tu cultura organizacional.
           </p>
+
+          <div className="flex flex-col lg:flex-row items-center gap-3 w-full lg:w-auto mt-2">
+            <Link href="/contacto?tipo=empresa" className="w-full lg:w-auto">
+              <Button variant="primary" size="lg" className="w-full lg:w-auto h-[52px] justify-center">
+                Agendar Reunión
+                <ArrowRight className="w-4 h-4" />
+              </Button>
+            </Link>
+            <Link href="https://wa.me/51952805608?text=Hola%2C%20me%20interesa%20el%20programa%20de%20bienestar%20corporativo" target="_blank" className="w-full lg:w-auto">
+              <Button variant="whatsapp" size="lg" className="w-full lg:w-auto h-[52px] justify-center">
+                <MessageCircle className="w-5 h-5" />
+                Cotizar por WhatsApp
+              </Button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
+      {/* Stats Section */}
+      <section className="bg-berry-red px-5 py-8 lg:px-20 lg:py-12">
+        <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 lg:gap-8 max-w-[1000px] mx-auto">
+          {empresaStats.map((stat) => (
+            <div key={stat.label} className="flex flex-col items-center gap-1">
+              <span className="text-[28px] lg:text-[40px] font-bold text-text-inverse">
+                {stat.value}
+              </span>
+              <span className="text-xs lg:text-sm text-white/80 text-center">
+                {stat.label}
+              </span>
+            </div>
+          ))}
         </div>
       </section>
 
       {/* Channels Section */}
-      <section className="bg-bg-surface px-5 pb-10 lg:px-20 lg:pb-20">
+      <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-20">
         <div className="flex flex-col items-center gap-6 lg:gap-8 max-w-[1200px] mx-auto">
-          <div className="grid grid-cols-1 lg:grid-cols-3 gap-5 lg:gap-6 w-full">
+          <h2 className="text-2xl lg:text-[40px] font-bold text-text-primary text-center">
+            Nuestros canales empresariales
+          </h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-5 lg:gap-6 w-full">
             {channels.map((channel) => (
               <div
                 key={channel.title}
@@ -148,6 +196,36 @@ export default function EmpresaPage() {
         </div>
       </section>
 
+      {/* Cómo Funciona Section */}
+      <section className="bg-bg-primary px-5 py-10 lg:px-20 lg:py-20">
+        <div className="flex flex-col items-center gap-8 lg:gap-12 max-w-[1000px] mx-auto">
+          <div className="flex flex-col items-center gap-2 lg:gap-3">
+            <h2 className="text-2xl lg:text-[40px] font-bold text-text-primary text-center">
+              Cómo implementamos ComeBerries en tu empresa
+            </h2>
+            <p className="hidden lg:block text-lg text-text-secondary text-center max-w-[500px]">
+              En 4 pasos simples, tu equipo empieza a disfrutar de bienestar real
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 w-full">
+            {processStepsEmpresa.map((step) => (
+              <div key={step.step} className="flex flex-col items-center gap-3 text-center">
+                <div className="w-14 h-14 rounded-full bg-berry-red-light flex items-center justify-center relative">
+                  <span className="text-xl font-bold text-berry-red">{step.step}</span>
+                </div>
+                <h3 className="text-sm lg:text-base font-bold text-text-primary">
+                  {step.title}
+                </h3>
+                <p className="text-xs lg:text-sm text-text-secondary leading-relaxed">
+                  {step.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Trust Section */}
       <section className="bg-bg-muted px-5 py-10 lg:px-20 lg:py-16">
         <div className="flex flex-col items-center gap-6 lg:gap-8">
@@ -168,29 +246,25 @@ export default function EmpresaPage() {
       </section>
 
       {/* CTA Section */}
-      <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-20">
-        <div className="flex flex-col items-center gap-5 lg:gap-8">
-          <h2 className="text-xl lg:text-[32px] font-bold text-text-primary text-center">
-            ¿Necesitas una solución personalizada?
+      <section className="bg-berry-red px-5 py-10 lg:px-20 lg:py-16">
+        <div className="flex flex-col items-center gap-5 lg:gap-6 max-w-[600px] mx-auto text-center">
+          <h2 className="text-2xl lg:text-[36px] font-bold text-text-inverse">
+            Agenda una reunión y diseña el programa ideal para tu equipo
           </h2>
 
-          <p className="lg:hidden text-sm text-text-secondary text-center">
-            Creamos soluciones a medida. Contáctanos.
+          <p className="text-[15px] lg:text-lg text-white/80">
+            En 15 minutos te mostramos cómo funciona y preparamos una propuesta personalizada.
           </p>
 
-          <p className="hidden lg:block text-lg text-text-secondary text-center max-w-[600px]">
-            Creamos soluciones a medida para tu empresa. Contáctanos y diseñemos juntos la propuesta ideal.
-          </p>
-
-          <div className="flex flex-col lg:flex-row items-center gap-3 lg:gap-4 w-full lg:w-auto">
-            <Link href="/contacto" className="w-full lg:w-auto">
-              <Button variant="primary" size="lg" className="w-full lg:w-auto h-[52px] justify-center">
-                <Phone className="w-5 h-5" />
-                Contactar Ventas
+          <div className="flex flex-col lg:flex-row items-center gap-3 w-full lg:w-auto">
+            <Link href="/contacto?tipo=empresa" className="w-full lg:w-auto">
+              <Button variant="outline" size="lg" className="w-full lg:w-auto h-[52px] justify-center border-white text-white hover:bg-white hover:text-berry-red">
+                Agendar Reunión
+                <ArrowRight className="w-4 h-4" />
               </Button>
             </Link>
             <Link
-              href="https://wa.me/51952805608"
+              href="https://wa.me/51952805608?text=Hola%2C%20me%20interesa%20el%20programa%20de%20bienestar%20corporativo"
               target="_blank"
               className="w-full lg:w-auto"
             >

@@ -187,6 +187,23 @@ export default async function BlogPostPage({ params }: PageProps) {
             })}
           </div>
 
+          {/* CTA to Shop */}
+          <div className="flex flex-col items-center gap-4 mt-10 p-6 lg:p-8 bg-berry-red-light rounded-2xl text-center">
+            <p className="text-lg font-bold text-text-primary">
+              Prueba nuestros berries frescos
+            </p>
+            <p className="text-sm text-text-secondary max-w-[400px]">
+              Delivery en Lima con cadena de frío. Más de 60 productos naturales disponibles.
+            </p>
+            <Link
+              href="/tienda"
+              className="inline-flex items-center gap-2 bg-berry-red hover:bg-berry-red/90 text-white px-6 py-3 rounded-lg font-semibold text-sm transition-colors"
+            >
+              Ver tienda
+              <ChevronRight className="w-4 h-4" />
+            </Link>
+          </div>
+
           {/* Tags */}
           <div className="flex flex-wrap gap-2 mt-10 pt-6 border-t border-border-subtle">
             {post.tags.map((tag) => (

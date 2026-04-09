@@ -115,6 +115,13 @@ const catalogItems = [
   { name: "Frutos secos", items: "Almendras, pistachos, nueces y mix para decoración y toppings" },
 ];
 
+const horecaProcess = [
+  { step: "1", title: "Cotiza por WhatsApp", description: "Cuéntanos qué productos necesitas y en qué volumen." },
+  { step: "2", title: "Confirmamos disponibilidad", description: "Te enviamos precio y confirmamos stock en menos de 1 hora." },
+  { step: "3", title: "Programamos entrega", description: "Elige frecuencia: diaria, semanal o bajo demanda." },
+  { step: "4", title: "Entregamos y facturamos", description: "Delivery directo a tu local con factura electrónica." },
+];
+
 export default function HorecaPage() {
   return (
     <main className="min-h-screen bg-bg-primary">
@@ -138,11 +145,11 @@ export default function HorecaPage() {
             </div>
 
             <h1 className="text-[28px] lg:text-[48px] font-bold text-text-primary leading-tight text-center lg:text-left">
-              Berries frescos y congelados para tu negocio gastronómico
+              El proveedor de berries que tu cocina necesita
             </h1>
 
             <p className="text-[15px] lg:text-lg text-text-secondary text-center lg:text-left max-w-[500px]">
-              Proveedor de berries premium para hoteles, restaurantes, cafeterías, bares de jugos, heladerías y servicios de catering en Lima.
+              Arándanos, fresas, moras y congelados IQF con calibre uniforme y entrega programada. Restaurantes, hoteles y catering en Lima.
             </p>
 
             <div className="flex flex-col lg:flex-row items-center gap-3 w-full lg:w-auto mt-2">
@@ -254,6 +261,36 @@ export default function HorecaPage() {
                 </h3>
                 <p className="text-xs lg:text-sm text-text-secondary leading-relaxed">
                   {adv.description}
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Cómo Funciona Section */}
+      <section className="bg-bg-primary px-5 py-10 lg:px-20 lg:py-20">
+        <div className="flex flex-col items-center gap-8 lg:gap-12 max-w-[1000px] mx-auto">
+          <div className="flex flex-col items-center gap-2 lg:gap-3">
+            <h2 className="text-2xl lg:text-[40px] font-bold text-text-primary text-center">
+              Cómo funciona
+            </h2>
+            <p className="hidden lg:block text-lg text-text-secondary text-center">
+              De tu cotización a tu cocina en 4 pasos simples
+            </p>
+          </div>
+
+          <div className="grid grid-cols-2 lg:grid-cols-4 gap-4 lg:gap-6 w-full">
+            {horecaProcess.map((step) => (
+              <div key={step.step} className="flex flex-col items-center gap-3 text-center">
+                <div className="w-14 h-14 rounded-full bg-berry-green-light flex items-center justify-center">
+                  <span className="text-xl font-bold text-berry-green">{step.step}</span>
+                </div>
+                <h3 className="text-sm lg:text-base font-bold text-text-primary">
+                  {step.title}
+                </h3>
+                <p className="text-xs lg:text-sm text-text-secondary leading-relaxed">
+                  {step.description}
                 </p>
               </div>
             ))}

@@ -120,7 +120,7 @@ export default function NosotrosPage() {
         <div className="flex flex-col lg:flex-row items-center gap-8 lg:gap-15 max-w-[1100px] mx-auto">
           <div className="relative w-full lg:w-[400px] h-[250px] lg:h-[350px] rounded-xl overflow-hidden flex-shrink-0">
             <Image
-              src="https://images.unsplash.com/photo-1464226184884-fa280b87c399?w=800"
+              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/a9205b0b-4f68-447d-8d11-0b048108ea00/Hero"
               alt="Campos de berries en Perú"
               fill
               className="object-cover"
@@ -136,6 +136,49 @@ export default function NosotrosPage() {
             <p className="text-[15px] lg:text-lg text-text-secondary leading-relaxed text-center lg:text-left">
               Lo que empezó con entregas por WhatsApp en Lima, hoy es una empresa con más de 7,400 pedidos entregados, 60+ productos naturales, y 4 líneas de negocio que atienden desde familias hasta empresas como NEXA, SUNARP y MEDIFARMA.
             </p>
+            {/* Founder Quote */}
+            <div className="bg-bg-surface border-l-4 border-berry-red rounded-r-xl p-5 lg:p-6 mt-2">
+              <p className="text-[15px] lg:text-base text-text-primary italic leading-relaxed">
+                &ldquo;Empecé vendiendo berries por WhatsApp desde mi casa en 2017. Hoy atendemos a más de 6 empresas y hemos entregado más de 7,400 pedidos. Lo que no ha cambiado es la obsesión por la frescura.&rdquo;
+              </p>
+              <p className="text-sm font-semibold text-berry-red mt-3">
+                — Javier Guerra, Fundador
+              </p>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* Timeline Section */}
+      <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-16">
+        <div className="flex flex-col items-center gap-8 lg:gap-10 max-w-[900px] mx-auto">
+          <h2 className="text-2xl lg:text-[36px] font-bold text-text-primary text-center">
+            Nuestro camino
+          </h2>
+          <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 w-full">
+            {[
+              { year: "2017", title: "Fundación", description: "Primeras entregas por WhatsApp con una inversión personal." },
+              { year: "2019", title: "Primeros corporativos", description: "Empresas descubren nuestros packs como solución de bienestar." },
+              { year: "2021", title: "E-commerce", description: "Lanzamos la tienda online con delivery en Lima." },
+              { year: "2023", title: "ComeBerries", description: "Nace el programa de bienestar corporativo integral." },
+              { year: "2024", title: "HORECA + Export", description: "Abrimos canales para restaurantes y exportación." },
+              { year: "2026", title: "Tienda física", description: "Próxima apertura en Barranco, Lima." },
+            ].map((milestone) => (
+              <div
+                key={milestone.year}
+                className="flex flex-col gap-2 p-4 lg:p-5 bg-bg-primary rounded-xl border border-border-subtle"
+              >
+                <span className="text-2xl lg:text-3xl font-bold text-berry-red">
+                  {milestone.year}
+                </span>
+                <h3 className="text-sm lg:text-base font-bold text-text-primary">
+                  {milestone.title}
+                </h3>
+                <p className="text-xs lg:text-sm text-text-secondary leading-relaxed">
+                  {milestone.description}
+                </p>
+              </div>
+            ))}
           </div>
         </div>
       </section>
@@ -238,7 +281,7 @@ export default function NosotrosPage() {
             100% natural, sin preservantes
           </h2>
           <p className="text-[15px] lg:text-lg text-text-secondary leading-relaxed">
-            Trabajamos directamente con agricultores peruanos y garantizamos frescura en cada entrega. Sin químicos, sin preservantes. Tu bienestar es nuestra prioridad.
+            Trabajamos con productores de Ica, Trujillo y Huancayo. Cada lote es inspeccionado antes de salir. Si no cumple nuestro estándar, no sale. Tu bienestar es nuestra prioridad.
           </p>
           <div className="flex flex-wrap justify-center gap-4 mt-2">
             {["Sin preservantes", "Sin químicos", "Cadena de frío", "Del campo a tu mesa"].map((item) => (

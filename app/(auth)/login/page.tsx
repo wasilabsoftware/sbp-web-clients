@@ -56,7 +56,7 @@ export default function LoginPage() {
           <div className="flex items-center gap-3">
             <Truck className="w-6 h-6 text-white" />
             <span className="text-white/90">
-              Envío gratis en pedidos mayores a S/50
+              Envío gratis en pedidos desde S/100
             </span>
           </div>
           <div className="flex items-center gap-3">
