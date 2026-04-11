@@ -45,20 +45,14 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
   const totalPrice = product.price * quantity;
   const hasImages = product.images.length > 0;
 
-  const handleAddToCart = () => {
-    addItem(
-      {
-        id: product.id,
-        name: product.name,
-        description: product.weightInfo || product.name,
-        unitPrice: product.price,
-        imageUrl: product.images[0] ?? "",
-      },
-      quantity
-    );
-
-    setIsAdded(true);
-    setTimeout(() => setIsAdded(false), 2000);
+  const handleAddToCart = async () => {
+    try {
+      await addItem(product.id, quantity);
+      setIsAdded(true);
+      setTimeout(() => setIsAdded(false), 2000);
+    } catch {
+      // Error is handled by the cart store
+    }
   };
 
   const handleWhatsAppOrder = () => {

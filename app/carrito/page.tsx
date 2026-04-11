@@ -1,8 +1,9 @@
 "use client";
 
+import { useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Loader2 } from "lucide-react";
 import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
 import { CartItemCard } from "@/components/shop/CartItemCard";
@@ -11,19 +12,30 @@ import { useCart } from "@/hooks/useCart";
 
 export default function CarritoPage() {
   const router = useRouter();
-  const { items, updateQuantity, removeItem, getSubtotal, getItemCount } =
-    useCart();
+  const {
+    cart,
+    isLoading,
+    isUpdating,
+    fetchCart,
+    updateQuantity,
+    removeItem,
+  } = useCart();
 
-  const subtotal = getSubtotal();
-  const shipping = subtotal >= 100 ? 0 : 10;
-  const itemCount = getItemCount();
+  useEffect(() => {
+    fetchCart();
+  }, [fetchCart]);
 
-  const handleQuantityChange = (id: string, quantity: number) => {
-    updateQuantity(id, quantity);
+  const items = cart?.items ?? [];
+  const subtotal = parseFloat(cart?.summary.subtotal ?? "0");
+  const shipping = parseFloat(cart?.summary.deliveryFee ?? "0");
+  const itemCount = cart?.summary.itemCount ?? 0;
+
+  const handleQuantityChange = (itemId: string, quantity: number) => {
+    updateQuantity(itemId, quantity);
   };
 
-  const handleRemove = (id: string) => {
-    removeItem(id);
+  const handleRemove = (itemId: string) => {
+    removeItem(itemId);
   };
 
   const handleCheckout = () => {
@@ -34,14 +46,28 @@ export default function CarritoPage() {
     const itemsText = items
       .map(
         (item) =>
-          `• ${item.name} (${item.quantity}x) - S/ ${(item.unitPrice * item.quantity).toFixed(2)}`
+          `• ${item.variant.name} (${item.quantity}x) - S/ ${(parseFloat(item.unitPrice) * parseFloat(item.quantity)).toFixed(2)}`
       )
       .join("\n");
+    const total = (subtotal + shipping).toFixed(2);
     const message = encodeURIComponent(
-      `¡Hola! Me gustaría hacer un pedido:\n\n${itemsText}\n\nTotal: S/ ${(subtotal + shipping).toFixed(2)}`
+      `¡Hola! Me gustaría hacer un pedido:\n\n${itemsText}\n\nTotal: S/ ${total}`
     );
     window.open(`https://wa.me/51952805608?text=${message}`, "_blank");
   };
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen bg-bg-primary flex flex-col">
+        <div className="hidden lg:block">
+          <Header />
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <Loader2 className="w-8 h-8 text-berry-red animate-spin" />
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-screen bg-bg-primary flex flex-col">
@@ -60,7 +86,9 @@ export default function CarritoPage() {
         </button>
         <h1 className="text-lg font-bold text-text-primary">Tu Carrito</h1>
         <div className="w-10 h-10 rounded-full bg-berry-red flex items-center justify-center">
-          <span className="text-sm font-bold text-text-inverse">{itemCount}</span>
+          <span className="text-sm font-bold text-text-inverse">
+            {itemCount}
+          </span>
         </div>
       </header>
 
@@ -88,6 +116,7 @@ export default function CarritoPage() {
                       item={item}
                       onQuantityChange={handleQuantityChange}
                       onRemove={handleRemove}
+                      disabled={isUpdating}
                     />
                   ))}
                 </div>
@@ -107,14 +136,16 @@ export default function CarritoPage() {
             </div>
 
             {/* Order Summary Section */}
-            <div className="w-full lg:w-[400px]">
-              <OrderSummary
-                subtotal={subtotal}
-                shipping={shipping}
-                onCheckout={handleCheckout}
-                onWhatsAppOrder={handleWhatsAppOrder}
-              />
-            </div>
+            {items.length > 0 && (
+              <div className="w-full lg:w-[400px]">
+                <OrderSummary
+                  subtotal={subtotal}
+                  shipping={shipping}
+                  onCheckout={handleCheckout}
+                  onWhatsAppOrder={handleWhatsAppOrder}
+                />
+              </div>
+            )}
           </div>
         </div>
       </main>

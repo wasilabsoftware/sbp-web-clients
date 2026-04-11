@@ -1,59 +1,178 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import type { AuthUser, AuthMeResponse, RegisterData, OnboardingData } from "@/types/auth";
+import * as authService from "@/lib/services/auth.service";
 
-export interface User {
-  id: string;
+// Compat helpers for components that use the old User shape (name, initials)
+export function getUserDisplayName(user: AuthUser | null): string {
+  if (!user) return "";
+  return [user.firstName, user.lastName].filter(Boolean).join(" ") || user.email;
+}
+
+export function getUserInitials(user: AuthUser | null): string {
+  if (!user) return "";
+  const first = user.firstName?.charAt(0) ?? "";
+  const last = user.lastName?.charAt(0) ?? "";
+  if (first || last) return (first + last).toUpperCase();
+  return user.email.charAt(0).toUpperCase();
+}
+
+// Compat type for portal components that expect { name, initials, email }
+export interface CompatUser extends AuthUser {
   name: string;
-  email: string;
   initials: string;
-  memberSince: string;
+}
+
+export function toCompatUser(user: AuthUser): CompatUser {
+  return {
+    ...user,
+    name: getUserDisplayName(user),
+    initials: getUserInitials(user),
+  };
+}
+
+// Hook that returns a compat user for portal pages
+export function useAuthCompat() {
+  const state = useAuth();
+  return {
+    ...state,
+    user: state.user ? toCompatUser(state.user) : null,
+  };
 }
 
 interface AuthState {
-  user: User | null;
+  user: AuthUser | null;
+  meData: AuthMeResponse | null;
+  token: string | null;
   isAuthenticated: boolean;
-  login: (email: string) => void;
-  logout: () => void;
+  isLoading: boolean;
+  returnUrl: string | null;
+
+  login: (email: string, password: string) => Promise<void>;
+  register: (data: RegisterData) => Promise<void>;
+  logout: () => Promise<void>;
+  refreshUser: () => Promise<void>;
+  completeOnboarding: (data: OnboardingData) => Promise<void>;
+  setReturnUrl: (url: string | null) => void;
+  initialize: () => Promise<void>;
 }
-
-// Mock user data based on email
-const getMockUser = (email: string): User => {
-  const name = email.split("@")[0].replace(/[._]/g, " ");
-  const capitalizedName = name
-    .split(" ")
-    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-    .join(" ");
-  const initials = capitalizedName
-    .split(" ")
-    .map((word) => word.charAt(0))
-    .join("")
-    .slice(0, 2)
-    .toUpperCase();
-
-  return {
-    id: Math.random().toString(36).slice(2),
-    name: capitalizedName || "Usuario",
-    email,
-    initials: initials || "US",
-    memberSince: "Enero 2024",
-  };
-};
 
 export const useAuth = create<AuthState>()(
   persist(
-    (set) => ({
+    (set, get) => ({
       user: null,
+      meData: null,
+      token: null,
       isAuthenticated: false,
-      login: (email: string) => {
-        const user = getMockUser(email);
-        set({ user, isAuthenticated: true });
+      isLoading: true,
+      returnUrl: null,
+
+      login: async (email: string, password: string) => {
+        const response = await authService.login(email, password);
+        set({
+          user: response.user,
+          token: response.token,
+          isAuthenticated: true,
+        });
       },
-      logout: () => {
-        set({ user: null, isAuthenticated: false });
+
+      register: async (data: RegisterData) => {
+        const response = await authService.register(data);
+        set({
+          user: response.user,
+          token: response.token,
+          isAuthenticated: true,
+        });
+      },
+
+      logout: async () => {
+        const { token } = get();
+        if (token) {
+          await authService.logout(token).catch(() => {});
+        }
+        set({
+          user: null,
+          meData: null,
+          token: null,
+          isAuthenticated: false,
+          returnUrl: null,
+        });
+      },
+
+      refreshUser: async () => {
+        const { token } = get();
+        if (!token) {
+          set({ isLoading: false });
+          return;
+        }
+
+        try {
+          const meData = await authService.getMe(token);
+          set({
+            user: {
+              id: meData.id,
+              email: meData.email,
+              role: meData.role,
+              firstName: meData.firstName,
+              lastName: meData.lastName,
+              isActive: meData.isActive,
+              emailVerified: meData.emailVerified,
+              hasCompletedOnboarding: meData.hasCompletedOnboarding,
+              phone: meData.phone,
+              customerId: meData.customer?.id ?? null,
+              createdAt: meData.createdAt,
+              lastLogin: meData.lastLogin,
+            },
+            meData,
+            isAuthenticated: true,
+            isLoading: false,
+          });
+        } catch {
+          // Token expired or invalid
+          set({
+            user: null,
+            meData: null,
+            token: null,
+            isAuthenticated: false,
+            isLoading: false,
+          });
+        }
+      },
+
+      completeOnboarding: async (data: OnboardingData) => {
+        const { token, user } = get();
+        if (!token) throw new Error("No autenticado");
+
+        await authService.completeOnboarding(token, data);
+
+        if (user) {
+          set({
+            user: { ...user, hasCompletedOnboarding: true },
+          });
+        }
+      },
+
+      setReturnUrl: (url: string | null) => {
+        set({ returnUrl: url });
+      },
+
+      initialize: async () => {
+        const { token } = get();
+        if (token) {
+          await get().refreshUser();
+        } else {
+          set({ isLoading: false });
+        }
       },
     }),
     {
       name: "sbp-auth",
+      partialize: (state) => ({
+        token: state.token,
+        user: state.user,
+        isAuthenticated: state.isAuthenticated,
+        returnUrl: state.returnUrl,
+      }),
     }
   )
 );

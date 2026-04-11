@@ -1,88 +1,147 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export interface CartItem {
-  id: string;
-  name: string;
-  description: string;
-  unitPrice: number;
-  quantity: number;
-  imageUrl: string;
-}
+import type { ServerCart, ServerCartItem } from "@/types/cart";
+import * as cartService from "@/lib/services/cart.service";
 
 interface CartState {
-  items: CartItem[];
-  addItem: (item: Omit<CartItem, "quantity">, quantity?: number) => void;
-  removeItem: (id: string) => void;
-  updateQuantity: (id: string, quantity: number) => void;
+  sessionId: string | null;
+  cart: ServerCart | null;
+  isLoading: boolean;
+  isUpdating: boolean;
+  error: string | null;
+
+  getOrCreateSessionId: () => string;
+  fetchCart: () => Promise<void>;
+  addItem: (productId: string, quantity?: number) => Promise<void>;
+  updateQuantity: (itemId: string, quantity: number) => Promise<void>;
+  removeItem: (itemId: string) => Promise<void>;
   clearCart: () => void;
+
+  // Computed helpers
   getItemCount: () => number;
   getSubtotal: () => number;
+  getItems: () => ServerCartItem[];
+}
+
+function generateSessionId(): string {
+  return crypto.randomUUID();
 }
 
 export const useCart = create<CartState>()(
   persist(
     (set, get) => ({
-      items: [],
+      sessionId: null,
+      cart: null,
+      isLoading: false,
+      isUpdating: false,
+      error: null,
 
-      addItem: (item, quantity = 1) => {
-        set((state) => {
-          const existingItem = state.items.find((i) => i.id === item.id);
-
-          if (existingItem) {
-            // Update quantity if item already exists
-            return {
-              items: state.items.map((i) =>
-                i.id === item.id
-                  ? { ...i, quantity: i.quantity + quantity }
-                  : i
-              ),
-            };
-          }
-
-          // Add new item
-          return {
-            items: [...state.items, { ...item, quantity }],
-          };
-        });
+      getOrCreateSessionId: () => {
+        let { sessionId } = get();
+        if (!sessionId) {
+          sessionId = generateSessionId();
+          set({ sessionId });
+        }
+        return sessionId;
       },
 
-      removeItem: (id) => {
-        set((state) => ({
-          items: state.items.filter((item) => item.id !== id),
-        }));
+      fetchCart: async () => {
+        const sessionId = get().getOrCreateSessionId();
+        set({ isLoading: true, error: null });
+
+        try {
+          const cart = await cartService.getCart(sessionId);
+          set({ cart, isLoading: false });
+        } catch (err) {
+          set({
+            error: (err as Error).message,
+            isLoading: false,
+          });
+        }
       },
 
-      updateQuantity: (id, quantity) => {
+      addItem: async (productId: string, quantity: number = 1) => {
+        const sessionId = get().getOrCreateSessionId();
+        set({ isUpdating: true, error: null });
+
+        try {
+          await cartService.addItem(
+            sessionId,
+            productId,
+            quantity.toFixed(2)
+          );
+          // Re-fetch the full cart to get updated summary
+          const cart = await cartService.getCart(sessionId);
+          set({ cart, isUpdating: false });
+        } catch (err) {
+          set({
+            error: (err as Error).message,
+            isUpdating: false,
+          });
+          throw err;
+        }
+      },
+
+      updateQuantity: async (itemId: string, quantity: number) => {
         if (quantity < 1) {
-          get().removeItem(id);
+          await get().removeItem(itemId);
           return;
         }
 
-        set((state) => ({
-          items: state.items.map((item) =>
-            item.id === id ? { ...item, quantity } : item
-          ),
-        }));
+        const sessionId = get().getOrCreateSessionId();
+        set({ isUpdating: true, error: null });
+
+        try {
+          await cartService.updateItem(itemId, quantity.toFixed(2));
+          const cart = await cartService.getCart(sessionId);
+          set({ cart, isUpdating: false });
+        } catch (err) {
+          set({
+            error: (err as Error).message,
+            isUpdating: false,
+          });
+          throw err;
+        }
+      },
+
+      removeItem: async (itemId: string) => {
+        const sessionId = get().getOrCreateSessionId();
+        set({ isUpdating: true, error: null });
+
+        try {
+          await cartService.removeItem(itemId);
+          const cart = await cartService.getCart(sessionId);
+          set({ cart, isUpdating: false });
+        } catch (err) {
+          set({
+            error: (err as Error).message,
+            isUpdating: false,
+          });
+          throw err;
+        }
       },
 
       clearCart: () => {
-        set({ items: [] });
+        set({ sessionId: null, cart: null, error: null });
       },
 
       getItemCount: () => {
-        return get().items.reduce((total, item) => total + item.quantity, 0);
+        return get().cart?.summary.itemCount ?? 0;
       },
 
       getSubtotal: () => {
-        return get().items.reduce(
-          (total, item) => total + item.unitPrice * item.quantity,
-          0
-        );
+        return parseFloat(get().cart?.summary.subtotal ?? "0");
+      },
+
+      getItems: () => {
+        return get().cart?.items ?? [];
       },
     }),
     {
-      name: "sbp-cart", // localStorage key
+      name: "sbp-cart",
+      partialize: (state) => ({
+        sessionId: state.sessionId,
+      }),
     }
   )
 );

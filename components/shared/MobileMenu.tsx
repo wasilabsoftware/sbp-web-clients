@@ -20,7 +20,7 @@ import {
   LogOut,
   UtensilsCrossed,
 } from "lucide-react";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, getUserDisplayName, getUserInitials } from "@/hooks/useAuth";
 import { useEffect } from "react";
 
 interface MobileMenuProps {
@@ -163,12 +163,12 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
           <div className="bg-bg-muted p-5 flex items-center gap-4">
             <div className="w-14 h-14 rounded-full bg-berry-red-light flex items-center justify-center">
               <span className="text-xl font-bold text-berry-red">
-                {user.initials}
+                {getUserInitials(user)}
               </span>
             </div>
             <div className="flex-1 flex flex-col gap-1">
               <span className="text-lg font-semibold text-text-primary">
-                {user.name}
+                {getUserDisplayName(user)}
               </span>
               <span className="text-sm text-text-secondary">
                 {user.email}

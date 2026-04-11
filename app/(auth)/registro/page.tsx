@@ -2,19 +2,85 @@
 
 import Link from "next/link";
 import { useState } from "react";
-import { Button } from "@/components/ui/Button";
+import { useRouter } from "next/navigation";
 import { Input } from "@/components/ui/Input";
-import { Truck, Leaf, Clock, Mail, Sparkles } from "lucide-react";
+import { useAuth } from "@/hooks/useAuth";
+import { Truck, Leaf, Clock, Mail, Lock, User, Phone, UserPlus } from "lucide-react";
+import { registerSchema } from "@/lib/validations/auth";
+import type { ApiError } from "@/types/auth";
+
+const ERROR_MESSAGES: Record<string, string> = {
+  EMAIL_EXISTS: "Este email ya está registrado. ¿Quieres iniciar sesión?",
+  WEAK_PASSWORD: "La contraseña no cumple con los requisitos de seguridad",
+  PASSWORD_MISMATCH: "Las contraseñas no coinciden",
+};
 
 export default function RegistroPage() {
-  const [email, setEmail] = useState("");
+  const router = useRouter();
+  const { register } = useAuth();
+  const [formData, setFormData] = useState({
+    fullName: "",
+    email: "",
+    phone: "",
+    password: "",
+    confirmPassword: "",
+  });
   const [isLoading, setIsLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [serverError, setServerError] = useState<string | null>(null);
 
-  const handleMagicLinkSubmit = async (e: React.FormEvent) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const { name, value } = e.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+    if (errors[name]) {
+      setErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
+    }
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    setErrors({});
+    setServerError(null);
+
+    const result = registerSchema.safeParse(formData);
+    if (!result.success) {
+      const fieldErrors: Record<string, string> = {};
+      for (const issue of result.error.issues) {
+        const field = issue.path[0] as string;
+        if (!fieldErrors[field]) {
+          fieldErrors[field] = issue.message;
+        }
+      }
+      setErrors(fieldErrors);
+      return;
+    }
+
     setIsLoading(true);
-    // TODO: Implement magic link registration
-    setTimeout(() => setIsLoading(false), 2000);
+
+    try {
+      await register({
+        fullName: formData.fullName,
+        email: formData.email,
+        password: formData.password,
+        confirmPassword: formData.confirmPassword,
+        phone: formData.phone || undefined,
+      });
+
+      router.push("/onboarding");
+    } catch (err) {
+      const apiError = err as ApiError;
+      const message =
+        ERROR_MESSAGES[apiError.code] ||
+        apiError.error ||
+        "Error al crear la cuenta";
+      setServerError(message);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   return (
@@ -24,7 +90,9 @@ export default function RegistroPage() {
         <div className="w-16 h-16 bg-white rounded-full flex items-center justify-center">
           <span className="text-berry-red text-xl font-bold">SB</span>
         </div>
-        <h1 className="text-[28px] font-bold text-white">Súper Berries Perú</h1>
+        <h1 className="text-[28px] font-bold text-white">
+          Súper Berries Perú
+        </h1>
         <p className="text-sm text-white/90 italic">
           Frutas frescas directo a tu puerta
         </p>
@@ -36,18 +104,19 @@ export default function RegistroPage() {
           <div className="w-20 h-20 bg-white rounded-full flex items-center justify-center">
             <span className="text-berry-red text-2xl font-bold">SB</span>
           </div>
-          <h1 className="text-4xl font-bold text-white">Súper Berries Perú</h1>
+          <h1 className="text-4xl font-bold text-white">
+            Súper Berries Perú
+          </h1>
           <p className="text-lg text-white/90 text-center italic whitespace-nowrap">
             Frutas frescas directo a tu puerta
           </p>
         </div>
 
-        {/* Features - Desktop only */}
         <div className="flex flex-col gap-5 mt-12">
           <div className="flex items-center gap-3">
             <Truck className="w-6 h-6 text-white" />
             <span className="text-white/90">
-              Envío gratis en pedidos mayores a S/50
+              Envío gratis en pedidos desde S/100
             </span>
           </div>
           <div className="flex items-center gap-3">
@@ -65,8 +134,7 @@ export default function RegistroPage() {
 
       {/* Right Panel - Registration Form */}
       <div className="flex-1 lg:w-1/2 flex items-center justify-center p-6 lg:p-20 bg-bg-surface">
-        <div className="w-full max-w-[400px] flex flex-col gap-7 lg:gap-8">
-          {/* Header */}
+        <div className="w-full max-w-[400px] flex flex-col gap-6 lg:gap-7">
           <div className="flex flex-col gap-2">
             <h2 className="text-[26px] lg:text-3xl font-bold text-text-primary">
               Crear Cuenta
@@ -76,52 +144,88 @@ export default function RegistroPage() {
             </p>
           </div>
 
-          {/* Social Login */}
-          <div className="flex flex-col gap-4">
-            <button
-              type="button"
-              className="w-full h-12 lg:h-[52px] flex items-center justify-center gap-2.5 bg-bg-surface border border-border-subtle rounded-[--radius-md] hover:bg-bg-muted transition-colors"
-            >
-              <div className="w-5 h-5 bg-[#4285F4] rounded-full flex items-center justify-center">
-                <span className="text-white text-xs font-bold">G</span>
-              </div>
-              <span className="text-sm lg:text-[15px] font-medium text-text-primary">
-                Continuar con Google
-              </span>
-            </button>
-
-            {/* Divider */}
-            <div className="flex items-center gap-3 lg:gap-4">
-              <div className="flex-1 h-px bg-border-subtle" />
-              <span className="text-[13px] lg:text-sm text-text-tertiary">o</span>
-              <div className="flex-1 h-px bg-border-subtle" />
+          {serverError && (
+            <div className="bg-berry-red-light border border-berry-red/20 rounded-[--radius-md] px-4 py-3">
+              <p className="text-sm text-berry-red">{serverError}</p>
             </div>
-          </div>
+          )}
 
-          {/* Email Form */}
-          <form onSubmit={handleMagicLinkSubmit} className="flex flex-col gap-3 lg:gap-4">
+          <form onSubmit={handleSubmit} className="flex flex-col gap-3 lg:gap-4">
+            <Input
+              type="text"
+              name="fullName"
+              label="Nombre completo"
+              placeholder="Juan Pérez García"
+              value={formData.fullName}
+              onChange={handleChange}
+              icon={<User className="w-[18px] h-[18px] lg:w-5 lg:h-5" />}
+              error={errors.fullName}
+              required
+            />
+
             <Input
               type="email"
               name="email"
               label="Correo electrónico"
               placeholder="tu@email.com"
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              value={formData.email}
+              onChange={handleChange}
               icon={<Mail className="w-[18px] h-[18px] lg:w-5 lg:h-5" />}
+              error={errors.email}
+              required
+            />
+
+            <Input
+              type="tel"
+              name="phone"
+              label="Teléfono (opcional)"
+              placeholder="999 888 777"
+              value={formData.phone}
+              onChange={handleChange}
+              icon={<Phone className="w-[18px] h-[18px] lg:w-5 lg:h-5" />}
+              error={errors.phone}
+            />
+
+            <Input
+              type="password"
+              name="password"
+              label="Contraseña"
+              placeholder="Mínimo 8 caracteres"
+              value={formData.password}
+              onChange={handleChange}
+              icon={<Lock className="w-[18px] h-[18px] lg:w-5 lg:h-5" />}
+              error={errors.password}
+              required
+            />
+
+            <Input
+              type="password"
+              name="confirmPassword"
+              label="Confirmar contraseña"
+              placeholder="Repite tu contraseña"
+              value={formData.confirmPassword}
+              onChange={handleChange}
+              icon={<Lock className="w-[18px] h-[18px] lg:w-5 lg:h-5" />}
+              error={errors.confirmPassword}
               required
             />
 
             <button
               type="submit"
               disabled={isLoading}
-              className="w-full h-12 lg:h-[52px] flex items-center justify-center gap-2 bg-berry-red text-white font-semibold rounded-[--radius-md] hover:bg-berry-red-dark transition-colors disabled:opacity-50"
+              className="w-full h-12 lg:h-[52px] flex items-center justify-center gap-2 bg-berry-red text-white font-semibold rounded-[--radius-md] hover:bg-berry-red-dark transition-colors disabled:opacity-50 mt-1"
             >
-              <Sparkles className="w-[18px] h-[18px]" />
-              <span className="text-sm lg:text-base">Enviar Magic Link</span>
+              {isLoading ? (
+                <div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin" />
+              ) : (
+                <>
+                  <UserPlus className="w-[18px] h-[18px]" />
+                  <span className="text-sm lg:text-base">Crear Cuenta</span>
+                </>
+              )}
             </button>
           </form>
 
-          {/* Terms */}
           <p className="text-center text-xs lg:text-sm text-text-tertiary max-w-[280px] lg:max-w-none mx-auto">
             Al registrarte aceptas nuestros{" "}
             <Link href="/terminos" className="text-berry-red hover:underline">
@@ -129,9 +233,10 @@ export default function RegistroPage() {
             </Link>
           </p>
 
-          {/* Login Link */}
           <div className="flex items-center justify-center gap-1.5">
-            <span className="text-[13px] lg:text-sm text-text-secondary">¿Ya tienes cuenta?</span>
+            <span className="text-[13px] lg:text-sm text-text-secondary">
+              ¿Ya tienes cuenta?
+            </span>
             <Link
               href="/login"
               className="text-[13px] lg:text-sm text-berry-red font-semibold hover:underline"

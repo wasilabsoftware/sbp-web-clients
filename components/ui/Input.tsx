@@ -10,6 +10,20 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
   ({ className = "", label, error, icon, id, ...props }, ref) => {
     const inputId = id || props.name;
 
+    const inputClasses = [
+      "w-full h-[52px] px-4",
+      icon ? "pl-12" : "",
+      "bg-bg-muted rounded-[--radius-md]",
+      "text-text-primary placeholder:text-text-tertiary",
+      "border border-transparent",
+      "focus:outline-none focus:border-berry-red focus:bg-bg-surface",
+      "transition-colors",
+      error ? "border-berry-red bg-berry-red-light" : "",
+      className,
+    ]
+      .filter(Boolean)
+      .join(" ");
+
     return (
       <div className="flex flex-col gap-2 w-full">
         {label && (
@@ -20,7 +34,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
             {label}
           </label>
         )}
-        <div className="relative">
+        <div className="relative w-full">
           {icon && (
             <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary">
               {icon}
@@ -29,16 +43,7 @@ export const Input = forwardRef<HTMLInputElement, InputProps>(
           <input
             ref={ref}
             id={inputId}
-            className={`
-              w-full h-[52px] px-4 ${icon ? "pl-12" : ""}
-              bg-bg-muted rounded-[--radius-md]
-              text-text-primary placeholder:text-text-tertiary
-              border border-transparent
-              focus:outline-none focus:border-berry-red focus:bg-bg-surface
-              transition-colors
-              ${error ? "border-berry-red bg-berry-red-light" : ""}
-              ${className}
-            `}
+            className={inputClasses}
             {...props}
           />
         </div>

@@ -1,161 +1,59 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { useState, useEffect } from "react";
+import Link from "next/link";
+import { ChevronDown, Loader2, Package } from "lucide-react";
 import { Header } from "@/components/shared/Header";
-import { AccountSidebar } from "@/components/portal/AccountSidebar";
-import { OrderCard } from "@/components/portal/OrderCard";
-import { Order } from "@/types/order";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, getUserDisplayName, getUserInitials } from "@/hooks/useAuth";
+import { getOrders } from "@/lib/services/order.service";
+import { ORDER_STATUS_CONFIG } from "@/types/order";
+import type { ApiOrderListItem, OrderStatus } from "@/types/order";
 
-// Mock orders data
-const mockOrders: Order[] = [
-  {
-    id: "1",
-    orderNumber: "#SB-2024-0042",
-    status: "shipped",
-    statusLabel: "En camino",
-    createdAt: "27 de Enero, 2026",
-    estimatedDelivery: "30 Enero 2026, 2:00 - 4:00 PM",
-    products: [
-      {
-        id: "p1",
-        name: "Fresas Premium x2",
-        description: "500g",
-        quantity: 2,
-        unitPrice: 18.0,
-        total: 36.0,
-        imageUrl:
-          "https://images.unsplash.com/photo-1464965911861-746a04b4bca6?w=200&q=80",
-      },
-      {
-        id: "p2",
-        name: "Arándanos Fresh x1",
-        description: "250g",
-        quantity: 1,
-        unitPrice: 24.0,
-        total: 24.0,
-        imageUrl:
-          "https://images.unsplash.com/photo-1498557850523-fd3d118b962e?w=200&q=80",
-      },
-    ],
-    subtotal: 60.0,
-    shipping: 12.7,
-    shippingType: "Envío express",
-    discount: 0,
-    total: 72.7,
-    payment: { method: "Visa", last4: "4242", paidAt: "27 Ene 2026" },
-    address: {
-      street: "Av. Javier Prado Este 4200",
-      district: "Santiago de Surco",
-      city: "Lima",
-      postalCode: "15023",
-      fullAddress: "Av. Javier Prado Este 4200, Santiago de Surco, Lima 15023",
-    },
-    customer: {
-      name: "María Castro",
-      phone: "+51 987 654 321",
-      email: "maria.castro@email.com",
-    },
-  },
-  {
-    id: "2",
-    orderNumber: "#SB-2024-0038",
-    status: "delivered",
-    statusLabel: "Entregado",
-    createdAt: "20 de Enero, 2026",
-    estimatedDelivery: "22 Enero 2026",
-    products: [
-      {
-        id: "p3",
-        name: "Aguaymanto x2",
-        description: "200g",
-        quantity: 2,
-        unitPrice: 19.35,
-        total: 38.7,
-        imageUrl:
-          "https://images.unsplash.com/photo-1596591868231-05e908752cc5?w=200&q=80",
-      },
-    ],
-    subtotal: 38.7,
-    shipping: 10.0,
-    shippingType: "Envío estándar",
-    discount: 0,
-    total: 48.7,
-    payment: { method: "Visa", last4: "4242", paidAt: "20 Ene 2026" },
-    address: {
-      street: "Av. Javier Prado Este 4200",
-      district: "Santiago de Surco",
-      city: "Lima",
-      postalCode: "15023",
-      fullAddress: "Av. Javier Prado Este 4200, Santiago de Surco, Lima 15023",
-    },
-    customer: {
-      name: "María Castro",
-      phone: "+51 987 654 321",
-      email: "maria.castro@email.com",
-    },
-  },
-  {
-    id: "3",
-    orderNumber: "#SB-2024-0035",
-    status: "processing",
-    statusLabel: "Procesando",
-    createdAt: "15 de Enero, 2026",
-    estimatedDelivery: "18 Enero 2026",
-    products: [
-      {
-        id: "p4",
-        name: "Mix Frutas Selectx2",
-        description: "1kg",
-        quantity: 2,
-        unitPrice: 22.9,
-        total: 45.8,
-        imageUrl:
-          "https://images.unsplash.com/photo-1619566636858-adf3ef46400b?w=200&q=80",
-      },
-    ],
-    subtotal: 45.8,
-    shipping: 10.0,
-    shippingType: "Envío estándar",
-    discount: 0,
-    total: 55.8,
-    payment: { method: "Visa", last4: "4242", paidAt: "15 Ene 2026" },
-    address: {
-      street: "Av. Javier Prado Este 4200",
-      district: "Santiago de Surco",
-      city: "Lima",
-      postalCode: "15023",
-      fullAddress: "Av. Javier Prado Este 4200, Santiago de Surco, Lima 15023",
-    },
-    customer: {
-      name: "María Castro",
-      phone: "+51 987 654 321",
-      email: "maria.castro@email.com",
-    },
-  },
-];
-
-type FilterOption = "all" | "shipped" | "delivered" | "processing";
+type FilterOption = "all" | "pending" | "confirmed" | "preparing" | "in_transit" | "delivered" | "cancelled";
 
 const filterLabels: Record<FilterOption, string> = {
   all: "Todos",
-  shipped: "En camino",
+  pending: "Pendientes",
+  confirmed: "Confirmados",
+  preparing: "Preparando",
+  in_transit: "En camino",
   delivered: "Entregados",
-  processing: "Procesando",
+  cancelled: "Cancelados",
 };
 
 export default function OrdersPage() {
-  const { user } = useAuth();
+  const { user, token, isLoading: authLoading, initialize } = useAuth();
+  const [orders, setOrders] = useState<ApiOrderListItem[]>([]);
+  const [isLoading, setIsLoading] = useState(true);
   const [filter, setFilter] = useState<FilterOption>("all");
   const [showFilterMenu, setShowFilterMenu] = useState(false);
 
-  const filteredOrders =
-    filter === "all"
-      ? mockOrders
-      : mockOrders.filter((order) => order.status === filter);
+  useEffect(() => { initialize(); }, [initialize]);
 
-  if (!user) return null;
+  useEffect(() => {
+    if (!token || !user?.customerId) return;
+
+    setIsLoading(true);
+    getOrders(token, {
+      customerId: user.customerId,
+      status: filter === "all" ? undefined : filter,
+      limit: 50,
+    })
+      .then((res) => setOrders(res.data))
+      .catch(() => setOrders([]))
+      .finally(() => setIsLoading(false));
+  }, [token, user?.customerId, filter]);
+
+  if (authLoading || !user) {
+    return (
+      <div className="min-h-screen bg-bg-primary flex items-center justify-center">
+        <Loader2 className="w-8 h-8 text-berry-red animate-spin" />
+      </div>
+    );
+  }
+
+  const displayName = getUserDisplayName(user);
+  const initials = getUserInitials(user);
 
   return (
     <div className="min-h-screen bg-bg-primary">
@@ -163,73 +61,139 @@ export default function OrdersPage() {
 
       <main className="px-5 lg:px-20 py-8 lg:py-12">
         <div className="flex flex-col lg:flex-row gap-8 lg:gap-12">
-          {/* Sidebar - Hidden on mobile */}
-          <div className="hidden lg:block">
-            <AccountSidebar user={user} />
-          </div>
+          {/* Sidebar - Desktop */}
+          <aside className="hidden lg:block w-[280px] flex-shrink-0">
+            <div className="bg-bg-surface rounded-3xl p-6 shadow-[0_4px_16px_rgba(0,0,0,0.04)] flex flex-col gap-6">
+              <div className="flex flex-col items-center gap-4">
+                <div className="w-[100px] h-[100px] rounded-full bg-berry-red-light flex items-center justify-center">
+                  <span className="text-4xl font-bold text-berry-red">{initials}</span>
+                </div>
+                <div className="flex flex-col items-center gap-1">
+                  <span className="text-xl font-bold text-text-primary">{displayName}</span>
+                  <span className="text-sm text-text-secondary">{user.email}</span>
+                </div>
+              </div>
+              <nav className="flex flex-col gap-1">
+                <Link href="/mi-cuenta" className="flex items-center gap-3 h-12 px-4 rounded-xl text-text-secondary hover:bg-bg-muted transition-colors">
+                  <Package className="w-5 h-5" /><span className="text-[15px] font-medium">Mi Perfil</span>
+                </Link>
+                <Link href="/mi-cuenta/pedidos" className="flex items-center gap-3 h-12 px-4 rounded-xl bg-berry-red-light text-berry-red font-semibold">
+                  <Package className="w-5 h-5" /><span className="text-[15px]">Mis Pedidos</span>
+                </Link>
+              </nav>
+            </div>
+          </aside>
 
           {/* Main Content */}
           <div className="flex-1 flex flex-col gap-6">
-            {/* Header */}
             <div className="flex items-center justify-between">
-              <h1 className="text-2xl lg:text-[28px] font-bold text-text-primary">
-                Mis Pedidos
-              </h1>
+              <h1 className="text-2xl lg:text-[28px] font-bold text-text-primary">Mis Pedidos</h1>
 
-              {/* Filter Dropdown */}
+              {/* Filter */}
               <div className="relative">
                 <button
                   onClick={() => setShowFilterMenu(!showFilterMenu)}
                   className="flex items-center gap-2 h-10 px-4 bg-bg-surface border border-border-subtle rounded-md hover:bg-bg-muted transition-colors"
                 >
-                  <span className="text-sm text-text-primary">
-                    {filterLabels[filter]}
-                  </span>
+                  <span className="text-sm text-text-primary">{filterLabels[filter]}</span>
                   <ChevronDown className="w-4 h-4 text-text-tertiary" />
                 </button>
 
                 {showFilterMenu && (
                   <div className="absolute right-0 top-12 bg-bg-surface border border-border-subtle rounded-md shadow-lg z-10 min-w-[150px]">
-                    {(Object.keys(filterLabels) as FilterOption[]).map(
-                      (option) => (
-                        <button
-                          key={option}
-                          onClick={() => {
-                            setFilter(option);
-                            setShowFilterMenu(false);
-                          }}
-                          className={`w-full text-left px-4 py-2.5 text-sm hover:bg-bg-muted transition-colors ${
-                            filter === option
-                              ? "text-berry-red font-semibold"
-                              : "text-text-primary"
-                          }`}
-                        >
-                          {filterLabels[option]}
-                        </button>
-                      )
-                    )}
+                    {(Object.keys(filterLabels) as FilterOption[]).map((option) => (
+                      <button
+                        key={option}
+                        onClick={() => { setFilter(option); setShowFilterMenu(false); }}
+                        className={`w-full text-left px-4 py-2.5 text-sm hover:bg-bg-muted transition-colors ${filter === option ? "text-berry-red font-semibold" : "text-text-primary"}`}
+                      >
+                        {filterLabels[option]}
+                      </button>
+                    ))}
                   </div>
                 )}
               </div>
             </div>
 
-            {/* Orders List */}
-            <div className="flex flex-col gap-4">
-              {filteredOrders.length > 0 ? (
-                filteredOrders.map((order) => (
-                  <OrderCard key={order.id} order={order} />
-                ))
-              ) : (
-                <div className="flex flex-col items-center justify-center gap-4 py-16 bg-bg-surface rounded-xl">
-                  <p className="text-lg text-text-secondary">
-                    No tienes pedidos {filter !== "all" && filterLabels[filter].toLowerCase()}
-                  </p>
-                </div>
-              )}
-            </div>
+            {/* Orders */}
+            {isLoading ? (
+              <div className="flex items-center justify-center py-16">
+                <Loader2 className="w-8 h-8 text-berry-red animate-spin" />
+              </div>
+            ) : orders.length > 0 ? (
+              <div className="flex flex-col gap-4">
+                {orders.map((order) => (
+                  <OrderListCard key={order.id} order={order} />
+                ))}
+              </div>
+            ) : (
+              <div className="flex flex-col items-center justify-center gap-4 py-16 bg-bg-surface rounded-xl">
+                <Package className="w-12 h-12 text-text-tertiary" />
+                <p className="text-lg text-text-secondary">
+                  {filter === "all" ? "No tienes pedidos aún" : `No tienes pedidos ${filterLabels[filter].toLowerCase()}`}
+                </p>
+                <Link href="/tienda" className="text-berry-red font-medium hover:underline">
+                  Ir a la tienda
+                </Link>
+              </div>
+            )}
           </div>
         </div>
       </main>
+    </div>
+  );
+}
+
+function OrderListCard({ order }: { order: ApiOrderListItem }) {
+  const statusConfig = ORDER_STATUS_CONFIG[order.orderStatus] || ORDER_STATUS_CONFIG.pending;
+  const isActive = ["in_transit", "preparing", "confirmed"].includes(order.orderStatus);
+  const orderDate = new Date(order.orderDate).toLocaleDateString("es-PE", {
+    day: "numeric", month: "long", year: "numeric",
+  });
+
+  return (
+    <div className="bg-bg-surface rounded-xl p-5 lg:p-6 shadow-[0_4px_16px_rgba(0,0,0,0.04)]">
+      <div className="flex flex-col gap-4">
+        {/* Header */}
+        <div className="flex items-start justify-between">
+          <div className="flex flex-col gap-1">
+            <span className="text-base font-bold text-text-primary">
+              Pedido {order.orderNumber}
+            </span>
+            <span className="text-[13px] text-text-tertiary">{orderDate}</span>
+          </div>
+          <div className={`flex items-center gap-1.5 px-3.5 h-8 rounded-full ${statusConfig.bgColor}`}>
+            <div className={`w-2 h-2 rounded-full ${
+              ["in_transit", "delivered", "ready_delivery"].includes(order.orderStatus)
+                ? "bg-berry-green"
+                : order.orderStatus === "cancelled" ? "bg-red-500" : "bg-amber-500"
+            }`} />
+            <span className={`text-[13px] font-semibold ${statusConfig.color}`}>
+              {statusConfig.label}
+            </span>
+          </div>
+        </div>
+
+        {/* Footer */}
+        <div className="flex items-center justify-between pt-3 border-t border-border-subtle">
+          <div className="flex items-center gap-2">
+            <span className="text-sm text-text-secondary">Total:</span>
+            <span className="text-lg font-bold text-text-primary">
+              S/ {parseFloat(order.totalAmount).toFixed(2)}
+            </span>
+          </div>
+          <Link
+            href={`/pedido/${order.id}`}
+            className={`flex items-center gap-2 h-10 px-5 rounded-md transition-colors text-sm font-semibold ${
+              isActive
+                ? "bg-berry-red text-text-inverse hover:bg-berry-red-dark"
+                : "border border-border-subtle text-text-primary hover:bg-bg-muted"
+            }`}
+          >
+            Ver Detalles
+          </Link>
+        </div>
+      </div>
     </div>
   );
 }

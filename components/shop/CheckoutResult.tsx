@@ -1,10 +1,12 @@
 "use client";
 
+import { useEffect } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
-import { CheckCircle, XCircle, ArrowLeft, ShoppingBag } from "lucide-react";
+import { CheckCircle, XCircle, ArrowLeft, ShoppingBag, ClipboardList } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
+import { useCart } from "@/hooks/useCart";
 
 const ACTION_CODE_MESSAGES: Record<string, string> = {
   "000": "Aprobada",
@@ -24,6 +26,7 @@ const ERROR_MESSAGES: Record<string, string> = {
 export function CheckoutResult() {
   const searchParams = useSearchParams();
   const router = useRouter();
+  const { clearCart } = useCart();
 
   const orderId = searchParams.get("orderId");
   const status = searchParams.get("status");
@@ -31,6 +34,13 @@ export function CheckoutResult() {
   const errorCode = searchParams.get("error");
 
   const isSuccess = status === "success";
+
+  // Clear cart session on successful payment
+  useEffect(() => {
+    if (isSuccess) {
+      clearCart();
+    }
+  }, [isSuccess, clearCart]);
 
   const getErrorMessage = () => {
     if (errorCode && ERROR_MESSAGES[errorCode]) {
@@ -69,7 +79,7 @@ export function CheckoutResult() {
       <main className="flex-1 w-full">
         <div className="max-w-[520px] mx-auto px-5 lg:px-0 py-8 lg:py-16">
           {isSuccess ? (
-            /* ── Success ── */
+            /* Success */
             <div className="bg-bg-surface rounded-xl p-6 lg:p-8 shadow-[0_4px_20px_var(--shadow-color)]">
               <div className="text-center mb-6">
                 <CheckCircle className="w-16 h-16 text-berry-green mx-auto mb-4" />
@@ -96,6 +106,15 @@ export function CheckoutResult() {
                 <Button
                   variant="primary"
                   size="lg"
+                  onClick={() => router.push("/mi-cuenta/pedidos")}
+                  className="w-full h-14 text-base"
+                >
+                  <ClipboardList className="w-5 h-5" />
+                  Ver mis pedidos
+                </Button>
+                <Button
+                  variant="outline"
+                  size="lg"
                   onClick={() => router.push("/")}
                   className="w-full h-14 text-base"
                 >
@@ -105,7 +124,7 @@ export function CheckoutResult() {
               </div>
             </div>
           ) : (
-            /* ── Error / Failed ── */
+            /* Error / Failed */
             <div className="bg-bg-surface rounded-xl p-6 lg:p-8 text-center shadow-[0_4px_20px_var(--shadow-color)]">
               <XCircle className="w-16 h-16 text-berry-red mx-auto mb-4" />
               <h2 className="text-xl font-bold text-berry-red mb-2">
@@ -118,7 +137,9 @@ export function CheckoutResult() {
                   <Button
                     variant="primary"
                     size="lg"
-                    onClick={() => router.push(`/checkout?orderId=${orderId}`)}
+                    onClick={() =>
+                      router.push(`/checkout?orderId=${orderId}`)
+                    }
                     className="w-full h-14 text-base"
                   >
                     Intentar de nuevo

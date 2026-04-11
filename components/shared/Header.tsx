@@ -4,7 +4,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { Search, ShoppingBag, User, Menu } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
-import { useAuth } from "@/hooks/useAuth";
+import { useAuth, getUserInitials } from "@/hooks/useAuth";
 import { useState, useEffect } from "react";
 import { MobileMenu } from "./MobileMenu";
 
@@ -21,9 +21,7 @@ const navLinks = [
 export function Header() {
   const { user, isAuthenticated } = useAuth();
   // Use Zustand's built-in reactivity with a selector for proper updates
-  const itemCount = useCart((state) =>
-    state.items.reduce((total, item) => total + item.quantity, 0)
-  );
+  const itemCount = useCart((state) => state.cart?.summary.itemCount ?? 0);
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -83,7 +81,7 @@ export function Header() {
             href="/mi-cuenta"
             className="w-11 h-11 rounded-full bg-berry-red flex items-center justify-center hover:bg-berry-red-dark transition-colors"
           >
-            <span className="text-sm font-bold text-white">{user.initials}</span>
+            <span className="text-sm font-bold text-white">{getUserInitials(user)}</span>
           </Link>
         ) : (
           <Link
