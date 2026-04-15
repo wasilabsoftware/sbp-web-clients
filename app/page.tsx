@@ -155,7 +155,7 @@ export default async function HomePage() {
       .filter((c) => c.parentId === null)
       .map((c) => ({
         title: c.name,
-        productCount: 0,
+        productCount: c.productCount,
         imageUrl: c.imageUrl ?? getCategoryFallbackImage(c.slug),
         href: `/tienda?categoria=${c.slug}`,
       }));

@@ -109,7 +109,7 @@ export function CategoriesCarousel({ categories }: CategoriesCarouselProps) {
       {/* Scrollable container */}
       <div
         ref={scrollRef}
-        className="flex gap-3 lg:gap-6 overflow-x-auto pb-2 lg:pb-0 -mx-5 px-5 lg:mx-0 lg:px-0 snap-x snap-mandatory scrollbar-none"
+        className="flex gap-3 lg:gap-6 overflow-x-auto pb-3 lg:pb-4 -mx-5 px-5 lg:mx-0 lg:px-0 snap-x snap-mandatory scrollbar-none"
         style={{ scrollbarWidth: "none", msOverflowStyle: "none" }}
       >
         {categories.map((category) => (

@@ -12,6 +12,7 @@ export const apiCategorySchema = z.object({
   imageUrl: z.string().nullable(),
   createdAt: z.string(),
   defaultMarginPercentage: z.string(),
+  productCount: z.number().optional().default(0),
 });
 
 export const apiCategoriesResponseSchema = z.array(apiCategorySchema);
