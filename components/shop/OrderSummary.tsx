@@ -7,8 +7,10 @@ import {
   ShieldCheck,
   ArrowLeft,
   CreditCard,
+  Clock,
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
+import { isCheckoutEnabled } from "@/lib/feature-flags";
 
 interface OrderSummaryProps {
   subtotal: number;
@@ -89,16 +91,29 @@ export function OrderSummary({
 
         {/* Checkout Buttons */}
         <div className="flex flex-col gap-3 w-full">
-          <Button
-            variant="primary"
-            size="lg"
-            onClick={onCheckout}
-            className="w-full h-12 lg:h-[52px] rounded-md text-[15px] lg:text-base"
-          >
-            <CreditCard className="w-[18px] h-[18px] lg:hidden" />
-            <ShoppingBag className="w-5 h-5 hidden lg:block" />
-            Proceder al Pago
-          </Button>
+          {isCheckoutEnabled ? (
+            <Button
+              variant="primary"
+              size="lg"
+              onClick={onCheckout}
+              className="w-full h-12 lg:h-[52px] rounded-md text-[15px] lg:text-base"
+            >
+              <CreditCard className="w-[18px] h-[18px] lg:hidden" />
+              <ShoppingBag className="w-5 h-5 hidden lg:block" />
+              Proceder al Pago
+            </Button>
+          ) : (
+            <button
+              type="button"
+              disabled
+              aria-disabled="true"
+              title="El pago en línea estará disponible próximamente"
+              className="w-full h-12 lg:h-[52px] rounded-md text-[15px] lg:text-base bg-bg-muted text-text-tertiary flex items-center justify-center gap-2 cursor-not-allowed"
+            >
+              <Clock className="w-[18px] h-[18px] lg:w-5 lg:h-5" />
+              Pago en línea — Próximamente
+            </button>
+          )}
           <Button
             variant="whatsapp"
             size="lg"
@@ -110,13 +125,20 @@ export function OrderSummary({
           </Button>
         </div>
 
-        {/* Security Note */}
-        <div className="flex items-center justify-center gap-1.5 lg:gap-2 w-full">
-          <ShieldCheck className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-text-tertiary" />
-          <span className="text-xs lg:text-[13px] text-text-tertiary">
-            Pago 100% seguro
-          </span>
-        </div>
+        {/* Security / Availability Note */}
+        {isCheckoutEnabled ? (
+          <div className="flex items-center justify-center gap-1.5 lg:gap-2 w-full">
+            <ShieldCheck className="w-3.5 h-3.5 lg:w-4 lg:h-4 text-text-tertiary" />
+            <span className="text-xs lg:text-[13px] text-text-tertiary">
+              Pago 100% seguro
+            </span>
+          </div>
+        ) : (
+          <p className="text-xs lg:text-[13px] text-text-tertiary text-center">
+            Mientras habilitamos el pago en línea, finaliza tu pedido por
+            WhatsApp y coordinamos el pago contigo.
+          </p>
+        )}
       </div>
 
       {/* Continue Shopping */}

@@ -1,6 +1,8 @@
 import { Suspense } from "react";
+import { redirect } from "next/navigation";
 import { CheckoutClient } from "@/components/shop/CheckoutClient";
 import { Loader2 } from "lucide-react";
+import { isCheckoutEnabled } from "@/lib/feature-flags";
 
 function CheckoutSkeleton() {
   return (
@@ -14,6 +16,10 @@ function CheckoutSkeleton() {
 }
 
 export default function CheckoutPage() {
+  if (!isCheckoutEnabled) {
+    redirect("/carrito");
+  }
+
   return (
     <Suspense fallback={<CheckoutSkeleton />}>
       <CheckoutClient />
