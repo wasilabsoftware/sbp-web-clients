@@ -176,6 +176,7 @@ export default async function HomePage() {
         p.images?.[0] ?? firstVariant?.images?.[0] ?? "";
       return {
         id: p.id,
+        variantId: firstVariant?.id,
         name: p.name.length > 16 ? p.name.split(" ").slice(0, 2).join(" ") : p.name,
         nameFull: p.name,
         category: p.category.name,
@@ -315,6 +316,7 @@ export default async function HomePage() {
             <ProductCard
               key={product.id}
               id={product.id}
+              variantId={"variantId" in product ? (product.variantId as string | undefined) : undefined}
               name={product.name}
               price={product.price}
               imageUrl={product.imageUrl}
@@ -330,6 +332,7 @@ export default async function HomePage() {
             <ProductCard
               key={product.id}
               id={product.id}
+              variantId={"variantId" in product ? (product.variantId as string | undefined) : undefined}
               name={product.nameFull}
               category={product.category}
               categoryColor={product.categoryColor}

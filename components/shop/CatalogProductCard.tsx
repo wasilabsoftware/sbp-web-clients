@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Plus, ImageOff } from "lucide-react";
+import { ImageOff } from "lucide-react";
+import { QuickAddButton } from "@/components/shop/QuickAddButton";
 
 const PLACEHOLDER_IMAGE = "/placeholder-product.svg";
 
@@ -16,6 +17,7 @@ interface CatalogProductCardProps {
 }
 
 export function CatalogProductCard({
+  id,
   name,
   category,
   categoryColor = "red",
@@ -77,9 +79,7 @@ export function CatalogProductCard({
           <span className="text-lg font-bold text-berry-red">
             S/ {price.toFixed(2)}
           </span>
-          <button className="w-9 h-9 rounded-full bg-berry-red flex items-center justify-center hover:bg-berry-red-dark transition-colors">
-            <Plus className="w-4 h-4 text-text-inverse" />
-          </button>
+          <QuickAddButton variantId={id} size="sm" />
         </div>
       </div>
     </div>

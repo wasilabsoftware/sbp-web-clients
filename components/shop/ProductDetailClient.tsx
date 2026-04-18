@@ -11,6 +11,7 @@ import {
   ShieldCheck,
   Check,
   ImageOff,
+  Loader2,
 } from "lucide-react";
 import { ProductGallery } from "@/components/shop/ProductGallery";
 import { QuantitySelector } from "@/components/shop/QuantitySelector";
@@ -40,18 +41,23 @@ interface ProductDetailClientProps {
 export function ProductDetailClient({ product }: ProductDetailClientProps) {
   const [quantity, setQuantity] = useState(1);
   const [isAdded, setIsAdded] = useState(false);
+  const [isAdding, setIsAdding] = useState(false);
   const { addItem } = useCart();
 
   const totalPrice = product.price * quantity;
   const hasImages = product.images.length > 0;
 
   const handleAddToCart = async () => {
+    if (isAdding || isAdded) return;
+    setIsAdding(true);
     try {
       await addItem(product.id, quantity);
       setIsAdded(true);
       setTimeout(() => setIsAdded(false), 2000);
     } catch {
       // Error is handled by the cart store
+    } finally {
+      setIsAdding(false);
     }
   };
 
@@ -148,16 +154,28 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
         <div className="flex flex-col gap-3">
           <button
             onClick={handleAddToCart}
-            className={`w-full h-14 ${
+            disabled={isAdding || isAdded}
+            className={`relative w-full h-14 ${
               isAdded
                 ? "bg-berry-green"
                 : "bg-berry-red hover:bg-berry-red-dark"
-            } text-text-inverse rounded-xl flex items-center justify-center gap-2.5 font-semibold text-[17px] transition-colors`}
+            } text-text-inverse rounded-xl flex items-center justify-center gap-2.5 font-semibold text-[17px] transition-colors disabled:cursor-not-allowed`}
           >
-            {isAdded ? (
+            {isAdding ? (
               <>
-                <Check className="w-[22px] h-[22px]" />
+                <Loader2 className="w-[22px] h-[22px] animate-spin" />
+                Agregando...
+              </>
+            ) : isAdded ? (
+              <>
+                <Check className="w-[22px] h-[22px] animate-pop-in" />
                 ¡Agregado al Carrito!
+                <span
+                  className="pointer-events-none absolute -top-3 left-1/2 -translate-x-1/2 text-text-inverse text-base font-bold animate-float-up"
+                  aria-hidden="true"
+                >
+                  +{quantity}
+                </span>
               </>
             ) : (
               <>

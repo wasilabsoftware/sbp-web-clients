@@ -5,7 +5,7 @@ import Link from "next/link";
 import { Search, ShoppingBag, User, Menu } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 import { useAuth, getUserInitials } from "@/hooks/useAuth";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { MobileMenu } from "./MobileMenu";
 
 const navLinks = [
@@ -24,10 +24,21 @@ export function Header() {
   const itemCount = useCart((state) => state.cart?.summary.itemCount ?? 0);
   const [mounted, setMounted] = useState(false);
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  const [bouncing, setBouncing] = useState(false);
+  const prevCountRef = useRef<number | null>(null);
 
   useEffect(() => {
     setMounted(true);
   }, []);
+
+  useEffect(() => {
+    if (prevCountRef.current !== null && itemCount > prevCountRef.current) {
+      setBouncing(true);
+      const t = setTimeout(() => setBouncing(false), 600);
+      return () => clearTimeout(t);
+    }
+    prevCountRef.current = itemCount;
+  }, [itemCount]);
 
   return (
     <header className="bg-bg-surface h-16 lg:h-20 flex items-center justify-between px-5 lg:px-20">
@@ -69,7 +80,11 @@ export function Header() {
         >
           <ShoppingBag className="w-5 h-5 text-text-inverse" />
           {itemCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-5 h-5 bg-berry-green text-text-inverse text-xs font-bold rounded-full flex items-center justify-center">
+            <span
+              className={`absolute -top-1 -right-1 w-5 h-5 bg-berry-green text-text-inverse text-xs font-bold rounded-full flex items-center justify-center ${
+                bouncing ? "animate-cart-bounce" : ""
+              }`}
+            >
               {itemCount > 9 ? "9+" : itemCount}
             </span>
           )}
@@ -101,7 +116,11 @@ export function Header() {
         >
           <ShoppingBag className="w-[18px] h-[18px] text-text-inverse" />
           {itemCount > 0 && (
-            <span className="absolute -top-1 -right-1 w-4 h-4 bg-berry-green text-text-inverse text-[10px] font-bold rounded-full flex items-center justify-center">
+            <span
+              className={`absolute -top-1 -right-1 w-4 h-4 bg-berry-green text-text-inverse text-[10px] font-bold rounded-full flex items-center justify-center ${
+                bouncing ? "animate-cart-bounce" : ""
+              }`}
+            >
               {itemCount > 9 ? "9+" : itemCount}
             </span>
           )}

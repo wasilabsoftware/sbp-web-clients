@@ -1,9 +1,10 @@
 import Image from "next/image";
 import Link from "next/link";
-import { Plus } from "lucide-react";
+import { QuickAddButton } from "@/components/shop/QuickAddButton";
 
 interface ProductCardProps {
   id: string;
+  variantId?: string;
   name: string;
   category?: string;
   categoryColor?: "red" | "green";
@@ -15,6 +16,7 @@ interface ProductCardProps {
 }
 
 export function ProductCard({
+  variantId,
   name,
   category,
   categoryColor = "red",
@@ -88,9 +90,7 @@ export function ProductCard({
           <span className="text-xl font-bold text-berry-red">
             S/ {price.toFixed(2)}
           </span>
-          <button className="w-10 h-10 rounded-full bg-berry-red flex items-center justify-center hover:bg-berry-red-dark transition-colors">
-            <Plus className="w-4.5 h-4.5 text-text-inverse" />
-          </button>
+          {variantId && <QuickAddButton variantId={variantId} size="md" />}
         </div>
       </div>
     </div>

@@ -90,6 +90,7 @@ export function OrderSummary({
         </div>
 
         {/* Checkout Buttons */}
+        <p>{JSON.stringify(isCheckoutEnabled)}</p>
         <div className="flex flex-col gap-3 w-full">
           {isCheckoutEnabled ? (
             <Button
