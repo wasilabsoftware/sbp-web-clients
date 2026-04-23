@@ -36,7 +36,7 @@ export function ArticleSchema({
       name: siteConfig.name,
       logo: {
         "@type": "ImageObject",
-        url: `${siteConfig.url}/logo.png`,
+        url: "https://imagedelivery.net/hrfM92Tw965illARz9WHuA/45c88eec-3e75-49f6-9976-6cea56a51f00/Hero",
       },
     },
   };

@@ -25,6 +25,7 @@ import {
   X,
   Sparkles,
   MessageCircle,
+  Briefcase,
 } from "lucide-react";
 
 import { Header } from "@/components/shared/Header";
@@ -228,6 +229,10 @@ const plans: Plan[] = [
   },
 ];
 
+const CF_IMAGE_BASE = "https://imagedelivery.net/hrfM92Tw965illARz9WHuA";
+const cfImage = (id: string, variant: "Hero" | "Medium" = "Hero") =>
+  `${CF_IMAGE_BASE}/${id}/${variant}`;
+
 // Services data (desktop only)
 const services = [
   {
@@ -237,13 +242,13 @@ const services = [
     quote: "\"Los pequeños detalles son los que marcan la diferencia\"",
   },
   {
-    image: "https://images.unsplash.com/photo-1573224395799-3e4f21436779?w=800",
+    image: cfImage("912e5e7e-4189-468c-d46a-814627c81800"),
     title: "Tabla de Quesos y Berries",
     description: "Presentación premium para reuniones y celebraciones. Entrega en oficina en 48 horas.",
     quote: "\"Un compartir premium y saludable\"",
   },
   {
-    image: "https://images.unsplash.com/photo-1574064577165-27cb98ca8209?w=800",
+    image: cfImage("12cde65b-fc10-46c7-b2f7-36f0cd29a400"),
     title: "Cesta de Frutas y Berries",
     description: "Servicio semanal de fruta fresca. 100% externalizado con entrega directa.",
     quote: "\"Frescura semanal para tu equipo\"",
@@ -251,7 +256,106 @@ const services = [
 ];
 
 // Clients data
-const clients = ["NEXA", "SUNARP", "MEDIFARMA", "OSINERGMIN", "REFAX", "IMAGINA"];
+type Client = {
+  name: string;
+  logoId: string;
+};
+
+const clients: Client[] = [
+  { name: "NEXA", logoId: "75bbe152-17da-42a1-1fe1-34692ac8ac00" },
+  { name: "SUNARP", logoId: "a5eb2fe3-7986-468f-daef-e26ec5a5b500" },
+  { name: "MEDIFARMA", logoId: "fa23250e-b25e-4a35-d26f-3d7ec3d3d100" },
+  { name: "OSINERGMIN", logoId: "748d4c19-1128-4f3f-e5a0-7c13cb692f00" },
+  { name: "REFAX", logoId: "dd6d56cf-f2e5-4aeb-0a6e-b039d79e9400" },
+  { name: "IMAGINA", logoId: "769ae884-ac8e-430a-a148-ada81e5fc300" },
+];
+
+// Program advantages (slide 19)
+const advantages = [
+  {
+    image: cfImage("d2d13ec8-97cb-49c3-f5bb-19977956bb00", "Medium"),
+    bgColor: "bg-berry-red-light",
+    title: "Diseño a Medida",
+    description: "Soluciones adaptadas a las necesidades de cada empresa",
+  },
+  {
+    image: cfImage("78d2dbe6-8ccb-4e46-d8a5-9afbed266400", "Medium"),
+    bgColor: "bg-berry-green-light",
+    title: "Autoservicio",
+    description: "Fácil, rápido y sin complicaciones",
+  },
+  {
+    image: cfImage("22da3846-c440-41e9-0af8-0af0b2bafb00", "Medium"),
+    bgColor: "bg-[#E8E0FF]",
+    title: "Variedad",
+    description: "Frutas, berries y snacks saludables",
+  },
+];
+
+// Healthy packs (slides 13-14)
+type Pack = {
+  name: string;
+  tag?: string;
+  image: string;
+  items: string[];
+};
+
+const packs: Pack[] = [
+  {
+    name: "Pack 1",
+    tag: "COMPLETO",
+    image: cfImage("d8261f6a-ec4b-4f23-82bf-2f02a3b74d00"),
+    items: [
+      "½ kg de fresas",
+      "½ kg de arándanos",
+      "100 gr de frambuesas",
+      "100 gr de aguaymantos",
+    ],
+  },
+  {
+    name: "Pack 2",
+    image: cfImage("7731d3e9-204d-49f3-eb82-95230422b100"),
+    items: [
+      "½ kg de fresas",
+      "½ kg de arándanos",
+      "½ kg de aguaymantos",
+    ],
+  },
+  {
+    name: "Pack 3",
+    image: cfImage("13d286ee-f1d7-4579-15d0-2d075fe12000"),
+    items: [
+      "1 kg de fresas",
+      "1 kg de arándanos",
+    ],
+  },
+  {
+    name: "Pack 4",
+    image: cfImage("fc319e0b-599c-41de-0af5-c46816095c00"),
+    items: [
+      "½ kg de fresas",
+      "½ kg de arándanos",
+      "½ kg de aguaymantos",
+      "100 gr de frambuesas",
+    ],
+  },
+  {
+    name: "Pack 5",
+    image: cfImage("6809819a-288e-4711-eb51-183657bacf00"),
+    items: [
+      "½ kg de fresas",
+      "½ kg de arándanos",
+    ],
+  },
+];
+
+// Corporate fairs features (slide 17)
+const fairFeatures = [
+  "Degustación de berries y snacks saludables",
+  "Stand con branding personalizado para tu empresa",
+  "Activaciones interactivas para colaboradores",
+  "Presencia en ferias de bienestar, salud y RRHH",
+];
 
 export default function ComeSanoPage() {
   return (
@@ -717,6 +821,80 @@ export default function ComeSanoPage() {
         </div>
       </section>
 
+      {/* Advantages Section */}
+      <section className="bg-bg-muted px-5 py-10 lg:px-20 lg:py-20">
+        <div className="flex flex-col items-center gap-6 lg:gap-12">
+          {/* Header */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="hidden lg:inline-flex items-center gap-2 bg-bg-surface rounded-full px-4 py-2">
+              <Sparkles className="w-4 h-4 text-berry-red" />
+              <span className="text-sm font-semibold text-berry-red">
+                Ventajas del Programa
+              </span>
+            </div>
+            <h2 className="text-2xl lg:text-[40px] font-bold text-text-primary text-center max-w-80 lg:max-w-none">
+              <span className="lg:hidden">¿Por qué elegirnos?</span>
+              <span className="hidden lg:inline">Las ventajas que marcan la diferencia</span>
+            </h2>
+            <p className="hidden lg:block text-lg text-text-secondary text-center max-w-150">
+              Un programa diseñado para adaptarse a cada empresa
+            </p>
+          </div>
+
+          {/* Advantages Grid - Desktop */}
+          <div className="hidden lg:grid grid-cols-3 gap-6 w-full max-w-275">
+            {advantages.map((advantage) => (
+              <div
+                key={advantage.title}
+                className={`flex flex-col items-center gap-5 ${advantage.bgColor} rounded-2xl p-8`}
+              >
+                <div className="relative w-32 h-32">
+                  <Image
+                    src={advantage.image}
+                    alt={advantage.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <h3 className="text-xl font-bold text-text-primary text-center">
+                  {advantage.title}
+                </h3>
+                <p className="text-sm text-text-secondary text-center max-w-55">
+                  {advantage.description}
+                </p>
+              </div>
+            ))}
+          </div>
+
+          {/* Advantages - Mobile */}
+          <div className="lg:hidden flex flex-col gap-3 w-full">
+            {advantages.map((advantage) => (
+              <div
+                key={advantage.title}
+                className={`flex items-center gap-4 ${advantage.bgColor} rounded-lg p-3`}
+              >
+                <div className="relative w-16 h-16 shrink-0">
+                  <Image
+                    src={advantage.image}
+                    alt={advantage.title}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
+                <div className="flex flex-col gap-1">
+                  <span className="text-[15px] font-bold text-text-primary">
+                    {advantage.title}
+                  </span>
+                  <span className="text-[13px] text-text-secondary">
+                    {advantage.description}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       {/* Other Services Section - Desktop only */}
       <section className="hidden lg:block bg-bg-surface px-20 py-20">
         <div className="flex flex-col items-center gap-12">
@@ -763,6 +941,154 @@ export default function ComeSanoPage() {
         </div>
       </section>
 
+      {/* Healthy Packs Section */}
+      <section className="bg-bg-muted px-5 py-10 lg:px-20 lg:py-20">
+        <div className="flex flex-col items-center gap-6 lg:gap-12">
+          {/* Header */}
+          <div className="flex flex-col items-center gap-4">
+            <div className="hidden lg:inline-flex items-center gap-2 bg-bg-surface rounded-full px-4 py-2">
+              <Package className="w-4 h-4 text-berry-red" />
+              <span className="text-sm font-semibold text-berry-red">
+                Packs Saludables
+              </span>
+            </div>
+            <h2 className="text-2xl lg:text-[40px] font-bold text-text-primary text-center max-w-80 lg:max-w-none">
+              <span className="lg:hidden">Packs Saludables</span>
+              <span className="hidden lg:inline">Elige tu pack saludable ideal</span>
+            </h2>
+            <p className="hidden lg:block text-lg text-text-secondary text-center max-w-150">
+              Combinaciones perfectas de berries frescos para cada momento
+            </p>
+          </div>
+
+          {/* Packs Grid - Desktop */}
+          <div className="hidden lg:grid grid-cols-3 xl:grid-cols-5 gap-5 w-full max-w-7xl">
+            {packs.map((pack) => (
+              <div
+                key={pack.name}
+                className="flex flex-col gap-4 bg-bg-surface border border-border-subtle rounded-2xl overflow-hidden"
+              >
+                <div className="relative w-full h-40 shrink-0">
+                  <Image
+                    src={pack.image}
+                    alt={pack.name}
+                    fill
+                    className="object-cover"
+                  />
+                  {pack.tag && (
+                    <span className="absolute top-3 right-3 bg-berry-red text-text-inverse text-[10px] font-bold px-2.5 py-1 rounded-full">
+                      {pack.tag}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col gap-4 px-6 pb-6">
+                  <h3 className="text-lg font-bold text-berry-red">
+                    {pack.name}
+                  </h3>
+                  <div className="flex flex-col gap-2">
+                    {pack.items.map((item) => (
+                      <div key={item} className="flex items-start gap-2">
+                        <CircleCheck className="w-4 h-4 text-berry-green shrink-0 mt-0.5" />
+                        <span className="text-[13px] text-text-secondary">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+
+          {/* Packs - Mobile */}
+          <div className="lg:hidden flex flex-col gap-3 w-full">
+            {packs.map((pack) => (
+              <div
+                key={pack.name}
+                className="flex flex-col bg-bg-surface rounded-xl border border-border-subtle overflow-hidden"
+              >
+                <div className="relative w-full h-40 shrink-0">
+                  <Image
+                    src={pack.image}
+                    alt={pack.name}
+                    fill
+                    className="object-cover"
+                  />
+                  {pack.tag && (
+                    <span className="absolute top-3 right-3 bg-berry-red text-text-inverse text-[10px] font-bold px-2.5 py-1 rounded-full">
+                      {pack.tag}
+                    </span>
+                  )}
+                </div>
+                <div className="flex flex-col gap-3 p-5">
+                  <h3 className="text-base font-bold text-berry-red">
+                    {pack.name}
+                  </h3>
+                  <div className="flex flex-col gap-1.5">
+                    {pack.items.map((item) => (
+                      <div key={item} className="flex items-start gap-2">
+                        <CircleCheck className="w-3.5 h-3.5 text-berry-green shrink-0 mt-0.5" />
+                        <span className="text-[13px] text-text-secondary">{item}</span>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Corporate Fairs Section */}
+      <section className="bg-bg-surface px-5 py-10 lg:px-20 lg:py-20">
+        <div className="flex flex-col lg:flex-row-reverse items-center gap-6 lg:gap-15 max-w-7xl mx-auto">
+          {/* Image */}
+          <div className="relative w-full h-55 lg:w-120 lg:h-100 rounded-xl overflow-hidden shrink-0">
+            <Image
+              src={cfImage("aec86acb-91a8-41a7-141a-0f32db05fc00")}
+              alt="Presencia en ferias corporativas"
+              fill
+              className="object-cover"
+            />
+          </div>
+
+          {/* Content */}
+          <div className="flex flex-col gap-4 lg:gap-6 flex-1 w-full">
+            <div className="hidden lg:inline-flex self-start items-center gap-2 bg-berry-red-light rounded-full px-4 py-2">
+              <Briefcase className="w-4 h-4 text-berry-red" />
+              <span className="text-sm font-semibold text-berry-red">
+                Activaciones
+              </span>
+            </div>
+            <h2 className="text-2xl lg:text-[40px] font-bold text-text-primary text-center lg:text-left">
+              Presencia en Ferias Corporativas
+            </h2>
+            <p className="text-[15px] lg:text-lg text-text-secondary text-center lg:text-left">
+              Llevamos la experiencia{" "}
+              <strong className="text-berry-red">#ComeBerries #ComeSano</strong>{" "}
+              a tu feria, evento o activación corporativa.
+            </p>
+            <div className="flex flex-col gap-3">
+              {fairFeatures.map((item) => (
+                <div key={item} className="flex items-start gap-2.5">
+                  <CircleCheck className="w-5 h-5 text-berry-green shrink-0 mt-0.5" />
+                  <span className="text-[14px] lg:text-base text-text-secondary">
+                    {item}
+                  </span>
+                </div>
+              ))}
+            </div>
+            <Link
+              href="https://wa.me/51952805608?text=Hola%2C%20me%20interesa%20la%20activaci%C3%B3n%20de%20ComeBerries%20en%20nuestra%20feria%20corporativa"
+              className="self-center lg:self-start mt-2"
+            >
+              <button className="flex items-center justify-center gap-2 border-2 border-berry-red text-berry-red px-6 py-3.5 rounded-lg font-semibold text-[15px] hover:bg-berry-red/5 transition-colors">
+                <MessageCircle className="w-4.5 h-4.5" />
+                Solicitar Activación
+              </button>
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Clients Section */}
       <section className="bg-bg-muted px-5 py-10 lg:px-20 lg:py-20">
         <div className="flex flex-col items-center gap-6 lg:gap-12">
@@ -777,45 +1103,41 @@ export default function ComeSanoPage() {
           </div>
 
           {/* Clients Logos - Desktop */}
-          <div className="hidden lg:flex flex-wrap justify-center gap-12">
+          <div className="hidden lg:flex flex-wrap justify-center items-center gap-8">
             {clients.map((client) => (
               <div
-                key={client}
-                className="flex items-center justify-center bg-bg-surface rounded-lg px-8 py-4"
+                key={client.name}
+                className="flex items-center justify-center bg-bg-surface rounded-lg px-8 py-4 h-24 w-44"
               >
-                <span className="text-xl font-bold text-text-tertiary">
-                  {client}
-                </span>
+                <div className="relative w-full h-full">
+                  <Image
+                    src={cfImage(client.logoId)}
+                    alt={client.name}
+                    fill
+                    className="object-contain"
+                  />
+                </div>
               </div>
             ))}
           </div>
 
           {/* Clients Logos - Mobile (2 rows) */}
-          <div className="lg:hidden flex flex-col gap-3 w-full">
-            <div className="flex justify-center gap-3">
-              {clients.slice(0, 3).map((client) => (
-                <div
-                  key={client}
-                  className="flex items-center justify-center bg-bg-surface rounded-sm px-4 py-2.5"
-                >
-                  <span className="text-xs font-bold text-text-tertiary">
-                    {client}
-                  </span>
+          <div className="lg:hidden grid grid-cols-3 gap-3 w-full">
+            {clients.map((client) => (
+              <div
+                key={client.name}
+                className="flex items-center justify-center bg-bg-surface rounded-sm p-2 h-16"
+              >
+                <div className="relative w-full h-full">
+                  <Image
+                    src={cfImage(client.logoId)}
+                    alt={client.name}
+                    fill
+                    className="object-contain"
+                  />
                 </div>
-              ))}
-            </div>
-            <div className="flex justify-center gap-3">
-              {clients.slice(3, 6).map((client) => (
-                <div
-                  key={client}
-                  className="flex items-center justify-center bg-bg-surface rounded-sm px-4 py-2.5"
-                >
-                  <span className="text-xs font-bold text-text-tertiary">
-                    {client}
-                  </span>
-                </div>
-              ))}
-            </div>
+              </div>
+            ))}
           </div>
         </div>
       </section>

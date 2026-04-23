@@ -56,6 +56,14 @@ export function OrderSummary({
           </div>
         </div>
 
+        {/* Delivery Time Note */}
+        <div className="flex items-center gap-2 w-full bg-berry-green/10 rounded-md px-3 py-2">
+          <Clock className="w-4 h-4 text-berry-green shrink-0" />
+          <span className="text-xs lg:text-[13px] text-text-primary">
+            <span className="font-semibold">Entrega al día siguiente</span> de confirmar tu pedido
+          </span>
+        </div>
+
         {/* Free Shipping Progress */}
         {shipping > 0 && subtotal > 0 && (
           <div className="flex flex-col gap-2 w-full">

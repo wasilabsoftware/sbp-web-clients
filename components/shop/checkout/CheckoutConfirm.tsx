@@ -109,7 +109,7 @@ export function CheckoutConfirm({
         amount: session.amount,
         expirationminutes: "20",
         timeouturl: `${window.location.origin}/checkout/timeout`,
-        merchantlogo: `${window.location.origin}/logo.png`,
+        merchantlogo: "https://imagedelivery.net/hrfM92Tw965illARz9WHuA/45c88eec-3e75-49f6-9976-6cea56a51f00/Hero",
         formbuttoncolor: "#E63946",
         action: session.action,
       });
@@ -142,6 +142,17 @@ export function CheckoutConfirm({
 
   return (
     <div className="flex flex-col gap-5">
+      {/* Next-day Delivery Reminder */}
+      <div className="flex items-start gap-3 bg-berry-green/10 border border-berry-green/20 rounded-xl p-4">
+        <Clock className="w-5 h-5 text-berry-green shrink-0 mt-0.5" />
+        <p className="text-sm text-text-primary">
+          <span className="font-semibold">Entrega al día siguiente.</span>{" "}
+          <span className="text-text-secondary">
+            Te contactaremos pronto para confirmar la entrega.
+          </span>
+        </p>
+      </div>
+
       {/* Order Summary */}
       <div className="bg-bg-surface rounded-xl p-5 lg:p-6">
         <h3 className="text-base lg:text-lg font-bold text-text-primary mb-4">

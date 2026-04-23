@@ -126,7 +126,7 @@ const features = [
   },
   {
     icon: Truck,
-    title: "Del campo peruano a tu puerta en 24h",
+    title: "Del campo peruano a tu puerta al día siguiente",
     description: "Directo del productor",
     descriptionFull:
       "Trabajamos directo con productores de los valles del Perú. Tu pedido se prepara el día anterior y llega fresco a tu puerta.",

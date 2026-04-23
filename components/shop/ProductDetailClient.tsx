@@ -18,7 +18,7 @@ import { QuantitySelector } from "@/components/shop/QuantitySelector";
 import { useCart } from "@/hooks/useCart";
 
 const features = [
-  { icon: Truck, label: "Delivery hoy en Lima" },
+  { icon: Truck, label: "Delivery al día siguiente" },
   { icon: Leaf, label: "100% Natural" },
   { icon: ShieldCheck, label: "Calidad garantizada" },
 ];
@@ -135,7 +135,7 @@ export function ProductDetailClient({ product }: ProductDetailClientProps) {
             <div className="flex items-center gap-1.5">
               <CircleCheck className="w-4 h-4 text-berry-green" />
               <span className="text-sm font-medium text-berry-green">
-                En stock - Entrega hoy
+                En stock - Entrega al día siguiente
               </span>
             </div>
           )}

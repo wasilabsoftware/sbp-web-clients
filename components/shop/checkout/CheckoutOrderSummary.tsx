@@ -1,6 +1,7 @@
 "use client";
 
 import Image from "next/image";
+import { Clock } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import type { ServerCartItem } from "@/types/cart";
 
@@ -23,6 +24,19 @@ export function CheckoutOrderSummary({
 
   return (
     <div className="flex flex-col gap-6">
+      {/* Next-day Delivery Banner */}
+      <div className="flex items-start gap-3 bg-berry-green/10 border border-berry-green/20 rounded-xl p-4">
+        <Clock className="w-5 h-5 text-berry-green shrink-0 mt-0.5" />
+        <div className="flex flex-col gap-0.5">
+          <p className="text-sm font-semibold text-text-primary">
+            Entrega al día siguiente
+          </p>
+          <p className="text-xs text-text-secondary">
+            Recibe tu pedido al día siguiente de confirmar tu compra.
+          </p>
+        </div>
+      </div>
+
       {/* Items */}
       <div className="bg-bg-surface rounded-xl p-5 lg:p-6">
         <h3 className="text-base lg:text-lg font-bold text-text-primary mb-4">

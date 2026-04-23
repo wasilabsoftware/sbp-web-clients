@@ -87,6 +87,18 @@ export function DeliveryForm({
 
   return (
     <form onSubmit={handleSubmit} className="flex flex-col gap-5">
+      <div className="flex items-start gap-3 bg-berry-green/10 border border-berry-green/20 rounded-xl p-4">
+        <Clock className="w-5 h-5 text-berry-green shrink-0 mt-0.5" />
+        <div className="flex flex-col gap-0.5">
+          <p className="text-sm font-semibold text-text-primary">
+            Entrega al día siguiente
+          </p>
+          <p className="text-xs text-text-secondary">
+            Tu pedido llegará al día siguiente en el horario que elijas.
+          </p>
+        </div>
+      </div>
+
       <div className="bg-bg-surface rounded-xl p-5 lg:p-6">
         <h3 className="text-base lg:text-lg font-bold text-text-primary mb-5">
           Dirección de Entrega
@@ -162,9 +174,12 @@ export function DeliveryForm({
       </div>
 
       <div className="bg-bg-surface rounded-xl p-5 lg:p-6">
-        <h3 className="text-base lg:text-lg font-bold text-text-primary mb-5">
+        <h3 className="text-base lg:text-lg font-bold text-text-primary mb-2">
           Fecha y Horario
         </h3>
+        <p className="text-xs text-text-tertiary mb-5">
+          Elige cuándo recibirlo. Entregamos al día siguiente, por eso las fechas disponibles comienzan desde mañana.
+        </p>
 
         <div className="flex flex-col gap-4">
           {/* Date */}

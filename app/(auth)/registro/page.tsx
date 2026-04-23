@@ -127,7 +127,7 @@ export default function RegistroPage() {
           </div>
           <div className="flex items-center gap-3">
             <Clock className="w-6 h-6 text-white" />
-            <span className="text-white/90">Entrega en 24-48 horas</span>
+            <span className="text-white/90">Entrega al día siguiente</span>
           </div>
         </div>
       </div>

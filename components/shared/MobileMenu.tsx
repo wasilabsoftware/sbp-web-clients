@@ -101,7 +101,7 @@ export function MobileMenu({ isOpen, onClose }: MobileMenuProps) {
         <div className="h-16 flex items-center justify-between px-5">
           <Link href="/" className="flex items-center gap-2" onClick={onClose}>
             <Image
-              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
+              src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/45c88eec-3e75-49f6-9976-6cea56a51f00/Hero"
               alt="Súper Berries Perú Logo"
               width={36}
               height={36}

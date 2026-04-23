@@ -6,7 +6,7 @@ export function LocalBusinessSchema() {
     "@type": "LocalBusiness",
     name: siteConfig.name,
     url: siteConfig.url,
-    logo: `${siteConfig.url}/logo.png`,
+    logo: "https://imagedelivery.net/hrfM92Tw965illARz9WHuA/45c88eec-3e75-49f6-9976-6cea56a51f00/Hero",
     description: siteConfig.description,
     telephone: `+${siteConfig.social.whatsapp}`,
     email: "hola@superberries.pe",

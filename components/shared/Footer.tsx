@@ -49,7 +49,7 @@ export function Footer() {
       <div className="flex flex-col items-center gap-6 lg:hidden">
         <Link href="/" className="flex items-center gap-2">
           <Image
-            src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
+            src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/45c88eec-3e75-49f6-9976-6cea56a51f00/Hero"
             alt="Súper Berries Perú Logo"
             width={32}
             height={32}
@@ -94,7 +94,7 @@ export function Footer() {
           <div className="flex flex-col gap-4 max-w-[300px]">
             <Link href="/" className="flex items-center gap-3">
               <Image
-                src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/6abdb513-caf3-4e23-42eb-4bcfbae49300/Hero"
+                src="https://imagedelivery.net/hrfM92Tw965illARz9WHuA/45c88eec-3e75-49f6-9976-6cea56a51f00/Hero"
                 alt="Súper Berries Perú Logo"
                 width={40}
                 height={40}
