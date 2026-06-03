@@ -11,11 +11,14 @@ const STEPS = [
 interface CheckoutStepperProps {
   currentStep: number;
   onStepClick?: (step: number) => void;
+  /** When true, completed pills are no longer clickable (e.g. order created). */
+  locked?: boolean;
 }
 
 export function CheckoutStepper({
   currentStep,
   onStepClick,
+  locked = false,
 }: CheckoutStepperProps) {
   return (
     <div className="flex items-center justify-center gap-2 lg:gap-4 w-full">
@@ -23,7 +26,7 @@ export function CheckoutStepper({
         const stepNumber = index + 1;
         const isCompleted = stepNumber < currentStep;
         const isCurrent = stepNumber === currentStep;
-        const isClickable = isCompleted && onStepClick;
+        const isClickable = isCompleted && !!onStepClick && !locked;
 
         return (
           <div key={step.label} className="flex items-center gap-2 lg:gap-4">
@@ -35,7 +38,9 @@ export function CheckoutStepper({
                 isCurrent
                   ? "bg-berry-red text-white"
                   : isCompleted
-                    ? "bg-berry-green-light text-berry-green cursor-pointer hover:bg-berry-green/20"
+                    ? `bg-berry-green-light text-berry-green ${
+                        isClickable ? "cursor-pointer hover:bg-berry-green/20" : "cursor-default"
+                      }`
                     : "bg-bg-muted text-text-tertiary"
               }`}
             >

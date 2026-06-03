@@ -4,7 +4,7 @@ import { useState, useEffect } from "react";
 import { Input } from "@/components/ui/Input";
 import { Button } from "@/components/ui/Button";
 import { MapPin, Phone, Home, Calendar, Clock, FileText, ArrowLeft } from "lucide-react";
-import { deliveryFormSchema, DELIVERY_TIME_SLOTS } from "@/lib/validations/checkout";
+import { deliveryFormSchema, DEFAULT_DELIVERY_TIME_SLOT } from "@/lib/validations/checkout";
 import type { DeliveryFormData } from "@/lib/validations/checkout";
 import { getDistricts } from "@/lib/services/district.service";
 import type { District } from "@/types/district";
@@ -35,7 +35,7 @@ export function DeliveryForm({
     addressReference: initialData?.addressReference ?? "",
     phone: initialData?.phone ?? "",
     deliveryDate: initialData?.deliveryDate ?? "",
-    deliveryTimeSlot: initialData?.deliveryTimeSlot ?? "",
+    deliveryTimeSlot: initialData?.deliveryTimeSlot ?? DEFAULT_DELIVERY_TIME_SLOT,
     notes: initialData?.notes ?? "",
   });
 
@@ -215,7 +215,7 @@ export function DeliveryForm({
             )}
           </div>
 
-          {/* Time Slot */}
+          {/* Time Slot — horario fijo por ahora (no seleccionable) */}
           <div className="flex flex-col gap-2 w-full">
             <label className="text-sm font-medium text-text-primary">
               Horario de entrega
@@ -224,33 +224,17 @@ export function DeliveryForm({
               <div className="absolute left-4 top-1/2 -translate-y-1/2 text-text-tertiary">
                 <Clock className="w-[18px] h-[18px]" />
               </div>
-              <select
-                name="deliveryTimeSlot"
-                value={formData.deliveryTimeSlot}
-                onChange={handleChange}
-                className={`
-                  w-full h-[52px] px-4 pl-12
-                  bg-bg-muted rounded-[--radius-md]
-                  text-text-primary
-                  border border-transparent
-                  focus:outline-none focus:border-berry-red focus:bg-bg-surface
-                  transition-colors appearance-none
-                  ${errors.deliveryTimeSlot ? "border-berry-red bg-berry-red-light" : ""}
-                `}
+              <div
+                aria-disabled="true"
+                className="w-full h-[52px] px-4 pl-12 flex items-center bg-bg-muted rounded-[--radius-md] text-text-secondary border border-transparent cursor-not-allowed"
               >
-                <option value="">Selecciona un horario</option>
-                {DELIVERY_TIME_SLOTS.map((slot) => (
-                  <option key={slot} value={slot}>
-                    {slot}
-                  </option>
-                ))}
-              </select>
+                {DEFAULT_DELIVERY_TIME_SLOT}
+              </div>
             </div>
-            {errors.deliveryTimeSlot && (
-              <span className="text-sm text-berry-red">
-                {errors.deliveryTimeSlot}
-              </span>
-            )}
+            <p className="text-xs text-text-tertiary">
+              Te avisaremos antes de que tu pedido salga; el área de logística se
+              comunicará contigo cuando esté en camino.
+            </p>
           </div>
 
           {/* Notes */}

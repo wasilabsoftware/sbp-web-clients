@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useEffect, use } from "react";
+import { useState, useEffect, useCallback, use } from "react";
 import Link from "next/link";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
@@ -16,11 +16,34 @@ import {
   CheckCircle,
   Clock,
   Truck,
+  ShieldCheck,
+  MessageCircle,
 } from "lucide-react";
 import { useAuth } from "@/hooks/useAuth";
 import { getOrderById } from "@/lib/services/order.service";
+import {
+  createIzipaySession,
+  openIzipayCheckout,
+  validateIzipayCallback,
+} from "@/lib/services/payment.service";
+import { Button } from "@/components/ui/Button";
 import { ORDER_STATUS_CONFIG } from "@/types/order";
-import type { ApiOrderDetail, OrderStatus } from "@/types/order";
+import type { ApiOrderDetail, OrderStatus, PaymentStatus } from "@/types/order";
+
+/** WhatsApp business line used for Yape/Plin payment coordination. */
+const WHATSAPP_NUMBER = "51952805608";
+
+/** Container selector where the Krypton popin form mounts. */
+const IZIPAY_CONTAINER_ID = "kr-container";
+
+const PAYMENT_STATUS_CONFIG: Record<
+  PaymentStatus,
+  { label: string; color: string; bgColor: string }
+> = {
+  pending: { label: "Pendiente", color: "text-amber-600", bgColor: "bg-amber-100" },
+  paid: { label: "Pagado", color: "text-berry-green", bgColor: "bg-berry-green-light" },
+  failed: { label: "Fallido", color: "text-red-600", bgColor: "bg-red-100" },
+};
 
 const TRACKING_STEPS: { status: OrderStatus; label: string; icon: typeof Package }[] = [
   { status: "pending", label: "Pedido recibido", icon: Package },
@@ -45,10 +68,12 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
   const [order, setOrder] = useState<ApiOrderDetail | null>(null);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [payState, setPayState] = useState<"idle" | "paying" | "error">("idle");
+  const [payError, setPayError] = useState<string | null>(null);
 
   useEffect(() => { initialize(); }, [initialize]);
 
-  useEffect(() => {
+  const loadOrder = useCallback(() => {
     if (!token) return;
     setIsLoading(true);
     getOrderById(token, id)
@@ -56,6 +81,39 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
       .catch((err) => setError((err as Error).message))
       .finally(() => setIsLoading(false));
   }, [token, id]);
+
+  useEffect(() => { loadOrder(); }, [loadOrder]);
+
+  const handlePayCard = useCallback(async () => {
+    if (!order) return;
+    setPayError(null);
+    setPayState("paying");
+    try {
+      const session = await createIzipaySession(order.id);
+      const data = await openIzipayCheckout(session, `#${IZIPAY_CONTAINER_ID}`);
+      await validateIzipayCallback({
+        "kr-answer": data.rawClientAnswer,
+        "kr-hash": data.hash,
+      });
+      // Refresh the order so the payment badge reflects the new status.
+      setPayState("idle");
+      loadOrder();
+    } catch (err) {
+      setPayError((err as Error).message || "Error al procesar el pago");
+      setPayState("error");
+    }
+  }, [order, loadOrder]);
+
+  const handleYapePlin = useCallback(() => {
+    if (!order) return;
+    const message =
+      `¡Hola! Quiero gestionar el pago del pedido ${order.orderNumber} por ` +
+      `S/ ${parseFloat(order.totalAmount).toFixed(2)} con Yape o Plin. ¿Me ayudan?`;
+    window.open(
+      `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(message)}`,
+      "_blank"
+    );
+  }, [order]);
 
   if (isLoading) {
     return (
@@ -88,6 +146,10 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
     ? new Date(order.deliveryDate).toLocaleDateString("es-PE", { weekday: "long", day: "numeric", month: "long" })
     : null;
   const payment = order.payments[0];
+  const payStatus: PaymentStatus =
+    order.paymentStatus in PAYMENT_STATUS_CONFIG ? order.paymentStatus : "pending";
+  const payConfig = PAYMENT_STATUS_CONFIG[payStatus];
+  const canPay = payStatus !== "paid";
 
   return (
     <div className="min-h-screen bg-bg-primary">
@@ -230,21 +292,71 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
               </div>
 
               {/* Payment info */}
-              {payment && (
-                <div className="mt-4 pt-4 border-t border-border-subtle">
-                  <div className="flex items-center gap-2">
-                    <CreditCard className="w-4 h-4 text-text-tertiary" />
-                    <span className="text-sm text-text-secondary">
-                      {payment.paymentMethod === "card" ? "Tarjeta" : payment.paymentMethod}
-                      {payment.paymentReference && ` · ${payment.paymentReference}`}
+              <div className="mt-4 pt-4 border-t border-border-subtle">
+                <div className="flex items-center justify-between gap-2">
+                  <div className="flex items-center gap-2 min-w-0">
+                    <CreditCard className="w-4 h-4 text-text-tertiary shrink-0" />
+                    <span className="text-sm text-text-secondary truncate">
+                      {payment
+                        ? `${payment.paymentMethod === "card" ? "Tarjeta" : payment.paymentMethod}${
+                            payment.paymentReference ? ` · ${payment.paymentReference}` : ""
+                          }`
+                        : "Pago"}
                     </span>
                   </div>
-                  <p className="text-xs text-text-tertiary mt-1 ml-6">
-                    Estado: {payment.paymentStatus === "paid" ? "Pagado" : payment.paymentStatus === "failed" ? "Fallido" : "Pendiente"}
-                    {payment.transactionDate && ` · ${new Date(payment.transactionDate).toLocaleDateString("es-PE")}`}
-                  </p>
+                  <span
+                    className={`shrink-0 px-2.5 h-6 inline-flex items-center rounded-full text-xs font-semibold ${payConfig.bgColor} ${payConfig.color}`}
+                  >
+                    {payConfig.label}
+                  </span>
                 </div>
-              )}
+                {payment?.transactionDate && (
+                  <p className="text-xs text-text-tertiary mt-1 ml-6">
+                    {new Date(payment.transactionDate).toLocaleDateString("es-PE")}
+                  </p>
+                )}
+
+                {/* Pay actions for unpaid orders */}
+                {canPay && (
+                  <div className="mt-4 flex flex-col gap-2">
+                    {payState === "error" && payError && (
+                      <p className="text-sm text-berry-red">{payError}</p>
+                    )}
+                    <Button
+                      variant="primary"
+                      size="md"
+                      onClick={handlePayCard}
+                      loading={payState === "paying"}
+                      disabled={payState === "paying"}
+                      className="w-full h-12"
+                    >
+                      <CreditCard className="w-4 h-4" />
+                      {payState === "paying" ? "Procesando pago..." : "Pagar con tarjeta"}
+                    </Button>
+                    <Button
+                      variant="whatsapp"
+                      size="md"
+                      onClick={handleYapePlin}
+                      className="w-full h-12"
+                    >
+                      <MessageCircle className="w-4 h-4" />
+                      Pagar con Yape o Plin
+                    </Button>
+                    {payState === "paying" && (
+                      <p className="text-xs text-text-tertiary text-center">
+                        Si cerraste la ventana de Izipay, también puedes pagar con
+                        Yape o Plin.
+                      </p>
+                    )}
+                    <div className="flex items-center justify-center gap-1.5 mt-1">
+                      <ShieldCheck className="w-4 h-4 text-text-tertiary" />
+                      <span className="text-xs text-text-tertiary">
+                        Pago seguro procesado por Izipay
+                      </span>
+                    </div>
+                  </div>
+                )}
+              </div>
             </div>
 
             {/* Delivery Info */}
@@ -276,6 +388,14 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
             </div>
           </div>
         </div>
+
+        {/* Mount point for the Izipay (Krypton) popin form. Rendered empty in
+            the layout; the SDK overlays a modal when "Pagar con tarjeta" runs. */}
+        {canPay && (
+          <div id={IZIPAY_CONTAINER_ID}>
+            <div className="kr-embedded" kr-popin="true" />
+          </div>
+        )}
       </main>
     </div>
   );

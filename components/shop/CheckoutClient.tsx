@@ -20,6 +20,9 @@ export function CheckoutClient() {
 
   const [step, setStep] = useState(1);
   const [deliveryData, setDeliveryData] = useState<DeliveryFormData | null>(null);
+  // Once the order is created (in step 3) the flow is locked: the user can no
+  // longer go back to edit the summary or delivery data.
+  const [orderCreated, setOrderCreated] = useState(false);
 
   // Initialize auth
   useEffect(() => {
@@ -103,6 +106,7 @@ export function CheckoutClient() {
   };
 
   const handleStepClick = (targetStep: number) => {
+    if (orderCreated) return;
     if (targetStep < step) {
       setStep(targetStep);
     }
@@ -119,13 +123,15 @@ export function CheckoutClient() {
       <header className="lg:hidden flex items-center justify-between bg-bg-surface h-16 px-5">
         <button
           onClick={() => {
+            if (orderCreated) return;
             if (step > 1) {
               setStep(step - 1);
             } else {
               router.push("/carrito");
             }
           }}
-          className="w-10 h-10 rounded-full bg-bg-muted flex items-center justify-center"
+          disabled={orderCreated}
+          className="w-10 h-10 rounded-full bg-bg-muted flex items-center justify-center disabled:opacity-40 disabled:cursor-not-allowed"
         >
           <ArrowLeft className="w-5 h-5 text-text-primary" />
         </button>
@@ -140,6 +146,7 @@ export function CheckoutClient() {
             <CheckoutStepper
               currentStep={step}
               onStepClick={handleStepClick}
+              locked={orderCreated}
             />
           </div>
 
@@ -172,6 +179,7 @@ export function CheckoutClient() {
               deliveryData={deliveryData}
               onBack={() => setStep(2)}
               onCartClear={clearCart}
+              onOrderCreated={() => setOrderCreated(true)}
             />
           )}
         </div>
