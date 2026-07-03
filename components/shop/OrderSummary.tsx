@@ -11,6 +11,7 @@ import {
 } from "lucide-react";
 import { Button } from "@/components/ui/Button";
 import { isCheckoutEnabled } from "@/lib/feature-flags";
+import { FREE_DELIVERY_THRESHOLD } from "@/lib/constants";
 
 interface OrderSummaryProps {
   subtotal: number;
@@ -70,11 +71,11 @@ export function OrderSummary({
             <div className="w-full h-1.5 bg-border-subtle rounded-full overflow-hidden">
               <div
                 className="h-full bg-berry-green rounded-full transition-all"
-                style={{ width: `${Math.min((subtotal / 100) * 100, 100)}%` }}
+                style={{ width: `${Math.min((subtotal / FREE_DELIVERY_THRESHOLD) * 100, 100)}%` }}
               />
             </div>
             <p className="text-xs text-text-tertiary text-center">
-              Te faltan <span className="font-semibold text-berry-red">S/ {(100 - subtotal).toFixed(2)}</span> para envío gratis
+              Te faltan <span className="font-semibold text-berry-red">S/ {(FREE_DELIVERY_THRESHOLD - subtotal).toFixed(2)}</span> para envío gratis
             </p>
           </div>
         )}

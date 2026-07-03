@@ -11,7 +11,7 @@ import type { District } from "@/types/district";
 
 interface DeliveryFormProps {
   initialData?: Partial<DeliveryFormData>;
-  onSubmit: (data: DeliveryFormData) => void;
+  onSubmit: (data: DeliveryFormData, district?: District) => void;
   onBack: () => void;
 }
 
@@ -80,7 +80,8 @@ export function DeliveryForm({
       return;
     }
 
-    onSubmit(parsed.data);
+    const district = districts.find((d) => d.id === parsed.data.districtId);
+    onSubmit(parsed.data, district);
   };
 
   const minDate = getTomorrowDate();

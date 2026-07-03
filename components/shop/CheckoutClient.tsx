@@ -11,7 +11,9 @@ import { DeliveryForm } from "@/components/shop/checkout/DeliveryForm";
 import { CheckoutConfirm } from "@/components/shop/checkout/CheckoutConfirm";
 import { useAuth } from "@/hooks/useAuth";
 import { useCart } from "@/hooks/useCart";
+import { FREE_DELIVERY_THRESHOLD } from "@/lib/constants";
 import type { DeliveryFormData } from "@/lib/validations/checkout";
+import type { District } from "@/types/district";
 
 export function CheckoutClient() {
   const router = useRouter();
@@ -20,6 +22,8 @@ export function CheckoutClient() {
 
   const [step, setStep] = useState(1);
   const [deliveryData, setDeliveryData] = useState<DeliveryFormData | null>(null);
+  // Fee of the district chosen in step 2; null until a district is selected.
+  const [districtFee, setDistrictFee] = useState<number | null>(null);
   // Once the order is created (in step 3) the flow is locked: the user can no
   // longer go back to edit the summary or delivery data.
   const [orderCreated, setOrderCreated] = useState(false);
@@ -100,8 +104,17 @@ export function CheckoutClient() {
     phone: meData?.customer?.phone ?? user?.phone ?? "",
   };
 
-  const handleDeliverySubmit = (data: DeliveryFormData) => {
+  // Delivery fee shown/charged at confirmation: the chosen district's rate,
+  // waived from FREE_DELIVERY_THRESHOLD. The API recomputes this same rule
+  // server-side when the order is created.
+  const subtotalNum = parseFloat(subtotal);
+  const confirmFee =
+    subtotalNum >= FREE_DELIVERY_THRESHOLD ? 0 : districtFee ?? parseFloat(deliveryFee);
+  const confirmTotal = (subtotalNum + confirmFee).toFixed(2);
+
+  const handleDeliverySubmit = (data: DeliveryFormData, district?: District) => {
     setDeliveryData(data);
+    setDistrictFee(district ? parseFloat(district.deliveryFee) : null);
     setStep(3);
   };
 
@@ -173,8 +186,8 @@ export function CheckoutClient() {
             <CheckoutConfirm
               items={items}
               subtotal={subtotal}
-              deliveryFee={deliveryFee}
-              total={total}
+              deliveryFee={confirmFee.toFixed(2)}
+              total={confirmTotal}
               customerId={customerId}
               deliveryData={deliveryData}
               onBack={() => setStep(2)}
