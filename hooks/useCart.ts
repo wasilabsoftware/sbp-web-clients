@@ -13,6 +13,7 @@ interface CartState {
   getOrCreateSessionId: () => string;
   fetchCart: () => Promise<void>;
   addItem: (productId: string, quantity?: number) => Promise<void>;
+  addBundle: (bundleId: string, quantity?: number) => Promise<void>;
   updateQuantity: (itemId: string, quantity: number) => Promise<void>;
   removeItem: (itemId: string) => Promise<void>;
   clearCart: () => void;
@@ -70,6 +71,24 @@ export const useCart = create<CartState>()(
             productId,
             quantity.toFixed(2)
           );
+          // Re-fetch the full cart to get updated summary
+          const cart = await cartService.getCart(sessionId);
+          set({ cart, isUpdating: false });
+        } catch (err) {
+          set({
+            error: (err as Error).message,
+            isUpdating: false,
+          });
+          throw err;
+        }
+      },
+
+      addBundle: async (bundleId: string, quantity: number = 1) => {
+        const sessionId = get().getOrCreateSessionId();
+        set({ isUpdating: true, error: null });
+
+        try {
+          await cartService.addBundleItem(sessionId, bundleId, quantity.toFixed(2));
           // Re-fetch the full cart to get updated summary
           const cart = await cartService.getCart(sessionId);
           set({ cart, isUpdating: false });

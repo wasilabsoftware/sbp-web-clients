@@ -2,9 +2,11 @@ import {
   storefrontResponseSchema,
   storefrontVariantDetailResponseSchema,
   featuredProductsResponseSchema,
+  storefrontBundlesResponseSchema,
   type StorefrontResponse,
   type StorefrontVariantDetail,
   type FeaturedProduct,
+  type StorefrontBundle,
 } from "@/types/storefront";
 
 const API_URL = process.env.NEXT_PUBLIC_API_URL;
@@ -77,6 +79,20 @@ export async function getStorefrontVariantById(
 
   const data = await res.json();
   return storefrontVariantDetailResponseSchema.parse(data).data;
+}
+
+export async function getStorefrontBundles(): Promise<StorefrontBundle[]> {
+  const res = await fetch(`${getApiUrl()}/api/v1/storefront/bundles`, {
+    headers: { accept: "application/json" },
+    next: { revalidate: 60 * 5 },
+  });
+
+  if (!res.ok) {
+    throw new Error(`Error al obtener packs: ${res.status}`);
+  }
+
+  const data = await res.json();
+  return storefrontBundlesResponseSchema.parse(data).data;
 }
 
 export async function getFeaturedProducts(

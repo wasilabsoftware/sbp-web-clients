@@ -79,19 +79,36 @@ export function CheckoutConfirm({
         `${deliveryData.deliveryDate}T${deliveryData.deliveryTimeSlot.split(" - ")[0]}:00`
       ).toISOString(),
       orderSource: "web" as const,
-      items: items.map((item) => ({
-        productId: item.product.id,
-        variantId: item.variant.id,
-        productName: item.product.name,
-        variantName: item.variant.name,
-        productSku: item.variant.sku,
-        quantity: item.quantity,
-        unitPrice: item.unitPrice,
-        totalPrice: (
+      items: items.map((item) => {
+        const totalPrice = (
           parseFloat(item.quantity) * parseFloat(item.unitPrice)
-        ).toFixed(2),
-        specialInstructions: item.specialInstructions || undefined,
-      })),
+        ).toFixed(2);
+
+        // Pack line — the server prices it from the bundle-cost view.
+        if (item.bundle) {
+          return {
+            bundleId: item.bundle.id,
+            productName: item.bundle.name,
+            productSku: item.bundle.slug,
+            quantity: item.quantity,
+            unitPrice: item.unitPrice,
+            totalPrice,
+            specialInstructions: item.specialInstructions || undefined,
+          };
+        }
+
+        return {
+          productId: item.product?.id,
+          variantId: item.variant?.id,
+          productName: item.product?.name ?? "",
+          variantName: item.variant?.name,
+          productSku: item.variant?.sku ?? "",
+          quantity: item.quantity,
+          unitPrice: item.unitPrice,
+          totalPrice,
+          specialInstructions: item.specialInstructions || undefined,
+        };
+      }),
     }),
     [customerId, subtotal, deliveryFee, total, deliveryData, items]
   );

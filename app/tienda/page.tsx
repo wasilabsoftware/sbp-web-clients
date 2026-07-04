@@ -1,8 +1,14 @@
 import { CatalogClient } from "@/components/shop/CatalogClient";
 import { getCategories } from "@/lib/services/category.service";
-import { getStorefrontVariants } from "@/lib/services/storefront.service";
+import {
+  getStorefrontBundles,
+  getStorefrontVariants,
+} from "@/lib/services/storefront.service";
 import { getAllCategories } from "@/lib/data/products";
 import type { ApiCategory } from "@/types/category";
+
+// Categories that hold packs (bundles) instead of products.
+const BUNDLE_CATEGORY_SLUGS = ["super-packs", "super-snacks"];
 
 interface CatalogPageProps {
   searchParams: Promise<{
@@ -91,10 +97,48 @@ export default async function CatalogPage({ searchParams }: CatalogPageProps) {
     console.error("Failed to fetch products:", error);
   }
 
+  // Packs (bundles): shown as their own section. When a bundle category is
+  // selected they replace the product grid (those categories hold no
+  // sellable products); on "Todos" a teaser of the packs appears on page 1.
+  const isBundleCategory = BUNDLE_CATEGORY_SLUGS.includes(selectedCategory);
+  let bundles: {
+    id: string;
+    slug: string;
+    name: string;
+    category: string;
+    description: string;
+    price: number;
+    imageUrl: string | null;
+  }[] = [];
+
+  if (!search && (isBundleCategory || (selectedCategory === "todos" && currentPage === 1))) {
+    try {
+      const allBundles = await getStorefrontBundles();
+      const filtered = isBundleCategory
+        ? allBundles.filter((b) => b.category?.slug === selectedCategory)
+        : allBundles.slice(0, 6);
+
+      bundles = filtered.map((b) => ({
+        id: b.id,
+        slug: b.slug,
+        name: b.name,
+        category: b.category?.name ?? "Pack",
+        description:
+          b.description ?? b.components.map((comp) => comp.name).join(", "),
+        price: parseFloat(b.calculatedPrice),
+        imageUrl: b.images?.[0] ?? null,
+      }));
+    } catch (error) {
+      console.error("Failed to fetch bundles:", error);
+    }
+  }
+
   return (
     <CatalogClient
       categories={categories}
       products={products}
+      bundles={bundles}
+      bundlesOnly={isBundleCategory}
       currentPage={currentPage}
       totalPages={totalPages}
       totalProducts={totalProducts}

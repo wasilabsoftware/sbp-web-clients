@@ -26,13 +26,26 @@ export interface ServerCartProduct {
   images: string[] | null;
 }
 
+export interface ServerCartBundle {
+  id: string;
+  name: string;
+  slug: string;
+  description: string | null;
+  images: string[] | null;
+}
+
+/**
+ * A cart line is either a variant (variant + product set, bundle null) or a
+ * pack (bundle set, variant/product null).
+ */
 export interface ServerCartItem {
   id: string;
   quantity: string;
   unitPrice: string;
   specialInstructions: string | null;
-  variant: ServerCartVariant;
-  product: ServerCartProduct;
+  variant: ServerCartVariant | null;
+  product: ServerCartProduct | null;
+  bundle: ServerCartBundle | null;
 }
 
 export interface CartSummary {

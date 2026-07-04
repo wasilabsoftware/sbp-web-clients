@@ -48,7 +48,13 @@ export function CheckoutOrderSummary({
             const qty = parseFloat(item.quantity);
             const price = parseFloat(item.unitPrice);
             const lineTotal = qty * price;
-            const imageUrl = item.variant.images?.[0] ?? item.product.images?.[0] ?? "";
+            const displayName =
+              item.bundle?.name ?? item.variant?.name ?? "Producto";
+            const imageUrl =
+              item.bundle?.images?.[0] ??
+              item.variant?.images?.[0] ??
+              item.product?.images?.[0] ??
+              "";
 
             return (
               <div
@@ -59,7 +65,7 @@ export function CheckoutOrderSummary({
                   {imageUrl ? (
                     <Image
                       src={imageUrl}
-                      alt={item.variant.name}
+                      alt={displayName}
                       fill
                       className="object-cover"
                     />
@@ -71,7 +77,7 @@ export function CheckoutOrderSummary({
                 </div>
                 <div className="flex-1 min-w-0">
                   <p className="text-sm font-medium text-text-primary truncate">
-                    {item.variant.name}
+                    {displayName}
                   </p>
                   <p className="text-xs text-text-tertiary">
                     {qty} x S/ {price.toFixed(2)}

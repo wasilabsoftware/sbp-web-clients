@@ -8,6 +8,7 @@ import { Header } from "@/components/shared/Header";
 import { Footer } from "@/components/shared/Footer";
 import { SidebarFilters } from "@/components/shop/SidebarFilters";
 import { CatalogProductCard } from "@/components/shop/CatalogProductCard";
+import { BundleCard } from "@/components/shop/BundleCard";
 import { Pagination } from "@/components/ui/Pagination";
 
 interface FilterCategory {
@@ -25,9 +26,22 @@ interface CatalogProduct {
   href: string;
 }
 
+interface CatalogBundle {
+  id: string;
+  slug: string;
+  name: string;
+  category: string;
+  description: string;
+  price: number;
+  imageUrl: string | null;
+}
+
 interface CatalogClientProps {
   categories: FilterCategory[];
   products: CatalogProduct[];
+  bundles?: CatalogBundle[];
+  /** True when a pack category is selected — the grid shows only packs. */
+  bundlesOnly?: boolean;
   currentPage: number;
   totalPages: number;
   totalProducts: number;
@@ -38,6 +52,8 @@ interface CatalogClientProps {
 export function CatalogClient({
   categories,
   products,
+  bundles = [],
+  bundlesOnly = false,
   currentPage,
   totalPages,
   totalProducts,
@@ -236,46 +252,87 @@ export function CatalogClient({
 
         {/* Products Area */}
         <div className="flex-1 flex flex-col gap-6 lg:gap-8">
-          {/* Desktop Header */}
-          <div className="hidden lg:flex items-center justify-between">
-            <span className="text-[15px] text-text-secondary">
-              Mostrando {displayProducts.length} de {totalProducts} productos
-            </span>
-            <button className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border-subtle rounded-sm">
-              <span className="text-sm text-text-secondary">
-                Ordenar por: Más vendidos
-              </span>
-              <ChevronDown className="w-4 h-4 text-text-secondary" />
-            </button>
-          </div>
-
-          {/* Products Grid */}
-          {displayProducts.length > 0 ? (
-            <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 -mx-0.5 lg:mx-0">
-              {displayProducts.map((product) => (
-                <CatalogProductCard key={product.id} {...product} />
-              ))}
+          {/* Packs section */}
+          {bundles.length > 0 && (
+            <div className="flex flex-col gap-4">
+              <div className="flex items-center justify-between">
+                <h2 className="text-lg lg:text-xl font-bold text-text-primary">
+                  Packs y Snacks
+                </h2>
+                {!bundlesOnly && (
+                  <button
+                    onClick={() =>
+                      navigateTo({ categoria: "super-packs", page: undefined })
+                    }
+                    className="text-sm font-medium text-berry-red hover:underline"
+                  >
+                    Ver todos
+                  </button>
+                )}
+              </div>
+              <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 -mx-0.5 lg:mx-0">
+                {bundles.map((bundle) => (
+                  <BundleCard key={bundle.id} {...bundle} />
+                ))}
+              </div>
             </div>
-          ) : (
+          )}
+
+          {bundlesOnly && bundles.length === 0 && (
             <div className="flex flex-col items-center justify-center py-16 text-center">
               <p className="text-lg text-text-secondary mb-2">
-                No se encontraron productos
+                No hay packs disponibles
               </p>
               <p className="text-sm text-text-tertiary">
-                Intenta ajustar los filtros
+                Vuelve pronto — estamos armando nuevos packs
               </p>
             </div>
           )}
 
-          {/* Pagination */}
-          {totalPages > 1 && (
-            <Pagination
-              currentPage={currentPage}
-              totalPages={totalPages}
-              onPageChange={(page) =>
-                navigateTo({ page: String(page) })
-              }
-            />
+          {!bundlesOnly && (
+            <>
+              {/* Desktop Header */}
+              <div className="hidden lg:flex items-center justify-between">
+                <span className="text-[15px] text-text-secondary">
+                  Mostrando {displayProducts.length} de {totalProducts} productos
+                </span>
+                <button className="flex items-center gap-2 px-4 py-2.5 bg-bg-surface border border-border-subtle rounded-sm">
+                  <span className="text-sm text-text-secondary">
+                    Ordenar por: Más vendidos
+                  </span>
+                  <ChevronDown className="w-4 h-4 text-text-secondary" />
+                </button>
+              </div>
+
+              {/* Products Grid */}
+              {displayProducts.length > 0 ? (
+                <div className="grid grid-cols-2 lg:grid-cols-3 gap-4 lg:gap-6 -mx-0.5 lg:mx-0">
+                  {displayProducts.map((product) => (
+                    <CatalogProductCard key={product.id} {...product} />
+                  ))}
+                </div>
+              ) : (
+                <div className="flex flex-col items-center justify-center py-16 text-center">
+                  <p className="text-lg text-text-secondary mb-2">
+                    No se encontraron productos
+                  </p>
+                  <p className="text-sm text-text-tertiary">
+                    Intenta ajustar los filtros
+                  </p>
+                </div>
+              )}
+
+              {/* Pagination */}
+              {totalPages > 1 && (
+                <Pagination
+                  currentPage={currentPage}
+                  totalPages={totalPages}
+                  onPageChange={(page) =>
+                    navigateTo({ page: String(page) })
+                  }
+                />
+              )}
+            </>
           )}
         </div>
       </section>

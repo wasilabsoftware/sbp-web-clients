@@ -5,14 +5,18 @@ import { Plus, Check, Loader2 } from "lucide-react";
 import { useCart } from "@/hooks/useCart";
 
 interface QuickAddButtonProps {
-  variantId: string;
+  /** Variant line — mutually exclusive with bundleId. */
+  variantId?: string;
+  /** Pack (bundle) line — mutually exclusive with variantId. */
+  bundleId?: string;
   size?: "sm" | "md";
 }
 
 type Status = "idle" | "loading" | "success";
 
-export function QuickAddButton({ variantId, size = "md" }: QuickAddButtonProps) {
+export function QuickAddButton({ variantId, bundleId, size = "md" }: QuickAddButtonProps) {
   const addItem = useCart((state) => state.addItem);
+  const addBundle = useCart((state) => state.addBundle);
   const [status, setStatus] = useState<Status>("idle");
   const [burstKey, setBurstKey] = useState(0);
 
@@ -23,10 +27,15 @@ export function QuickAddButton({ variantId, size = "md" }: QuickAddButtonProps) 
     e.preventDefault();
     e.stopPropagation();
     if (status !== "idle") return;
+    if (!variantId && !bundleId) return;
 
     setStatus("loading");
     try {
-      await addItem(variantId);
+      if (bundleId) {
+        await addBundle(bundleId);
+      } else {
+        await addItem(variantId!);
+      }
       setStatus("success");
       setBurstKey((k) => k + 1);
       setTimeout(() => setStatus("idle"), 1100);

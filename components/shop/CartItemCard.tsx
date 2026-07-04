@@ -20,7 +20,14 @@ export function CartItemCard({
   const quantity = parseFloat(item.quantity);
   const unitPrice = parseFloat(item.unitPrice);
   const total = unitPrice * quantity;
-  const imageUrl = item.variant.images?.[0] ?? item.product.images?.[0] ?? "";
+  // A line is either a pack (bundle) or a product variant.
+  const displayName = item.bundle?.name ?? item.variant?.name ?? "Producto";
+  const displaySubtitle = item.bundle ? "Pack" : item.variant?.sku ?? "";
+  const imageUrl =
+    item.bundle?.images?.[0] ??
+    item.variant?.images?.[0] ??
+    item.product?.images?.[0] ??
+    "";
 
   const decrease = () => {
     if (quantity > 1) {
@@ -48,7 +55,7 @@ export function CartItemCard({
         {imageUrl ? (
           <Image
             src={imageUrl}
-            alt={item.variant.name}
+            alt={displayName}
             fill
             className="object-cover"
           />
@@ -62,10 +69,10 @@ export function CartItemCard({
       {/* Product Info */}
       <div className="flex flex-col gap-1.5 lg:gap-2 flex-1 min-w-0">
         <h3 className="text-[15px] lg:text-base font-semibold text-text-primary truncate pr-10 lg:pr-0">
-          {item.variant.name}
+          {displayName}
         </h3>
         <p className="text-[13px] lg:text-sm text-text-secondary">
-          {item.variant.sku}
+          {displaySubtitle}
         </p>
 
         {/* Mobile: Quantity controls then Price below */}

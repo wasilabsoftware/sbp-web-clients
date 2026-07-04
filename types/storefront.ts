@@ -110,3 +110,27 @@ export const featuredProductsResponseSchema = z.object({
 
 export type FeaturedProduct = z.infer<typeof featuredProductSchema>;
 export type FeaturedProductsResponse = z.infer<typeof featuredProductsResponseSchema>;
+
+// Packs (product bundles) — public catalog with calculated price only
+export const storefrontBundleComponentSchema = z.object({
+  name: z.string(),
+  quantity: z.string(),
+});
+
+export const storefrontBundleSchema = z.object({
+  id: z.string(),
+  name: z.string(),
+  slug: z.string(),
+  description: z.string().nullable(),
+  images: z.array(z.string()).nullable(),
+  isFeatured: z.boolean().nullable(),
+  category: storefrontCategorySchema.nullable(),
+  calculatedPrice: z.string(),
+  components: z.array(storefrontBundleComponentSchema),
+});
+
+export const storefrontBundlesResponseSchema = z.object({
+  data: z.array(storefrontBundleSchema),
+});
+
+export type StorefrontBundle = z.infer<typeof storefrontBundleSchema>;

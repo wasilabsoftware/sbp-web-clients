@@ -232,7 +232,8 @@ export default function OrderDetailPage({ params }: { params: Promise<{ id: stri
               <h3 className="text-base font-bold text-text-primary mb-5">Productos</h3>
               <div className="flex flex-col gap-4">
                 {order.items.map((item) => {
-                  const imageUrl = item.product.images?.[0] ?? "";
+                  const imageUrl =
+                    item.bundle?.images?.[0] ?? item.product?.images?.[0] ?? "";
                   return (
                     <div key={item.id} className="flex items-center gap-4">
                       <div className="relative w-14 h-14 rounded-md overflow-hidden shrink-0 bg-bg-muted">

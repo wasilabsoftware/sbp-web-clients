@@ -40,6 +40,19 @@ export async function addItem(
   return handleResponse<ServerCartItem>(res);
 }
 
+export async function addBundleItem(
+  sessionId: string,
+  bundleId: string,
+  quantity: string
+): Promise<ServerCartItem> {
+  const res = await fetch(`${getApiUrl()}/api/v1/cart/${sessionId}/items`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ bundleId, quantity }),
+  });
+  return handleResponse<ServerCartItem>(res);
+}
+
 export async function updateItem(
   itemId: string,
   quantity: string,

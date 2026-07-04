@@ -46,7 +46,7 @@ export default function CarritoPage() {
     const itemsText = items
       .map(
         (item) =>
-          `• ${item.variant.name} (${item.quantity}x) - S/ ${(parseFloat(item.unitPrice) * parseFloat(item.quantity)).toFixed(2)}`
+          `• ${item.bundle?.name ?? item.variant?.name ?? "Producto"} (${item.quantity}x) - S/ ${(parseFloat(item.unitPrice) * parseFloat(item.quantity)).toFixed(2)}`
       )
       .join("\n");
     const total = (subtotal + shipping).toFixed(2);

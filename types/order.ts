@@ -95,7 +95,12 @@ export interface ApiOrderItem {
     name: string;
     images: string[] | null;
     unitOfMeasure: string;
-  };
+  } | null;
+  bundle?: {
+    id: string;
+    name: string;
+    images: string[] | null;
+  } | null;
 }
 
 export interface ApiOrderPayment {
@@ -159,9 +164,15 @@ export interface ApiOrderTracking {
 
 // --- Create order types ---
 
+/**
+ * An order line is either a variant (productId + variantId) or a pack
+ * (bundleId). The server re-resolves names and prices; the snapshot fields
+ * here are informative.
+ */
 export interface CreateOrderItem {
-  productId: string;
-  variantId: string;
+  productId?: string;
+  variantId?: string;
+  bundleId?: string;
   productName: string;
   variantName?: string;
   productSku: string;
